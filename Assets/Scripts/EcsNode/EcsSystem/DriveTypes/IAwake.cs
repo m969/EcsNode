@@ -1,0 +1,22 @@
+﻿using ECS;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace ECS
+{
+    public interface IAwake
+    {
+    }
+
+    public interface IAwake<T> : IAwake where T : EcsEntity
+    {
+        void Awake(T entity);
+    }
+
+    public interface IAwake<T, T2> : IAwake where T : EcsEntity where T2 : IEcsComponent
+    {
+        void Awake(T entity, T2 component);
+    }
+}
