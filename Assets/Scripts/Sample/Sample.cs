@@ -6,8 +6,6 @@ using UnityEngine;
 public class Sample : MonoBehaviour
 {
     public EcsNode EcsNode { get; set; }
-    //private EcsUpdateDriveSystem EcsUpdateDriveSystem { get; set; }
-
 
     // Start is called before the first frame update
     void Start()
@@ -18,31 +16,20 @@ public class Sample : MonoBehaviour
         EcsNode.RegisterDrive<IInit>();
         EcsNode.RegisterDrive<IUpdate>();
 
-        //EcsNode.RegisterEcsDriveSystem<EcsAwakeDriveSystem>();
-        //EcsNode.RegisterEcsDriveSystem<EcsStartDriveSystem>();
-        //EcsNode.RegisterEcsDriveSystem<EcsUpdateDriveSystem>();
-        //EcsUpdateDriveSystem = EcsNode.GetEcsDriveSystem<EcsUpdateDriveSystem>();
+        EcsNode.RegisterSystem<EntitySystem>();
+        EcsNode.RegisterSystem<MoveSystem>();
 
-        //EcsNode.RegisterEntitySystem<ActorSystem>();
-        //EcsNode.RegisterEntitySystem<ActorStartSystem>();
-        //EcsNode.RegisterEntitySystem<ActorUpdateSystem>();
-        EcsNode.RegisterEntitySystem<MoveSystem>();
-        //EcsNode.RegisterEntitySystem<HealthSystem>();
-
-        var actor = EcsNode.AddChild<Actor>(beforeAwake: x => x.ActorType = 1);
+        var actor = EcsNode.AddChild<Actor>(beforeAwake: x => x.Type = 1);
         actor.AddComponent<MoveComponent>();
         actor.AddComponent<HealthComponent>();
         actor.Init();
 
-        //var actorSystem = EcsNode.GetSystem<ActorSystem>();
-        //actor.Initialize();
-        //actorSystem.Test1(actor);
+        actor.MoveToAsync(Vector3.zero);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //EcsUpdateDriveSystem.Handle(EcsNode);
         EcsNode.DriveUpdate();
     }
 }

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Device;
 using static UnityEditor.ShaderData;
 
 namespace ECS
 {
     public class SystemInfo
     {
-        public IEcsEntitySystem System { get; set; }
+        public IEcsSystem System { get; set; }
         public MethodInfo Action { get; set; }
     }
 
@@ -17,13 +19,10 @@ namespace ECS
     {
         public Dictionary<long, EcsEntity> AllEntities { get; set; } = new();
         public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; }= new();
-        public Dictionary<Type, IEcsDriveSystem> AllEcsSystems { get; set; }= new();
-        //public Dictionary<Type, IEcsEntitySystem> AllEntitySystems { get; set; }= new();
         public Dictionary<Type, Dictionary<Type, SystemInfo>> AllEntitySystems { get; set; }= new();
         public Dictionary<(Type, Type), Dictionary<Type, SystemInfo>> AllEntityComponentSystems { get; set; }= new();
         public Dictionary<Type, SystemInfo> AllUpdateSystems { get; set; }= new();
         public Dictionary<Type, Dictionary<Type, SystemInfo>> AllUpdateComponentSystems { get; set; }= new();
-        public Dictionary<Type, Dictionary<Type, IEcsEntitySystem>> BeDrivedSystems { get; set; }= new();
         public List<Type> DriveTypes { get; set; } = new();
 
         public void RegisterDrive<T>()
@@ -31,25 +30,13 @@ namespace ECS
             DriveTypes.Add(typeof(T));
         }
 
-        public T RegisterEcsDriveSystem<T>() where T : class, IEcsDriveSystem, new()
-        {
-            var system = new T();
-            AllEcsSystems.Add(system.GetType(), system);
-            return system;
-        }
-
-        public T GetEcsDriveSystem<T>() where T : class, IEcsDriveSystem, new()
-        {
-            return AllEcsSystems[typeof(T)] as T;
-        }
-        
-        public T RegisterEntitySystem<T>() where T : class, IEcsEntitySystem, new()
+        public T RegisterSystem<T>() where T : class, IEcsSystem, new()
         {
             var system = new T();
             var systemType = system.GetType();
             //AllEntitySystems.Add(systemType, system);
 
-            if (system is IEcsEntitySystem ecsEntitySystem)
+            if (system is IEcsSystem1 ecsEntitySystem)
             {
                 var entityType = ecsEntitySystem.EntityType;
                 if (!AllEntitySystems.TryGetValue(entityType, out var systems))
@@ -85,7 +72,8 @@ namespace ECS
                     }
                 }
             }
-            if (system is IEcsEntitySystem2 ecsEntitySystem2)
+
+            if (system is IEcsSystem2 ecsEntitySystem2)
             {
                 var entityType = ecsEntitySystem2.EntityType;
                 var componentType = ecsEntitySystem2.ComponentType;
@@ -132,17 +120,32 @@ namespace ECS
             return system;
         }
 
-        public T GetSystem<T>() where T : class, IEcsEntitySystem, new()
+        public void DriveSystems(EcsEntity entity, Type entityType, Type driveType)
         {
-            return AllEntitySystems[typeof(T)] as T;
+            AllEntitySystems.TryGetValue(entityType, out var systems);
+            if (systems == null)
+            {
+                return;
+            }
+            foreach (var item in systems)
+            {
+                if (item.Key.IsAssignableFrom(driveType))
+                {
+                    var systemInfo = item.Value;
+                    var system = systemInfo.System;
+                    var method = systemInfo.Action;
+                    method.Invoke(system, new object[] { entity });
+                }
+            }
         }
 
-        public T GetSystems<T, T2>(T entity, T2 component) where T : EcsEntity, new() where T2 : IEcsComponent, new()
+        public void DriveSystems<T1>(T1 entity, Type driveType) where T1 : EcsEntity
         {
-            return AllEntityComponentSystems[(typeof(T), typeof(T2))] as T;
+            DriveSystems(entity, typeof(EcsEntity), driveType);
+            DriveSystems(entity, entity.GetType(), driveType);
         }
 
-        public void DriveSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : IEcsComponent
+        public void DriveSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
         {
             AllEntityComponentSystems.TryGetValue((entity.GetType(), component.GetType()), out var systems);
             if (systems == null)
@@ -163,13 +166,26 @@ namespace ECS
 
         public void DriveUpdate()
         {
+            foreach (var item in AllUpdateSystems)
+            {
+                var entityType = item.Key;
+                var entities = Type2Entities[entityType];
+                var systemInfo = item.Value;
+                var system = systemInfo.System;
+                var method = systemInfo.Action;
+                foreach (var entity in entities)
+                {
+                    method.Invoke(system, new object[] { entity });
+                }
+            }
+
             foreach (var item in AllUpdateComponentSystems)
             {
                 var entityType = item.Key;
                 var entities = Type2Entities[entityType];
                 foreach (var entity in entities)
                 {
-                    foreach (var component in entity.components)
+                    foreach (var component in entity.Components)
                     {
                         var componentType = component.Key;
                         if (item.Value.TryGetValue(componentType, out var systemInfo))

@@ -17,7 +17,7 @@ namespace ECS
 	{
 	}
 
-	public interface IInit<T, T2> : IInit where T : EcsEntity where T2 : IEcsComponent
+	public interface IInit<T, T2> : IInit where T : EcsEntity where T2 : EcsComponent
 	{
 		void Init(T entity, T2 component);
 	}

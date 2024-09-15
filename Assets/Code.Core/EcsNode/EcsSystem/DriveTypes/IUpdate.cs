@@ -14,7 +14,7 @@ namespace ECS
     {
     }
 
-    public interface IUpdate<T, T2> : IUpdate where T : EcsEntity where T2 : IEcsComponent
+    public interface IUpdate<T, T2> : IUpdate where T : EcsEntity where T2 : EcsComponent
     {
         void Update(T entity, T2 component);
     }

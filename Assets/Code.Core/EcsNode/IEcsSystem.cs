@@ -2,25 +2,29 @@
 
 namespace ECS
 {
-    public interface IEcsDriveSystem
-    {
+    //public interface IEcsDriveSystem
+    //{
         
-    }
+    //}
 
-    public interface IEcsDriveSystem<in T> : IEcsDriveSystem where T : EcsEntity
-    {
-        void Handle(EcsNode ecsNode, T entity);
-    }
+    //public interface IEcsDriveSystem<in T> : IEcsDriveSystem where T : EcsEntity
+    //{
+    //    void Handle(EcsNode ecsNode, T entity);
+    //}
 
     /// <summary>
     /// 系统是包含的机制，大系统包含小系统，小系统包含更小的系统
     /// </summary>
-    public interface IEcsEntitySystem
+    public interface IEcsSystem
     {
         Type EntityType { get; }
     }
 
-    public interface IEcsEntitySystem2 : IEcsEntitySystem
+    public interface IEcsSystem1 : IEcsSystem
+    {
+    }
+
+    public interface IEcsSystem2 : IEcsSystem
     {
         Type ComponentType { get; }
     }

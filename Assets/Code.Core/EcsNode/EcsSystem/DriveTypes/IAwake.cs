@@ -15,7 +15,7 @@ namespace ECS
         void Awake(T entity);
     }
 
-    public interface IAwake<T, T2> : IAwake where T : EcsEntity where T2 : IEcsComponent
+    public interface IAwake<T, T2> : IAwake where T : EcsEntity where T2 : EcsComponent
     {
         void Awake(T entity, T2 component);
     }

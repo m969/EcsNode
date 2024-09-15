@@ -8,6 +8,6 @@ public class EntitySystem : AEcsSystem<EcsEntity>,
 {
     public void Awake(EcsEntity entity)
     {
-        Debug.Log("EntitySystem Awake");
+        Debug.Log($"EntitySystem Awake {entity.GetType().Name}");
     }
 }
