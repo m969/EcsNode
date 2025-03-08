@@ -1,0 +1,17 @@
+{
+    "name": "Game.ViewModel",
+    "rootNamespace": "",
+    "references": [
+        "GUID:44b68c5cb5bdd2941899f32aad657861",
+        "GUID:056340643d9aef44dbc392abf802867d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

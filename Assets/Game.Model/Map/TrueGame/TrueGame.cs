@@ -1,0 +1,43 @@
+﻿using ECS;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using TrueSync;
+
+// 输入指令结构
+public struct PlayerInput
+{
+    public int PlayerId;
+    public string Command;
+    public long Frame;
+}
+
+// 帧执行命令
+public interface IFramePlay
+{
+    public long EntityId { get; set; }
+}
+
+public struct FramePlay_Move : IFramePlay
+{
+    public long EntityId { get; set; }
+    public TSVector Position;
+    public TSVector AfterPosition;
+}
+
+public class TrueGame : EcsEntity
+{
+    // 游戏逻辑帧率（每秒帧数）
+    public const int FPS = 20;
+
+    // 当前逻辑帧编号
+    public long _currentFrame;
+
+    // 当前输入帧编号
+    public long _currentInputFrame;
+
+    // 逻辑帧间隔（毫秒）
+    public readonly long _frameInterval = 1000 / FPS;
+}
