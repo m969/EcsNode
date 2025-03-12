@@ -7,11 +7,13 @@ public class Process_GameSystemInit
 {
     public static void Init(EcsNode ecsNode)
     {
-        Debug.Log($"Process_GameSystemInit Init");
+        ConsoleLog.Debug($"Process_GameSystemInit Init");
+        ecsNode.EcsUpdate = new EcsNodeSystem();
     }
 
     public static void Reload(EcsNode ecsNode)
     {
-        Debug.Log($"Process_GameSystemInit Reload");
+        ConsoleLog.Debug($"Process_GameSystemInit Reload");
+        ecsNode.EcsUpdate = new EcsNodeSystem();
     }
 }

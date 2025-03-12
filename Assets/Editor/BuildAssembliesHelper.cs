@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEditor.Build.Player;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Emit;
 
 namespace ET
 {
@@ -33,16 +36,72 @@ namespace ET
             unitySynchronizationContext = SynchronizationContext.Current;
         }
 
-        [MenuItem("ET/Build Tool")]
-        public static void ShowWindow()
+        //[MenuItem("ET/Build Tool")]
+        //public static void ShowWindow()
+        //{
+        //    //BuildHotfix(CodeOptimization.Debug);
+        //    DoCompile();
+        //}
+
+        [MenuItem("ECSNode/Compile Systems")]
+        public static void CompileAssemblies()
         {
-            //BuildHotfix(CodeOptimization.Debug);
-            DoCompile();
+            // 获取所有 asmdef 程序集的源代码文件
+            var sourceFiles = new List<string>();
+            var assemblies = CompilationPipeline.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                if (assembly.name.StartsWith("Game.System"))
+                {
+                    sourceFiles.AddRange(assembly.sourceFiles);
+                }
+                if (assembly.name.StartsWith("Game.ViewSystem"))
+                {
+                    sourceFiles.AddRange(assembly.sourceFiles);
+                }
+            }
+
+            // 使用 Roslyn 编译
+            var syntaxTrees = sourceFiles.Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file)));
+            var allAss = AppDomain.CurrentDomain.GetAssemblies();
+            var reloadDll = "MergeSystem";
+            var references = allAss
+                .Where(a => !a.IsDynamic)
+                .Where(a => a.GetName().Name != reloadDll)
+                .Select(a => MetadataReference.CreateFromFile(a.Location))
+                .Cast<MetadataReference>()
+                .ToList();
+
+            var compilation = CSharpCompilation.Create(
+                reloadDll,
+                syntaxTrees,
+                references,
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+            // 输出 DLL
+            string outputPath = Path.Combine(Define.BuildOutputDir, reloadDll + ".dll");
+            using (var ms = new MemoryStream())
+            {
+                EmitResult result = compilation.Emit(ms);
+                if (result.Success)
+                {
+                    File.WriteAllBytes(outputPath, ms.ToArray());
+                    Debug.Log("DLL 编译成功: " + outputPath);
+                }
+                else
+                {
+                    foreach (var diagnostic in result.Diagnostics)
+                    {
+                        Debug.LogError(diagnostic.ToString());
+                    }
+                }
+            }
         }
 
         /// <summary>
         /// 执行编译代码流程
         /// </summary>
+        [MenuItem("ECSNode/DoCompile")]
         public static void DoCompile()
         {
             // 强制刷新一下，防止关闭auto refresh，编译出老代码
@@ -73,7 +132,8 @@ namespace ET
             try
             {
                 Directory.CreateDirectory(Define.BuildOutputDir);
-                BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+                //BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+                BuildTarget target = BuildTarget.Stadia;
                 BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
                 ScriptCompilationSettings scriptCompilationSettings = new()
                 {

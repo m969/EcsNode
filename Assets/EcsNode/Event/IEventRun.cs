@@ -23,7 +23,7 @@ namespace ECS
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                ConsoleLog.Error(e);
             }
         }
     }
@@ -39,7 +39,7 @@ namespace ECS
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                ConsoleLog.Error(e);
             }
         }
     }
@@ -55,7 +55,7 @@ namespace ECS
             }
             catch (Exception e)
             {
-                Debug.LogError(e);
+                ConsoleLog.Error(e);
             }
         }
     }

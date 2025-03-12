@@ -23,7 +23,7 @@ public class TrueGameSystem : AEcsEntitySystem<TrueGame>,
         long nextFrameTime = game._currentFrame * game._frameInterval;
 
         // 等待到下一帧时间
-        while (DateTime.Now.Millisecond < nextFrameTime)
+        while (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond < nextFrameTime)
         {
             return;
         }

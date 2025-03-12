@@ -19,11 +19,14 @@ public class PlayerInputSystem : AEcsComponentSystem<TrueGame, PlayerInputCompon
      
     public static void Update(TrueGame game, PlayerInputComponent component)
     {
+        //UnityEngine.Debug.Log("PlayerInputSystem Update");
         if (Input.GetKeyDown(KeyCode.D))
         {
+            //ConsoleLog.Log("PlayerInputSystem Update KeyCode");
+            //ConsoleLog.Log("PlayerInputSystem Update KeyCode2");
             component.PlayerInputs.Add(new PlayerInput()
             {
-                PlayerId = 0,
+                PlayerId = game.MyActor.Id,
                 Command = "Move"
             });
         }

@@ -19,14 +19,19 @@ public class TrueGameExecuteSystem : AEcsComponentSystem<TrueGame, TrueGameExecu
     // 添加玩家输入
     public static void AddPlayerInput(TrueGame game, PlayerInput input)
     {
+        //ConsoleLog.Log("TrueGameExecuteSystem AddPlayerInput");
         var execute = game.GetComponent<TrueGameExecuteComponent>();
-        lock (execute._locker)
+        var frame = game._currentFrame;
+        //ConsoleLog.Log("TrueGameExecuteSystem AddPlayerInput2");
+        //lock (execute._locker)
         {
-            if (!execute._inputQueue.ContainsKey(input.Frame))
+            if (!execute._inputQueue.ContainsKey(frame))
             {
-                execute._inputQueue[input.Frame] = new List<PlayerInput>();
+                execute._inputQueue[frame] = new List<PlayerInput>();
             }
-            execute._inputQueue[input.Frame].Add(input);
+            input.Frame = frame;
+            execute._inputQueue[frame].Add(input);
+            //ConsoleLog.Log("TrueGameExecuteSystem AddPlayerInput _locker");
         }
     }
 
@@ -36,7 +41,7 @@ public class TrueGameExecuteSystem : AEcsComponentSystem<TrueGame, TrueGameExecu
 
         // 取出当前帧所有输入
         List<PlayerInput> inputs;
-        lock (component._locker)
+        //lock (component._locker)
         {
             component._inputQueue.TryGetValue(frame, out inputs);
             component._inputQueue.Remove(frame);

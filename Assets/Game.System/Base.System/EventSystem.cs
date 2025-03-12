@@ -14,8 +14,9 @@ public class EventSystem : AEcsComponentSystem<EcsNode, EventComponent>,
         {
             if (item.BaseType == null) continue;
             if (item.BaseType.BaseType == null) continue;
-            if (item.BaseType.IsAssignableFrom(typeof(ICommandHandler)) == false) continue;
+            if (typeof(ICommandHandler).IsAssignableFrom(item.BaseType) == false) continue;
 
+            //ConsoleLog.Debug($"EventSystem Awake {item.Name}");
             var handler = Activator.CreateInstance(item) as ICommandHandler;
             var cmdType = handler.Type;
             component.CommandHandlers.TryGetValue(cmdType, out var handlers);

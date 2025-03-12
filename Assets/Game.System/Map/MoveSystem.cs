@@ -11,12 +11,12 @@ public class MoveSystem : AEcsComponentSystem<Actor, MoveComponent>,
 {
     public void Awake(Actor actor, MoveComponent moveComponent)
     {
-        Debug.Log($"MoveSystem Awake {actor.GetType().Name} {moveComponent.GetType().Name}");
+        ConsoleLog.Debug($"MoveSystem Awake {actor.GetType().Name} {moveComponent.GetType().Name}");
     }
 
     public void Init(Actor actor, MoveComponent moveComponent)
     {
-        Debug.Log($"MoveSystem Init {actor.GetType().Name} {moveComponent.GetType().Name}");
+        ConsoleLog.Debug($"MoveSystem Init {actor.GetType().Name} {moveComponent.GetType().Name}");
     }
      
     public static void Update(Actor actor, MoveComponent moveComponent)
@@ -31,6 +31,7 @@ public class MoveSystem : AEcsComponentSystem<Actor, MoveComponent>,
 
     public static void ChangeMove(Actor actor, TSVector target)
     {
+        //ConsoleLog.Debug($"MoveSystem ChangeMove {target}");
         var moveComp = actor.GetComponent<MoveComponent>();
         moveComp.TrueDirection = target;
     }
@@ -54,6 +55,7 @@ public class MoveSystem : AEcsComponentSystem<Actor, MoveComponent>,
 
     public static void SetMovePosition(Actor actor, TSVector position)
     {
+        //ConsoleLog.Log($"SetMovePosition: {position}");
         var transComp = actor.GetComponent<TrueTransformComponent>();
         var beforePos = transComp.Position;
         transComp.Position = position;

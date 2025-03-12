@@ -8,7 +8,9 @@
         "GUID:935b598d871a8c24b9f6f74d78c1e93a",
         "GUID:645f7d097acee4f40b75a6b9ff1b0822"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Stadia"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

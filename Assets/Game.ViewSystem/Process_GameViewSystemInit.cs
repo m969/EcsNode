@@ -7,7 +7,7 @@ public class Process_GameViewSystemInit
 {
     public static void Init(EcsNode ecsNode)
     {
-        Debug.Log($"Process_GameViewSystemInit Init");
+        ConsoleLog.Debug($"Process_GameViewSystemInit Init");
 
         ecsNode.AddComponent<EventComponent>();
         ecsNode.Init();
@@ -24,11 +24,13 @@ public class Process_GameViewSystemInit
         actor.AddComponent<TrueTransformComponent>();
         actor.AddComponent<ActorViewComponent>();
         actor.Init();
+
+        game.MyActor = actor;
         //_ = MoveSystem.MoveAsync(actor, Vector3.zero);
     }
 
     public static void Reload(EcsNode ecsNode)
     {
-        Debug.Log($"Process_GameViewSystemInit Reload");
+        ConsoleLog.Debug($"Process_GameViewSystemInit Reload");
     }
 }

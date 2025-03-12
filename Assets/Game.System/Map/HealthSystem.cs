@@ -7,6 +7,6 @@ public class HealthSystem : AEcsComponentSystem<Actor, HealthComponent>,
 {
     public void Awake(Actor entity, HealthComponent component)
     {
-        Debug.Log($"HealthSystem Awake {entity.GetType().Name}");
+        ConsoleLog.Debug($"HealthSystem Awake {entity.GetType().Name}");
     }
 }

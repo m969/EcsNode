@@ -28,6 +28,7 @@ public class TrueGamePlaySystem : AEcsComponentSystem<TrueGame, TrueGamePlayComp
 
     public static void Update(TrueGame game, TrueGamePlayComponent component)
     {
+        //ConsoleLog.Log($"TrueGamePlaySystem Update");
         var frame = game._currentFrame;
 
         var actors = game.Id2Children.Values;
@@ -36,6 +37,7 @@ public class TrueGamePlaySystem : AEcsComponentSystem<TrueGame, TrueGamePlayComp
         {
             if (item.GetComponent<MoveComponent>().TrueDirection == TSVector.right)
             {
+                //ConsoleLog.Log($"TrueGamePlaySystem MoveFrame");
                 var framePlay = MoveSystem.MoveFrame(item as Actor);
                 PlayFrame(game, framePlay);
 

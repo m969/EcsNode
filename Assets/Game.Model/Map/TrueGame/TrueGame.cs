@@ -9,7 +9,7 @@ using TrueSync;
 // 输入指令结构
 public struct PlayerInput
 {
-    public int PlayerId;
+    public long PlayerId;
     public string Command;
     public long Frame;
 }
@@ -40,4 +40,6 @@ public class TrueGame : EcsEntity
 
     // 逻辑帧间隔（毫秒）
     public readonly long _frameInterval = 1000 / FPS;
+
+    public Actor MyActor { get; set; }
 }

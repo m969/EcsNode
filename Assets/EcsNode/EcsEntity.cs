@@ -121,7 +121,7 @@ namespace ECS
         private void DriveAwake<T>(T component) where T : EcsComponent, new()
         {
             var ecsNode = GetEcsNode();
-            ecsNode.DriveSystems(this, component, typeof(IAwake));
+            ecsNode.DriveComponentSystems(this, component, typeof(IAwake));
         }
 
         public void Init()
@@ -130,7 +130,7 @@ namespace ECS
             ecsNode.DriveSystems(this, typeof(IInit));
             foreach (var item in Components.Values)
             {
-                ecsNode.DriveSystems(this, item, typeof(IInit));
+                ecsNode.DriveComponentSystems(this, item, typeof(IInit));
             }
         }
     }

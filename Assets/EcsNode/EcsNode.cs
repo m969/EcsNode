@@ -10,20 +10,28 @@ namespace ECS
         public MethodInfo Action { get; set; }
     }
 
-    public class Debug
+    public interface IConsoleLogger
     {
-        public static void Log(object log)
+        void Log(object log);
+        void LogError(object log);
+    }
+
+    public class ConsoleLog
+    {
+        public static IConsoleLogger Logger;
+        public static Action<object> LogAction;
+        public static Action<object> LogErrorAction;
+
+        public static void Debug(object log)
         {
-#if UNITY_EDITOR
-            //UnityEngine.Debug.Log(log);
-#endif
+            Logger?.Log(log);
+            LogAction?.Invoke(log);
         }
 
-        public static void LogError(object log)
+        public static void Error(object log)
         {
-#if UNITY_EDITOR
-            //UnityEngine.Debug.Log(log);
-#endif
+            Logger?.LogError(log);
+            LogErrorAction?.Invoke(log);
         }
     }
 
@@ -33,12 +41,14 @@ namespace ECS
         public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; }= new();
 
         public Dictionary<Type, IEcsSystem> AllSystems { get; set; }= new();
-        public Dictionary<Type, Dictionary<Type, SystemInfo>> AllEntitySystems { get; set; }= new();
+        public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; }= new();
         public Dictionary<(Type, Type), Dictionary<Type, SystemInfo>> AllEntityComponentSystems { get; set; }= new();
-        public Dictionary<Type, SystemInfo> AllUpdateSystems { get; set; }= new();
+        public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; }= new();
         //public Dictionary<Type, Dictionary<Type, SystemInfo>> AllUpdateComponentSystems { get; set; }= new();
         public List<Type> DriveTypes { get; set; } = new();
         public Type[] AllTypes { get; set; }
+
+        public IUpdate<EcsNode> EcsUpdate { get; set; }
 
         public void RegisterDrive<T>()
         {
@@ -50,9 +60,9 @@ namespace ECS
             AllTypes = types;
 
             var allSystems = new Dictionary<Type, IEcsSystem>();
-            var allEntitySystems = new Dictionary<Type, Dictionary<Type, SystemInfo>>();
+            var allEntitySystems = new Dictionary<Type, Dictionary<Type, List<SystemInfo>>>();
             var allEntityComponentSystems = new Dictionary<(Type, Type), Dictionary<Type, SystemInfo>>();
-            var allUpdateSystems = new Dictionary<Type, SystemInfo>();
+            var allUpdateSystems = new Dictionary<Type, List<SystemInfo>>();
             var updateEntityTypes = new List<Type>();
 
             foreach (var systemType in types)
@@ -76,10 +86,10 @@ namespace ECS
                 if (system is IEcsEntitySystem ecsEntitySystem)
                 {
                     var entityType = ecsEntitySystem.EntityType;
-                    if (!allEntitySystems.TryGetValue(entityType, out var systems))
+                    if (!allEntitySystems.TryGetValue(entityType, out var typeSystems))
                     {
-                        systems = new Dictionary<Type, SystemInfo>();
-                        allEntitySystems.Add(entityType, systems);
+                        typeSystems = new Dictionary<Type, List<SystemInfo>>();
+                        allEntitySystems.Add(entityType, typeSystems);
                     }
 
                     var interfaces = systemType.GetInterfaces();
@@ -97,11 +107,19 @@ namespace ECS
                                 }
                                 var systemAction = systemType.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
                                 var systemInfo = new SystemInfo() { System = system, Action = systemAction };
-                                systems.Add(item, systemInfo);
+                                if (typeSystems.ContainsKey(item) == false)
+                                {
+                                    typeSystems.Add(item, new List<SystemInfo>());
+                                }
+                                typeSystems[item].Add(systemInfo);
 
                                 if (item == typeof(IUpdate))
                                 {
-                                    allUpdateSystems.Add(entityType, systemInfo);
+                                    if (allUpdateSystems.ContainsKey(entityType) == false)
+                                    {
+                                        allUpdateSystems.Add(entityType, new List<SystemInfo>());
+                                    }
+                                    allUpdateSystems[entityType].Add(systemInfo);
                                     updateEntityTypes.Add(entityType);
                                 }
 
@@ -171,10 +189,13 @@ namespace ECS
             {
                 if (item.Key.IsAssignableFrom(driveType))
                 {
-                    var systemInfo = item.Value;
-                    var system = systemInfo.System;
-                    var method = systemInfo.Action;
-                    method.Invoke(system, new object[] { entity });
+                    var systemList = item.Value;
+                    foreach (var systemInfo in systemList)
+                    {
+                        var system = systemInfo.System;
+                        var method = systemInfo.Action;
+                        method.Invoke(system, new object[] { entity });
+                    }
                 }
             }
         }
@@ -185,7 +206,7 @@ namespace ECS
             DriveSystems(entity, entity.GetType(), driveType);
         }
 
-        public void DriveSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
+        public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
         {
             AllEntityComponentSystems.TryGetValue((entity.GetType(), component.GetType()), out var systems);
             if (systems == null)
@@ -239,31 +260,36 @@ namespace ECS
                 var entityType = item.Key;
                 if (UpdateEntities.TryGetValue(entityType, out var entities))
                 {
-                    var systemInfo = item.Value;
-                    var system = systemInfo.System;
-                    var method = systemInfo.Action;
-                    foreach (var entity in entities)
+                    var systemList = item.Value;
+                    foreach (var systemInfo in systemList)
                     {
-                        method.Invoke(system, new object[] { entity });
+                        var system = systemInfo.System;
+                        var method = systemInfo.Action;
+                        foreach (var entity in entities)
+                        {
+                            method.Invoke(system, new object[] { entity });
+                        }
                     }
                 }
             }
+
+            EcsUpdate?.Update(this);
         }
 
-        public void DriveFixedUpdate()
-        {
-            foreach (var item in AllUpdateSystems)
-            {
-                var entityType = item.Key;
-                var entities = UpdateEntities[entityType];
-                var systemInfo = item.Value;
-                var system = systemInfo.System;
-                var method = systemInfo.Action;
-                foreach (var entity in entities)
-                {
-                    method.Invoke(system, new object[] { entity });
-                }
-            }
-        }
+        //public void DriveFixedUpdate()
+        //{
+        //    foreach (var item in AllUpdateSystems)
+        //    {
+        //        var entityType = item.Key;
+        //        var entities = UpdateEntities[entityType];
+        //        var systemInfo = item.Value;
+        //        var system = systemInfo.System;
+        //        var method = systemInfo.Action;
+        //        foreach (var entity in entities)
+        //        {
+        //            method.Invoke(system, new object[] { entity });
+        //        }
+        //    }
+        //}
     }
 }

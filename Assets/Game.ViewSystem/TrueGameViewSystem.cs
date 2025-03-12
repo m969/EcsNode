@@ -27,6 +27,7 @@ public class TrueGameViewSystem : AEcsEntitySystem<TrueGame>,
             // 帧播放前进后把收集到的输入填入游戏中
             if (game._currentInputFrame != game._currentFrame)
             {
+                //ConsoleLog.Log($"{game._currentInputFrame} {game._currentFrame}");
                 game._currentInputFrame = game._currentFrame;
 
                 foreach (var item in inputComp.PlayerInputs)
