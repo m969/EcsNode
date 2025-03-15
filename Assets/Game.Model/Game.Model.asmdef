@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "GUID:056340643d9aef44dbc392abf802867d",
-        "GUID:645f7d097acee4f40b75a6b9ff1b0822"
+        "GUID:645f7d097acee4f40b75a6b9ff1b0822",
+        "GUID:33e321a462e19324990117b868abb5be"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -13,5 +14,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

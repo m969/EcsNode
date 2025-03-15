@@ -3,54 +3,64 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class EventSystem : AEcsComponentSystem<EcsNode, EventComponent>,
-    IAwake<EcsNode, EventComponent>
+namespace ECS
 {
-    public void Awake(EcsNode entity, EventComponent component)
+    public class EventSystem : AComponentSystem<EcsNode, EventComponent>,
+IAwake<EcsNode, EventComponent>
     {
-        component.CommandHandlers.Clear();
-        var types = entity.AllTypes;
-        foreach (var item in types)
+        public void Awake(EcsNode entity, EventComponent component)
         {
-            if (item.BaseType == null) continue;
-            if (item.BaseType.BaseType == null) continue;
-            if (typeof(ICommandHandler).IsAssignableFrom(item.BaseType) == false) continue;
-
-            //ConsoleLog.Debug($"EventSystem Awake {item.Name}");
-            var handler = Activator.CreateInstance(item) as ICommandHandler;
-            var cmdType = handler.Type;
-            component.CommandHandlers.TryGetValue(cmdType, out var handlers);
-            if (handlers == null)
-            {
-                handlers = new List<ICommandHandler>();
-                component.CommandHandlers[cmdType] = handlers;
-            }
-            handlers.Add(handler);
+            Reload(entity, component);
         }
-    }
 
-    public static void Update(EcsNode entity, EventComponent component)
-    {
-        while (component.DispatchCommands.Count > 0)
+        public static void Reload(EcsNode entity, EventComponent component)
         {
-            var cmd = component.DispatchCommands.Dequeue();
-            if (component.CommandHandlers.TryGetValue(cmd.GetType(), out var handlers))
+            var CommandHandlers = new Dictionary<Type, List<ICommandHandler>>();
+
+            var types = entity.AllTypes;
+            foreach (var item in types)
             {
-                foreach (var handler in handlers)
+                if (item.BaseType == null) continue;
+                if (item.BaseType.BaseType == null) continue;
+                if (typeof(ICommandHandler).IsAssignableFrom(item.BaseType) == false) continue;
+
+                var handler = Activator.CreateInstance(item) as ICommandHandler;
+                var cmdType = handler.Type;
+                CommandHandlers.TryGetValue(cmdType, out var handlers);
+                if (handlers == null)
                 {
-                    handler.HandleCmd(cmd);
+                    handlers = new List<ICommandHandler>();
+                    CommandHandlers[cmdType] = handlers;
+                }
+                handlers.Add(handler);
+            }
+
+            component.CommandHandlers = CommandHandlers;
+        }
+
+        public static void Update(EcsNode entity, EventComponent component)
+        {
+            while (component.DispatchCommands.Count > 0)
+            {
+                var cmd = component.DispatchCommands.Dequeue();
+                if (component.CommandHandlers.TryGetValue(cmd.GetType(), out var handlers))
+                {
+                    foreach (var handler in handlers)
+                    {
+                        handler.HandleCmd(cmd);
+                    }
                 }
             }
         }
-    }
 
-    public static void Dispatch<T>(EcsNode ecsNode, T cmd) where T : struct, ICommand
-    {
-        ecsNode.GetComponent<EventComponent>().DispatchCommands.Enqueue(cmd);
-    }
+        public static void Dispatch<T>(EcsNode ecsNode, T cmd) where T : struct, ICommand
+        {
+            ecsNode.GetComponent<EventComponent>().DispatchCommands.Enqueue(cmd);
+        }
 
-    public static void Execute<T>(EcsNode ecsNode, T cmd) where T : struct, IExecuteCommand
-    {
-        ecsNode.GetComponent<EventComponent>().ExecuteCommands.Enqueue(cmd);
-    }
+        public static void Execute<T>(EcsNode ecsNode, T cmd) where T : struct, IExecuteCommand
+        {
+            ecsNode.GetComponent<EventComponent>().ExecuteCommands.Enqueue(cmd);
+        }
+    } 
 }

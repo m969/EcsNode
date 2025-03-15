@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class Define
@@ -19,7 +20,7 @@ public class AssemblyLoader : MarshalByRefObject
         return assembly;
     }
 
-    public Assembly LoadAndRun(string assemblyPath)
+    public Assembly LoadFile(string assemblyPath)
     {
         // 加载程序集
         Assembly assembly = Assembly.LoadFrom(assemblyPath);
@@ -49,7 +50,7 @@ public class AssemblyLoader : MarshalByRefObject
 public class Sample : MonoBehaviour
 {
     private EcsNode EcsNode { get; set; }
-    //private AppDomain HotReloadDomain { get; set; }
+    private AppDomain HotReloadDomain { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -57,26 +58,20 @@ public class Sample : MonoBehaviour
         EcsNode = new EcsNode();
 
         //ConsoleLog.Logger = new ConsoleLogger();
-        ConsoleLog.LogAction = (log) =>
-        {
-            Debug.Log(log);
-        };
-        ConsoleLog.LogErrorAction = (log) =>
-        {
-            Debug.LogError(log);
-        };
+        ConsoleLog.LogAction = Debug.Log;
+        ConsoleLog.LogErrorAction = Debug.LogError;
+        //ConsoleLog.LogAction = (log) =>
+        //{
+        //    Debug.Log(log);
+        //};
+        //ConsoleLog.LogErrorAction = (log) =>
+        //{
+        //    Debug.LogError(log);
+        //};
 
         RegisterDrives(EcsNode);
 
-        var result = LoadSystemAssembly("Init");
-
-        //var methodInfo = result.Item1.GetType("Process_GameSystemInit").GetMethod("Init");
-        //var param = new object[1] { EcsNode };
-        //methodInfo.Invoke(null, param);
-
-        //methodInfo = result.Item1.GetType("Process_GameViewSystemInit").GetMethod("Init");
-        //param = new object[1] { EcsNode };
-        //methodInfo.Invoke(null, param);
+        LoadSystemAssembly("Init");
     }
 
     private EcsNode RegisterDrives(EcsNode ecsNode)
@@ -87,64 +82,118 @@ public class Sample : MonoBehaviour
         return ecsNode;
     }
 
-    private (Assembly, Assembly) LoadSystemAssembly(string method)
+    private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
     {
-        //        if (HotReloadDomain != null)
-        //        {
-        //            // 卸载 AppDomain
-        //            AppDomain.Unload(HotReloadDomain);
-        //        }
-        //#if UNITY_EDITOR
-        //        AssetDatabase.Refresh();
-        //#endif
-        //        var domain = AppDomain.CreateDomain("HotReload");
-        //        HotReloadDomain = domain;
+        string assemblyName = new AssemblyName(args.Name).Name;
+        string assemblyPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll");
+        Debug.Log($"OnAssemblyResolve {assemblyPath}");
+        if (File.Exists(assemblyPath))
+        {
+            return Assembly.LoadFrom(assemblyPath);
+        }
 
-        // 加载程序集
+        return null;
+    }
+
+    private void LoadSystemAssembly(string method)
+    {
+        //if (HotReloadDomain != null)
+        //{
+        //    AppDomain.Unload(HotReloadDomain);
+        //}
+        //var domain = AppDomain.CreateDomain("HotReload");
+        //HotReloadDomain = domain;
+
+        //HotReloadDomain.AssemblyResolve += OnAssemblyResolve;
         //var loader = (AssemblyLoader)domain.CreateInstanceAndUnwrap(typeof(AssemblyLoader).Assembly.FullName, typeof(AssemblyLoader).FullName);
 
-        //var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "MergeSystem.dll"));
-        //var assembly = Assembly.Load(assBytes);
-        //var allTypes = assembly.GetTypes();
+        //if (PlayerPrefs.GetInt("GameSystemLoad", 0) == 1)
+        //{
+        //    //var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
+        //    //var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
+        //    //var assembly = loader.Load(assBytes, pdbBytes);
+        //    var assembly = loader.LoadFile(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
+        //    var allTypes = assembly.GetTypes();
 
-        var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
-        var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
-        var assembly = Assembly.Load(assBytes, pdbBytes);
-        var allTypes = assembly.GetTypes();
+        //    //assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.ViewSystem.dll"));
+        //    //pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.ViewSystem.pdb"));
+        //    //var assembly2 = loader.Load(assBytes, pdbBytes);
+        //    var assembly2 = loader.LoadFile(Path.Combine(Define.BuildOutputDir, "Game.ViewSystem.pdb"));
+        //    var allTypes2 = assembly2.GetTypes();
 
-        assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.ViewSystem.dll"));
-        pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.ViewSystem.pdb"));
-        var assembly2 = Assembly.Load(assBytes, pdbBytes);
-        var allTypes2 = assembly2.GetTypes();
+        //    var typeList = new List<Type>();
+        //    typeList.AddRange(allTypes);
+        //    typeList.AddRange(allTypes2);
+        //    EcsNode.AddSystems(typeList.ToArray());
 
-        var typeList = new List<Type>();
-        typeList.AddRange(allTypes);
-        typeList.AddRange(allTypes2);
-        EcsNode.AddSystems(typeList.ToArray());
+        //    var methodInfo = assembly.GetType("Process_GameSystemInit").GetMethod(method);
+        //    var param = new object[1] { EcsNode };
+        //    methodInfo.Invoke(null, param);
 
-        var methodInfo = assembly.GetType("Process_GameSystemInit").GetMethod(method);
-        var param = new object[1] { EcsNode };
-        methodInfo.Invoke(null, param);
+        //    methodInfo = assembly2.GetType("Process_GameViewSystemInit").GetMethod(method);
+        //    param = new object[1] { EcsNode };
+        //    methodInfo.Invoke(null, param);
+        //}
 
-        methodInfo = assembly2.GetType("Process_GameViewSystemInit").GetMethod(method);
-        param = new object[1] { EcsNode };
-        methodInfo.Invoke(null, param);
+        if (PlayerPrefs.GetInt("GameSystemLoad", 0) == 1)
+        {
+            var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
+            var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
+            var assembly = Assembly.Load(assBytes, pdbBytes);
+            var allTypes = assembly.GetTypes();
 
-        return (assembly, assembly2);
+            var typeList = new List<Type>();
+            typeList.AddRange(allTypes);
+            //typeList.AddRange(allTypes2);
+            EcsNode.AddSystems(typeList.ToArray());
+
+            var methodInfo = assembly.GetType("ECSGame.Process_GameSystemInit").GetMethod(method);
+            var param = new object[1] { EcsNode };
+            methodInfo.Invoke(null, param);
+
+            methodInfo = assembly.GetType("ECSGame.Process_GameViewSystemInit").GetMethod(method);
+            param = new object[1] { EcsNode };
+            methodInfo.Invoke(null, param);
+        }
+
+        //if (PlayerPrefs.GetInt("MergeSystemLoad", 0) == 1)
+        //{
+        //    var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "MergeSystem.dll"));
+        //    var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "MergeSystem.pdb"));
+        //    var assembly = Assembly.Load(assBytes, pdbBytes);
+        //    var allTypes = assembly.GetTypes();
+
+        //    //var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
+        //    //var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
+        //    //var assembly = Assembly.Load(assBytes, pdbBytes);
+        //    //var allTypes = assembly.GetTypes();
+
+        //    //assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.ViewSystem.dll"));
+        //    //pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.ViewSystem.pdb"));
+        //    //var assembly2 = Assembly.Load(assBytes, pdbBytes);
+        //    //var allTypes2 = assembly2.GetTypes();
+
+        //    var typeList = new List<Type>();
+        //    typeList.AddRange(allTypes);
+        //    //typeList.AddRange(allTypes2);
+        //    EcsNode.AddSystems(typeList.ToArray());
+
+        //    var methodInfo = assembly.GetType("Process_GameSystemInit").GetMethod(method);
+        //    var param = new object[1] { EcsNode };
+        //    methodInfo.Invoke(null, param);
+
+        //    methodInfo = assembly.GetType("Process_GameViewSystemInit").GetMethod(method);
+        //    param = new object[1] { EcsNode };
+        //    methodInfo.Invoke(null, param);
+        //}
+
+        return;
     }
 
     //[ContextMenu("Reload")]
     public void Reload()
     {
-        var result = LoadSystemAssembly("Reload");
-
-        //var methodInfo = result.Item1.GetType("Process_GameSystemInit").GetMethod("Reload");
-        //var param = new object[1] { EcsNode };
-        //methodInfo.Invoke(null, param);
-
-        //methodInfo = result.Item1.GetType("Process_GameViewSystemInit").GetMethod("Reload");
-        //param = new object[1] { EcsNode };
-        //methodInfo.Invoke(null, param);
+        LoadSystemAssembly("Reload");
     }
 
     // Update is called once per frame

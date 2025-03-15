@@ -4,9 +4,12 @@
     "references": [
         "GUID:44b68c5cb5bdd2941899f32aad657861",
         "GUID:056340643d9aef44dbc392abf802867d",
-        "GUID:645f7d097acee4f40b75a6b9ff1b0822"
+        "GUID:645f7d097acee4f40b75a6b9ff1b0822",
+        "GUID:33e321a462e19324990117b868abb5be",
+        "GUID:9c77c0573ac833a48bd323d530b9e901"
     ],
     "includePlatforms": [
+        "Editor",
         "Stadia"
     ],
     "excludePlatforms": [],

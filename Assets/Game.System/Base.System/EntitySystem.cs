@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ECS
 {
-    public class EntitySystem : AEcsEntitySystem<EcsEntity>,
+    public class EntitySystem : AEntitySystem<EcsEntity>,
         IAwake<EcsEntity>,
         IInit<EcsEntity>
     {

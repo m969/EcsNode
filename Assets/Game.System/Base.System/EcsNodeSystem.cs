@@ -2,13 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EcsNodeSystem : IUpdate<EcsNode>
+namespace ECSGame
 {
-    public void Update(EcsNode entity)
+    public class EcsNodeSystem : IUpdate<EcsNode>
     {
-        if (entity.GetComponent<EventComponent>() is { } component)
+        public void Update(EcsNode entity)
         {
-            EventSystem.Update(entity, component);
+            if (entity.GetComponent<EventComponent>() is { } component)
+            {
+                EventSystem.Update(entity, component);
+            }
         }
-    }
+    } 
 }

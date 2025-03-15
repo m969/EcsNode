@@ -10,31 +10,6 @@ namespace ECS
         public MethodInfo Action { get; set; }
     }
 
-    public interface IConsoleLogger
-    {
-        void Log(object log);
-        void LogError(object log);
-    }
-
-    public class ConsoleLog
-    {
-        public static IConsoleLogger Logger;
-        public static Action<object> LogAction;
-        public static Action<object> LogErrorAction;
-
-        public static void Debug(object log)
-        {
-            Logger?.Log(log);
-            LogAction?.Invoke(log);
-        }
-
-        public static void Error(object log)
-        {
-            Logger?.LogError(log);
-            LogErrorAction?.Invoke(log);
-        }
-    }
-
     public class EcsNode : EcsEntity
     {
         public Dictionary<long, EcsEntity> AllEntities { get; set; } = new();
@@ -79,8 +54,8 @@ namespace ECS
                 {
                     continue;
                 }
-
-                var system = systemType.Assembly.CreateInstance(systemType.Name) as IEcsSystem;
+                
+                var system = systemType.Assembly.CreateInstance(systemType.FullName) as IEcsSystem;
                 allSystems.Add(systemType, system);
 
                 if (system is IEcsEntitySystem ecsEntitySystem)
@@ -112,7 +87,7 @@ namespace ECS
                                     typeSystems.Add(item, new List<SystemInfo>());
                                 }
                                 typeSystems[item].Add(systemInfo);
-
+                                
                                 if (item == typeof(IUpdate))
                                 {
                                     if (allUpdateSystems.ContainsKey(entityType) == false)

@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class HealthComponent : EcsComponent
+namespace ECSGame
 {
-    public int Health { get; set; }
+	public class HealthComponent : EcsComponent
+	{
+		public int Health { get; set; }
+	} 
 }

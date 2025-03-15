@@ -43,7 +43,7 @@ namespace ET
         //    DoCompile();
         //}
 
-        [MenuItem("ECSNode/Compile Systems")]
+        //[MenuItem("ECSNode/Compile MergeSystem")]
         public static void CompileAssemblies()
         {
             // 获取所有 asmdef 程序集的源代码文件
@@ -76,26 +76,61 @@ namespace ET
                 reloadDll,
                 syntaxTrees,
                 references,
-                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+                    .WithOptimizationLevel(OptimizationLevel.Debug) // 启用调试信息
+                    .WithPlatform(Platform.AnyCpu));
 
-            // 输出 DLL
-            string outputPath = Path.Combine(Define.BuildOutputDir, reloadDll + ".dll");
-            using (var ms = new MemoryStream())
+            // 6. 定义输出路径
+            string outputDllPath = Path.Combine(Define.BuildOutputDir, reloadDll + ".dll");
+            string outputPdbPath = Path.Combine(Define.BuildOutputDir, reloadDll + ".pdb");
+
+            // 7. 编译并生成 DLL 和 PDB
+            using (var dllStream = new FileStream(outputDllPath, FileMode.Create))
+            using (var pdbStream = new FileStream(outputPdbPath, FileMode.Create))
             {
-                EmitResult result = compilation.Emit(ms);
+                var emitOptions = new EmitOptions(
+                    debugInformationFormat: DebugInformationFormat.PortablePdb, // 使用 Portable PDB 格式
+                    pdbFilePath: outputPdbPath);
+
+                EmitResult result = compilation.Emit(
+                    peStream: dllStream,
+                    pdbStream: pdbStream,
+                    options: emitOptions);
+
+                // 8. 检查编译结果
                 if (result.Success)
                 {
-                    File.WriteAllBytes(outputPath, ms.ToArray());
-                    Debug.Log("DLL 编译成功: " + outputPath);
+                    Debug.Log("编译成功！");
+                    Debug.Log($"DLL 路径: {outputDllPath}");
+                    Debug.Log($"PDB 路径: {outputPdbPath}");
                 }
                 else
                 {
                     foreach (var diagnostic in result.Diagnostics)
                     {
-                        Debug.LogError(diagnostic.ToString());
+                        Debug.Log(diagnostic.ToString());
                     }
                 }
             }
+
+            //// 输出 DLL
+            //string outputPath = Path.Combine(Define.BuildOutputDir, reloadDll + ".dll");
+            //using (var ms = new MemoryStream())
+            //{
+            //    EmitResult result = compilation.Emit(ms);
+            //    if (result.Success)
+            //    {
+            //        File.WriteAllBytes(outputPath, ms.ToArray());
+            //        Debug.Log("DLL 编译成功: " + outputPath);
+            //    }
+            //    else
+            //    {
+            //        foreach (var diagnostic in result.Diagnostics)
+            //        {
+            //            Debug.LogError(diagnostic.ToString());
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -104,12 +139,51 @@ namespace ET
         [MenuItem("ECSNode/DoCompile")]
         public static void DoCompile()
         {
-            // 强制刷新一下，防止关闭auto refresh，编译出老代码
-            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            //if (Directory.Exists("./Assets/Game.ViewSystem/.TempSystem"))
+            //{
+            //    Directory.Move("./Assets/Game.ViewSystem/.TempSystem", "./Assets/Game.ViewSystem/TempSystem");
+            //}
 
             //UnityEditor.Compilation.CompilationPipeline.
 
+            //var diretories = Directory.GetDirectories("./Assets/Game.System/");
+            //var d1 = Directory.CreateDirectory("./Assets/Game.System");
+            //var allCsScripts = d1.GetFiles("*.cs").ToList();
+            //foreach (var diretory in diretories)
+            //{
+            //    Debug.Log($"{diretory}");
+            //}
+
+            //void GetFiles(DirectoryInfo directoryInfo, List<FileInfo> files)
+            //{
+            //}
+
+            //var allAssets = AssetDatabase.FindAssets("t:Script", new string[] { "Assets/Game.System", "Assets/Game.ViewSystem" });
+            //var newAssets = new List<string>();
+            //foreach (var item in allAssets)
+            //{
+            //    var path = AssetDatabase.GUIDToAssetPath(item);
+            //    var newPath = "Assets/Game.MergeSystem/" + Path.GetFileName(path);
+            //    AssetDatabase.CopyAsset(path, newPath);
+            //    newAssets.Add(newPath);
+            //}
+
+            // 强制刷新一下，防止关闭auto refresh，编译出老代码
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+
             bool isCompileOk = CompileDlls();
+
+            //foreach (var item in newAssets)
+            //{
+            //    AssetDatabase.DeleteAsset(item);
+            //}
+
+            //if (Directory.Exists("./Assets/Game.ViewSystem/TempSystem"))
+            //{
+            //    Directory.Move("./Assets/Game.ViewSystem/TempSystem", "./Assets/Game.ViewSystem/.TempSystem");
+            //}
+            //AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+
             if (!isCompileOk)
             {
                 return;

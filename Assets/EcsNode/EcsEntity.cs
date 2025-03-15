@@ -8,6 +8,7 @@ namespace ECS
     /// </summary>
     public class EcsEntity : EcsObject
     {
+        public static int IdIndex;
         public long Id { get; set; }
         public Dictionary<long, EcsEntity> Id2Children = new();
         public EcsEntity Parent { get; set; }
@@ -64,7 +65,7 @@ namespace ECS
         public T AddChild<T>(Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
             var entity = new T();
-            entity.Id = DateTime.UtcNow.Ticks;
+            entity.Id = ++IdIndex;
             entity.Parent = this;
             Id2Children.Add(entity.Id, entity);
             beforeAwake?.Invoke(entity);
