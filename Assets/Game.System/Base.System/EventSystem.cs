@@ -1,4 +1,5 @@
 ﻿using ECS;
+using ET;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,6 +62,39 @@ IAwake<EcsNode, EventComponent>
         public static void Execute<T>(EcsNode ecsNode, T cmd) where T : struct, IExecuteCommand
         {
             ecsNode.GetComponent<EventComponent>().ExecuteCommands.Enqueue(cmd);
+        }
+
+        private static void BeforeRun<T>(T eventRun) where T : IEventRun
+        {
+            //AOGame.Root.GetComponent<EventComponent>().RunningEvents.Add(eventRun);
+            //AOCmd.Dispatch(new BeforeRunEventCmd() { EventRun = eventRun });
+        }
+
+        private static void AfterRun<T>(T eventRun) where T : IEventRun
+        {
+            //AOCmd.Dispatch(new AfterRunEventCmd() { EventRun = eventRun });
+            //AOGame.Root.GetComponent<EventComponent>().RunningEvents.Remove(eventRun);
+        }
+
+        public static async ETTask Run<T>(T eventRun) where T : AEventRun
+        {
+            BeforeRun(eventRun);
+            await eventRun.Handle();
+            AfterRun(eventRun);
+        }
+
+        public static async ETTask Run<T, A>(T eventRun, A a) where T : AEventRun<A>
+        {
+            BeforeRun(eventRun);
+            await eventRun.Handle(a);
+            AfterRun(eventRun);
+        }
+
+        public static async ETTask Run<T, A1, A2>(T eventRun, A1 a1, A2 a2) where T : AEventRun<A1, A2>
+        {
+            BeforeRun(eventRun);
+            await eventRun.Handle(a1, a2);
+            AfterRun(eventRun);
         }
     } 
 }

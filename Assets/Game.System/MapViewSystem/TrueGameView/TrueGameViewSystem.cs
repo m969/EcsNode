@@ -40,25 +40,36 @@ IUpdate<TrueGame>
         {
             if (inputComp.LookVector != Vector3.zero)
             {
-                var moveInput = new PlayerInput()
+                var input = new PlayerInput()
                 {
                     PlayerId = game.MyActor.Id,
                     InputType = PlayerInputType.Look,
                     InputVector = inputComp.LookVector.ToTSVector(),
                 };
-                TrueGameExecuteSystem.AddPlayerInput(game, moveInput);
+                TrueGameExecuteSystem.AddPlayerInput(game, input);
             }
 
             if (inputComp.MoveVector != Vector3.zero)
             {
-                var moveInput = new PlayerInput()
+                var input = new PlayerInput()
                 {
                     PlayerId = game.MyActor.Id,
                     InputType = PlayerInputType.Move,
                     InputVector = inputComp.MoveVector.ToTSVector(),
                 };
-                TrueGameExecuteSystem.AddPlayerInput(game, moveInput);
+                TrueGameExecuteSystem.AddPlayerInput(game, input);
             }
+
+            //if (inputComp.FireState)
+            //{
+            //    var input = new PlayerInput()
+            //    {
+            //        PlayerId = game.MyActor.Id,
+            //        InputType = PlayerInputType.Fire,
+            //        InputVector = inputComp.FireVector.ToTSVector(),
+            //    };
+            //    TrueGameExecuteSystem.AddPlayerInput(game, input);
+            //}
 
             foreach (var item in inputComp.PlayerInputs)
             {

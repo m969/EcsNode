@@ -21,8 +21,10 @@ namespace ECSGame
     {
         None = 0,
         Move = 10,
-        Stop = 20,
+        StopMove = 20,
         Look = 30,
+        Fire = 40,
+        StopFire = 50,
     }
 
     // 帧执行命令
@@ -38,10 +40,17 @@ namespace ECSGame
         public TSVector AfterPosition;
     }
 
+    public struct FramePlay_Fire : IFramePlay
+    {
+        public long EntityId { get; set; }
+        public TSVector Direction;
+    }
+
     public enum StatePlayType
     {
         None = 0,
         Move = 10,
+        Fire = 20,
     }
 
     public class TrueGame : EcsEntity

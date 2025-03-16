@@ -153,7 +153,7 @@ namespace ECS
             return system as T;
         }
 
-        public void DriveSystems(EcsEntity entity, Type entityType, Type driveType)
+        public void DriveEntitySystems(EcsEntity entity, Type entityType, Type driveType)
         {
             AllEntitySystems.TryGetValue(entityType, out var systems);
             if (systems == null)
@@ -175,15 +175,15 @@ namespace ECS
             }
         }
 
-        public void DriveSystems<T1>(T1 entity, Type driveType) where T1 : EcsEntity
+        public void DriveEntitySystems<T1>(T1 entity, Type driveType) where T1 : EcsEntity
         {
-            DriveSystems(entity, typeof(EcsEntity), driveType);
-            DriveSystems(entity, entity.GetType(), driveType);
+            DriveEntitySystems(entity, typeof(EcsEntity), driveType);
+            DriveEntitySystems(entity, entity.GetType(), driveType);
         }
 
-        public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
+        public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type entityType, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
         {
-            AllEntityComponentSystems.TryGetValue((entity.GetType(), component.GetType()), out var systems);
+            AllEntityComponentSystems.TryGetValue((entityType, component.GetType()), out var systems);
             if (systems == null)
             {
                 return;
@@ -200,12 +200,18 @@ namespace ECS
             }
         }
 
+        public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
+        {
+            DriveComponentSystems(entity, component, typeof(EcsEntity), driveType);
+            DriveComponentSystems(entity, component, entity.GetType(), driveType);
+        }
+
         public List<Type> UpdateEntityTypes { get; set; } = new();
         public Dictionary<Type, List<EcsEntity>> UpdateEntities { get; set; } = new();
         public Queue<EcsEntity> AddEntities { get; set; } = new();
         public Queue<EcsEntity> RemoveEntities { get; set; } = new();
 
-        public void DriveUpdate()
+        public void DriveEntityUpdate()
         {
             while (AddEntities.Count > 0)
             {

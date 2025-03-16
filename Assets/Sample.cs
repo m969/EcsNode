@@ -204,7 +204,7 @@ public class Sample : MonoBehaviour
             ConsoleLog.Debug("EcsNode == null");
             return;
         }
-        EcsNode.DriveUpdate();
+        EcsNode.DriveEntityUpdate();
     }
 
     void FixedUpdate()

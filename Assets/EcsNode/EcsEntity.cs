@@ -23,11 +23,14 @@ namespace ECS
             }
         }
 
-        public EcsNode GetEcsNode()
+        public T GetParent<T>() where T : EcsEntity
         {
-            if (this is EcsNode node)
-                return node;
-            return Parent.GetEcsNode();
+            return (T)Parent;
+        }
+
+        private EcsNode GetEcsNode()
+        {
+            return EcsNode;
         }
 
         private void AddEntity(EcsEntity entity)
@@ -77,7 +80,7 @@ namespace ECS
         public T GetChild<T>(long id) where T : EcsEntity, new()
         {
             Id2Children.TryGetValue(id, out var entity);
-            return entity as T;
+            return (T)entity;
         }
 
         public void RemoveChild(EcsEntity entity)
@@ -116,7 +119,7 @@ namespace ECS
         private void DriveAwake(EcsEntity entity)
         {
             var ecsNode = GetEcsNode();
-            ecsNode.DriveSystems(entity, typeof(IAwake));
+            ecsNode.DriveEntitySystems(entity, typeof(IAwake));
         }
 
         private void DriveAwake<T>(T component) where T : EcsComponent, new()
@@ -128,7 +131,7 @@ namespace ECS
         public void Init()
         {
             var ecsNode = GetEcsNode();
-            ecsNode.DriveSystems(this, typeof(IInit));
+            ecsNode.DriveEntitySystems(this, typeof(IInit));
             foreach (var item in Components.Values)
             {
                 ecsNode.DriveComponentSystems(this, item, typeof(IInit));

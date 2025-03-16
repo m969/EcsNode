@@ -24,7 +24,8 @@ namespace ECSGame
             actor.AddComponent<MoveComponent>();
             actor.AddComponent<HealthComponent>();
             actor.AddComponent<TrueTransformComponent>();
-            actor.AddComponent<ActorViewComponent>();
+            actor.AddComponent<EntityViewComponent>();
+            actor.AddComponent<FireComponent>();
             actor.Init();
 
             game.MyActor = actor;
@@ -36,6 +37,14 @@ namespace ECSGame
             ConsoleLog.Debug($"Process_GameViewSystemInit Reload");
 
             EventSystem.Reload(ecsNode, ecsNode.GetComponent<EventComponent>());
+
+            //foreach (var item in ecsNode.Id2Children.Values)
+            //{
+            //    if (item is Actor actor)
+            //    {
+            //        FireSystem.SetSpeed(actor, 5);
+            //    }
+            //}
         }
     } 
 }

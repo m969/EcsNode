@@ -17,7 +17,7 @@ namespace ECS
 	{
 	}
 
-    public interface IInit<T> : IAwake where T : EcsEntity
+    public interface IInit<T> : IInit where T : EcsEntity
     {
         void Init(T entity);
     }

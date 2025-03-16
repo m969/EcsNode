@@ -11,12 +11,12 @@ IUpdate<Actor>
     {
         public void Awake(Actor entity)
         {
-            //Debug.Log($"ActorSystem Awake {entity.GetType().Name}");
         }
 
         public void Init(Actor entity)
         {
-            //Debug.Log($"ActorSystem Init {entity.GetType().Name}");
+            MoveSystem.SetSpeed(entity, 1);
+            FireSystem.SetSpeed(entity, 5);
         }
 
         public void Update(Actor entity)

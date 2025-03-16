@@ -133,6 +133,12 @@ namespace ET
             //}
         }
 
+        [MenuItem("ECSNode/ShareSystemCompile")]
+        public static void ShareSystemCompile()
+        {
+
+        }
+
         /// <summary>
         /// 执行编译代码流程
         /// </summary>

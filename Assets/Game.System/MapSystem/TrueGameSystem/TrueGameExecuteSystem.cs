@@ -21,20 +21,14 @@ IInit<TrueGame, TrueGameExecuteComponent>
         // 添加玩家输入
         public static void AddPlayerInput(TrueGame game, PlayerInput input)
         {
-            //ConsoleLog.Debug("TrueGameExecuteSystem AddPlayerInput");
             var execute = game.GetComponent<TrueGameExecuteComponent>();
             var frame = game._currentFrame;
-            //ConsoleLog.Log("TrueGameExecuteSystem AddPlayerInput2");
-            //lock (execute._locker)
+            if (!execute._inputQueue.ContainsKey(frame))
             {
-                if (!execute._inputQueue.ContainsKey(frame))
-                {
-                    execute._inputQueue[frame] = new List<PlayerInput>();
-                }
-                input.Frame = frame;
-                execute._inputQueue[frame].Add(input);
-                //ConsoleLog.Log("TrueGameExecuteSystem AddPlayerInput _locker");
+                execute._inputQueue[frame] = new List<PlayerInput>();
             }
+            input.Frame = frame;
+            execute._inputQueue[frame].Add(input);
         }
 
         public static void FrameUpdate(TrueGame game, TrueGameExecuteComponent component)
@@ -42,12 +36,8 @@ IInit<TrueGame, TrueGameExecuteComponent>
             var frame = game._currentFrame;
 
             // 取出当前帧所有输入
-            List<PlayerInput> inputs;
-            //lock (component._locker)
-            {
-                component._inputQueue.TryGetValue(frame, out inputs);
-                component._inputQueue.Remove(frame);
-            }
+            component._inputQueue.TryGetValue(frame, out var inputs);
+            component._inputQueue.Remove(frame);
 
             // 执行当前帧玩家所有输入
             if (inputs != null)
@@ -57,6 +47,7 @@ IInit<TrueGame, TrueGameExecuteComponent>
                     var playerId = input.PlayerId;
                     var actor = game.GetChild<Actor>(playerId);
 
+                    // 根据输入改变游戏状态
                     switch (input.InputType)
                     {
                         case PlayerInputType.None:
@@ -64,11 +55,18 @@ IInit<TrueGame, TrueGameExecuteComponent>
                         case PlayerInputType.Move:
                             MoveSystem.ChangeMove(actor, input.InputVector);
                             break;
-                        case PlayerInputType.Stop:
+                        case PlayerInputType.StopMove:
                             MoveSystem.ChangeMove(actor, TSVector.zero);
                             break;
                         case PlayerInputType.Look:
-                            TrueTransformSystem.ChangeLook(actor, input.InputVector);
+                            TrueTransformSystem.ChangeRotation(actor, input.InputVector);
+                            break;
+                        case PlayerInputType.Fire:
+                            //FireSystem.ChangeFire(actor, input.InputVector);
+                            FireSystem.Shoot(game, actor, input.InputVector);
+                            break;
+                        case PlayerInputType.StopFire:
+                            //FireSystem.StopFire(actor);
                             break;
                         default:
                             break;
@@ -76,5 +74,5 @@ IInit<TrueGame, TrueGameExecuteComponent>
                 }
             }
         }
-    } 
+    }
 }
