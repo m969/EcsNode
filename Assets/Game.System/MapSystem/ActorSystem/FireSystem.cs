@@ -15,11 +15,13 @@ IAwake<Actor, FireComponent>
         public static void Shoot(TrueGame game, Actor actor, TSVector target)
         {
             var item = game.AddChild<Item>();
-            item.AddComponent<TrueTransformComponent>();
+            item.AddComponent<TransformComponent>();
             item.AddComponent<MoveComponent>();
-            TrueTransformSystem.ChangePosition(item, actor.GetComponent<TrueTransformComponent>().Position);
-            MoveSystem.SetSpeed(item, 30);
-            MoveSystem.ChangeMove(item, target.normalized);
+            var actorTrans = actor.GetComponent<TransformComponent>();
+            TransformSystem.ChangePosition(item, actorTrans.Position);
+            TransformSystem.ChangeForward(item, actorTrans.Forward);
+            MoveSystem.SetSpeed(item, 10);
+            MoveSystem.ChangeMove(item, actorTrans.Forward.normalized);
 
             EventSystem.Dispatch(actor.EcsNode, new EntityCreateCmd()
             {

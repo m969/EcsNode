@@ -12,14 +12,14 @@ namespace ECSGame
         {
             if (cmd.Entity.GetComponent<EntityViewComponent>() is { } viewComp && viewComp.ViewObj != null)
             {
-                if (cmd.ChangeComponent is TrueTransformComponent transformComponent)
+                if (cmd.ChangeComponent is TransformComponent transformComponent)
                 {
                     viewComp.ViewObj.transform.rotation = transformComponent.Rotation.ToQuaternion();
                 }
 
                 if (cmd.ChangeComponent is MoveComponent moveComponent)
                 {
-                    viewComp.ViewObj.transform.position = cmd.Entity.GetComponent<TrueTransformComponent>().Position.ToVector();
+                    viewComp.ViewObj.transform.position = cmd.Entity.GetComponent<TransformComponent>().Position.ToVector();
                 }
             }
         }

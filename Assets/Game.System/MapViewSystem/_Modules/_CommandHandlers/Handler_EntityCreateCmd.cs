@@ -14,7 +14,7 @@ namespace ECSGame
             cmd.Entity.AddComponent<EntityViewComponent>();
             if (cmd.Entity is Item)
             {
-                EntityViewSystem.SetScale(cmd.Entity, TSVector.one * 0.2f);
+                //EntityViewSystem.SetScale(cmd.Entity, TSVector.one * 0.2f);
             }
         }
     }

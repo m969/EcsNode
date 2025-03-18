@@ -96,5 +96,12 @@ IAwake<EcsNode, EventComponent>
             await eventRun.Handle(a1, a2);
             AfterRun(eventRun);
         }
+
+        public static async ETTask Run<T, A1, A2, A3>(T eventRun, A1 a1, A2 a2, A3 a3) where T : AEventRun<A1, A2, A3>
+        {
+            BeforeRun(eventRun);
+            await eventRun.Handle(a1, a2, a3);
+            AfterRun(eventRun);
+        }
     } 
 }

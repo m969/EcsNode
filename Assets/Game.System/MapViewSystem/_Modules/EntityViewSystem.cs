@@ -12,9 +12,18 @@ IAwake<EcsEntity, EntityViewComponent>
         public void Awake(EcsEntity entity, EntityViewComponent component)
         {
             //ConsoleLog.Debug("EntityViewSystem Awake");
-            var viewObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            component.ViewObj = viewObj;
-            viewObj.transform.position = entity.GetComponent<TrueTransformComponent>().Position.ToVector();
+            if (entity is Actor)
+            {
+                var viewObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                component.ViewObj = viewObj;
+            }
+            if (entity is Item)
+            {
+                var viewObj = GameObject.Instantiate(Resources.Load<GameObject>("Bullet"));
+                component.ViewObj = viewObj;
+            }
+            component.ViewObj.transform.position = entity.GetComponent<TransformComponent>().Position.ToVector();
+            component.ViewObj.transform.forward = entity.GetComponent<TransformComponent>().Forward.ToVector();
         }
 
         public static void SetScale(EcsEntity entity, TSVector scale)

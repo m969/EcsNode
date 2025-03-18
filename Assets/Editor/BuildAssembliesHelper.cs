@@ -133,7 +133,7 @@ namespace ET
             //}
         }
 
-        [MenuItem("ECSNode/ShareSystemCompile")]
+        [MenuItem("EcsNode/ShareSystemCompile")]
         public static void ShareSystemCompile()
         {
 
@@ -142,7 +142,7 @@ namespace ET
         /// <summary>
         /// 执行编译代码流程
         /// </summary>
-        [MenuItem("ECSNode/DoCompile")]
+        [MenuItem("EcsNode/DoCompile")]
         public static void DoCompile()
         {
             //if (Directory.Exists("./Assets/Game.ViewSystem/.TempSystem"))

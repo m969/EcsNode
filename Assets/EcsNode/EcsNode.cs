@@ -54,8 +54,23 @@ namespace ECS
                 {
                     continue;
                 }
-                
-                var system = systemType.Assembly.CreateInstance(systemType.FullName) as IEcsSystem;
+                if (systemType.ContainsGenericParameters)
+                {
+                    continue;
+                }
+
+                //IEcsSystem system;
+                //ConsoleLog.Debug($"AddSystems {systemType.Name}");
+                //if (systemType.Name == "EventSystem")
+                //{
+                //    system = eventSystem;
+                //}
+                //else
+                //{
+                //    system = Activator.CreateInstance(systemType) as IEcsSystem;
+                //}
+
+                var system = Activator.CreateInstance(systemType) as IEcsSystem;
                 allSystems.Add(systemType, system);
 
                 if (system is IEcsEntitySystem ecsEntitySystem)
@@ -145,6 +160,11 @@ namespace ECS
             AllUpdateSystems = allUpdateSystems;
             UpdateEntityTypes = updateEntityTypes;
         }
+
+        //public IEcsSystem RegisterSystem(IEcsSystem system)
+        //{
+        //    return system;
+        //}
 
         public T GetSystem<T>() where T : class, IEcsSystem, new()
         {

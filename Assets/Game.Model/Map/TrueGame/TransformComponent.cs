@@ -5,7 +5,7 @@ using TrueSync;
 
 namespace ECSGame
 {
-    public class TrueTransformComponent : EcsComponent
+    public class TransformComponent : EcsComponent
     {
         public TSVector Position
         {

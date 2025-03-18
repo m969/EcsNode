@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameDebugEditor : OdinEditorWindow
 {
-    [MenuItem("ECSNode/GameDebugEditor")]
+    [MenuItem("EcsNode/GameDebugEditor")]
     public static void ShowWindow()
     {
         var window = CreateWindow<GameDebugEditor>();

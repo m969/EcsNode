@@ -27,9 +27,9 @@ IUpdate<TrueGame>
                 PlayerInputSystem.Update(game, inputComp);
 
                 // 帧播放向前推进后，把收集到的输入填入游戏中
-                if (game._currentInputFrame != game._currentFrame)
+                if (game._currentInputFrame != game.CurrentFrame)
                 {
-                    game._currentInputFrame = game._currentFrame;
+                    game._currentInputFrame = game.CurrentFrame;
 
                     FrameUpdate(game, inputComp);
                 }
@@ -43,7 +43,7 @@ IUpdate<TrueGame>
                 var input = new PlayerInput()
                 {
                     PlayerId = game.MyActor.Id,
-                    InputType = PlayerInputType.Look,
+                    InputType = InputType.Look,
                     InputVector = inputComp.LookVector.ToTSVector(),
                 };
                 TrueGameExecuteSystem.AddPlayerInput(game, input);
@@ -54,7 +54,7 @@ IUpdate<TrueGame>
                 var input = new PlayerInput()
                 {
                     PlayerId = game.MyActor.Id,
-                    InputType = PlayerInputType.Move,
+                    InputType = InputType.Move,
                     InputVector = inputComp.MoveVector.ToTSVector(),
                 };
                 TrueGameExecuteSystem.AddPlayerInput(game, input);

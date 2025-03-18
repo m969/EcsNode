@@ -40,7 +40,7 @@ IInit<TrueGame, PlayerInputComponent>
             component.PlayerInputs.Add(new PlayerInput()
             {
                 PlayerId = game.MyActor.Id,
-                InputType = PlayerInputType.StopMove
+                InputType = InputType.StopMove
             });
         }
 
@@ -108,20 +108,9 @@ IInit<TrueGame, PlayerInputComponent>
             var nowTime = FP.FromFloat(Time.realtimeSinceStartup);
             if (nowTime > component.NextFireTime)
             {
-                //ConsoleLog.Debug($"CheckFire {nowTime.AsFloat()} {component.NextFireTime.AsFloat()}");
                 component.NextFireTime = nowTime + interval;
-
                 var direction = Vector3.forward * fireJoystick.Vertical + Vector3.right * fireJoystick.Horizontal;
-                component.FireVector = direction;
-                var input = new PlayerInput()
-                {
-                    PlayerId = game.MyActor.Id,
-                    InputType = PlayerInputType.Fire,
-                    InputVector = component.FireVector.ToTSVector(),
-                };
-                TrueGameExecuteSystem.AddPlayerInput(game, input);
-                
-                //EventSystem.Run(EventType.InputEvent, Tuple.Create("Fire"));
+                EventSystem.Run(new InputEvent(), game, InputType.Fire, direction).Coroutine();
             }
         }
 

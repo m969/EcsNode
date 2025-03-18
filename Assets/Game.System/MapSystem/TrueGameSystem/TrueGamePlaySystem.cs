@@ -31,7 +31,7 @@ IInit<TrueGame, TrueGamePlayComponent>
                 case StatePlayType.Move:
                     {
                         var moveComp = entity.GetComponent<MoveComponent>();
-                        var transComp = entity.GetComponent<TrueTransformComponent>();
+                        var transComp = entity.GetComponent<TransformComponent>();
                         var beforePos = transComp.Position;
                         var afterPos = transComp.Position + moveComp.TrueDirection * FP.FromFloat(moveComp.Speed * 0.002f);
                         framePlay = new FramePlay_Move()
@@ -63,7 +63,7 @@ IInit<TrueGame, TrueGamePlayComponent>
 
         public static void AddFramePlay(TrueGame game, TrueGamePlayComponent component, IFramePlay framePlay)
         {
-            var frame = game._currentFrame;
+            var frame = game.CurrentFrame;
             component.FramePlays[frame].Add(framePlay);
         }
 
@@ -98,7 +98,7 @@ IInit<TrueGame, TrueGamePlayComponent>
         /// </summary>
         public static void PalyFramePlays(TrueGame game, TrueGamePlayComponent component)
         {
-            var frame = game._currentFrame;
+            var frame = game.CurrentFrame;
 
             foreach (var framePlay in component.FramePlays[frame])
             {
@@ -119,7 +119,7 @@ IInit<TrueGame, TrueGamePlayComponent>
         public static void FrameUpdate(TrueGame game, TrueGamePlayComponent component)
         {
             //ConsoleLog.Log($"TrueGamePlaySystem Update");
-            var frame = game._currentFrame;
+            var frame = game.CurrentFrame;
             if (!component.FramePlays.ContainsKey(frame))
             {
                 component.FramePlays[frame] = new List<IFramePlay>();

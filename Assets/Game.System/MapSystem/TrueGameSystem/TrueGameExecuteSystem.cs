@@ -22,22 +22,22 @@ IInit<TrueGame, TrueGameExecuteComponent>
         public static void AddPlayerInput(TrueGame game, PlayerInput input)
         {
             var execute = game.GetComponent<TrueGameExecuteComponent>();
-            var frame = game._currentFrame;
-            if (!execute._inputQueue.ContainsKey(frame))
+            var frame = game.CurrentFrame;
+            if (!execute.InputQueue.ContainsKey(frame))
             {
-                execute._inputQueue[frame] = new List<PlayerInput>();
+                execute.InputQueue[frame] = new List<PlayerInput>();
             }
             input.Frame = frame;
-            execute._inputQueue[frame].Add(input);
+            execute.InputQueue[frame].Add(input);
         }
 
         public static void FrameUpdate(TrueGame game, TrueGameExecuteComponent component)
         {
-            var frame = game._currentFrame;
+            var frame = game.CurrentFrame;
 
             // 取出当前帧所有输入
-            component._inputQueue.TryGetValue(frame, out var inputs);
-            component._inputQueue.Remove(frame);
+            component.InputQueue.TryGetValue(frame, out var inputs);
+            component.InputQueue.Remove(frame);
 
             // 执行当前帧玩家所有输入
             if (inputs != null)
@@ -50,22 +50,22 @@ IInit<TrueGame, TrueGameExecuteComponent>
                     // 根据输入改变游戏状态
                     switch (input.InputType)
                     {
-                        case PlayerInputType.None:
+                        case InputType.None:
                             break;
-                        case PlayerInputType.Move:
+                        case InputType.Move:
                             MoveSystem.ChangeMove(actor, input.InputVector);
                             break;
-                        case PlayerInputType.StopMove:
+                        case InputType.StopMove:
                             MoveSystem.ChangeMove(actor, TSVector.zero);
                             break;
-                        case PlayerInputType.Look:
-                            TrueTransformSystem.ChangeRotation(actor, input.InputVector);
+                        case InputType.Look:
+                            TransformSystem.ChangeForward(actor, input.InputVector);
                             break;
-                        case PlayerInputType.Fire:
+                        case InputType.Fire:
                             //FireSystem.ChangeFire(actor, input.InputVector);
                             FireSystem.Shoot(game, actor, input.InputVector);
                             break;
-                        case PlayerInputType.StopFire:
+                        case InputType.StopFire:
                             //FireSystem.StopFire(actor);
                             break;
                         default:

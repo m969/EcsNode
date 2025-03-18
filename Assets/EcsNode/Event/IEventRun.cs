@@ -59,4 +59,20 @@ namespace ECS
             }
         }
     }
+
+    public abstract class AEventRun<A1, A2,A3> : IEventRun
+    {
+        protected abstract ETTask Run(A1 a1, A2 a2, A3 a3);
+        public async ETTask Handle(A1 a1, A2 a2, A3 a3)
+        {
+            try
+            {
+                await Run(a1, a2, a3);
+            }
+            catch (Exception e)
+            {
+                ConsoleLog.Error(e);
+            }
+        }
+    }
 }

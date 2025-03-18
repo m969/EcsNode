@@ -22,7 +22,7 @@ IUpdate<TrueGame>
         public void Update(TrueGame game)
         {
             // 计算下一帧理论执行时间
-            long nextFrameTime = game._currentFrame * game._frameInterval;
+            long nextFrameTime = game.CurrentFrame * game._frameInterval;
 
             // 等待到下一帧时间
             while (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond < nextFrameTime)
@@ -46,7 +46,7 @@ IUpdate<TrueGame>
             }
 
             // 推进帧数
-            game._currentFrame++;
+            game.CurrentFrame++;
         }
     } 
 }

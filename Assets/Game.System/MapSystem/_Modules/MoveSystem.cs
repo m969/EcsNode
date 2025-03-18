@@ -29,7 +29,7 @@ IAwake<EcsEntity, MoveComponent>
 
         public static void SetMovePosition(EcsEntity actor, TSVector position)
         {
-            var transComp = actor.GetComponent<TrueTransformComponent>();
+            var transComp = actor.GetComponent<TransformComponent>();
             var beforePos = transComp.Position;
             transComp.Position = position;
 

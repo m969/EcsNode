@@ -7,7 +7,7 @@ namespace ECSGame
 {
     public class Process_GameViewSystemInit
     {
-        public static void Init(EcsNode ecsNode)
+        public static void Init(EcsNode ecsNode, List<Type> types)
         {
             ConsoleLog.Debug($"Process_GameViewSystemInit Init");
 
@@ -23,7 +23,7 @@ namespace ECSGame
             var actor = game.AddChild<Actor>(beforeAwake: x => x.Type = 1);
             actor.AddComponent<MoveComponent>();
             actor.AddComponent<HealthComponent>();
-            actor.AddComponent<TrueTransformComponent>();
+            actor.AddComponent<TransformComponent>();
             actor.AddComponent<EntityViewComponent>();
             actor.AddComponent<FireComponent>();
             actor.Init();
@@ -32,19 +32,19 @@ namespace ECSGame
             //_ = MoveSystem.MoveAsync(actor, Vector3.zero);
         }
 
-        public static void Reload(EcsNode ecsNode)
+        public static void Reload(EcsNode ecsNode, List<Type> types)
         {
             ConsoleLog.Debug($"Process_GameViewSystemInit Reload");
 
             EventSystem.Reload(ecsNode, ecsNode.GetComponent<EventComponent>());
 
-            //foreach (var item in ecsNode.Id2Children.Values)
-            //{
-            //    if (item is Actor actor)
-            //    {
-            //        FireSystem.SetSpeed(actor, 5);
-            //    }
-            //}
+            foreach (var item in ecsNode.Id2Children.Values)
+            {
+                if (item is Actor actor)
+                {
+                    MoveSystem.SetSpeed(actor, 2);
+                }
+            }
         }
     } 
 }

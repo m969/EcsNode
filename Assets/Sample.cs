@@ -145,14 +145,14 @@ public class Sample : MonoBehaviour
             var typeList = new List<Type>();
             typeList.AddRange(allTypes);
             //typeList.AddRange(allTypes2);
-            EcsNode.AddSystems(typeList.ToArray());
+            //EcsNode.AddSystems(typeList.ToArray());
 
             var methodInfo = assembly.GetType("ECSGame.Process_GameSystemInit").GetMethod(method);
-            var param = new object[1] { EcsNode };
+            var param = new object[2] { EcsNode, typeList };
             methodInfo.Invoke(null, param);
 
             methodInfo = assembly.GetType("ECSGame.Process_GameViewSystemInit").GetMethod(method);
-            param = new object[1] { EcsNode };
+            param = new object[2] { EcsNode, typeList };
             methodInfo.Invoke(null, param);
         }
 

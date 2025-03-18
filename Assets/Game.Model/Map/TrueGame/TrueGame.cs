@@ -13,11 +13,11 @@ namespace ECSGame
     {
         public long Frame;
         public long PlayerId;
-        public PlayerInputType InputType;
+        public InputType InputType;
         public TSVector InputVector;
     }
 
-    public enum PlayerInputType
+    public enum InputType
     {
         None = 0,
         Move = 10,
@@ -59,7 +59,7 @@ namespace ECSGame
         public const int FPS = 20;
 
         // 当前逻辑帧编号
-        public long _currentFrame;
+        public long CurrentFrame;
 
         // 当前输入帧编号
         public long _currentInputFrame;
