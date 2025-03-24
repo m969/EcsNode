@@ -26,14 +26,14 @@ namespace TrueSync {
         private int mti = N + 1;
 
         [MemoryPackConstructor]
-        private TSRandom() {
+        public TSRandom() {
         }
 
-        private TSRandom(int seed) {
+        public TSRandom(int seed) {
             init_genrand((uint)seed);
         }
 
-        private TSRandom(int[] init) {
+        public TSRandom(int[] init) {
             uint[] initArray = new uint[init.Length];
             for (int i = 0; i < init.Length; ++i)
                 initArray[i] = (uint)init[i];

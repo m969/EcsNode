@@ -10,7 +10,15 @@ namespace ECS
     {
         public static int IdIndex;
         public long Id { get; set; }
+        public bool IsDispose
+        {
+            get
+            {
+                return Id == 0;
+            }
+        }
         public Dictionary<long, EcsEntity> Id2Children = new();
+        public Dictionary<Type, EcsComponent> Components { get; set; } = new();
         public EcsEntity Parent { get; set; }
 
         public EcsNode EcsNode
@@ -85,11 +93,11 @@ namespace ECS
 
         public void RemoveChild(EcsEntity entity)
         {
+            DriveDestroy(entity);
             Id2Children.Remove(entity.Id);
             RemoveEntity(entity);
         }
 
-        public Dictionary<Type, EcsComponent> Components { get; set; } = new();
         public T AddComponent<T>(Action<T> beforeAwake = null) where T : EcsComponent, new()
         {
             var component = new T();
@@ -102,11 +110,12 @@ namespace ECS
 
         public void RemoveComponent<T>() where T : EcsComponent, new()
         {
-            Components.Remove(typeof(T));
+            RemoveComponent(typeof(T));
         }
 
         public void RemoveComponent(Type type)
         {
+            DriveDestroy(Components[type]);
             Components.Remove(type);
         }
 
@@ -126,6 +135,18 @@ namespace ECS
         {
             var ecsNode = GetEcsNode();
             ecsNode.DriveComponentSystems(this, component, typeof(IAwake));
+        }
+
+        private void DriveDestroy(EcsEntity entity)
+        {
+            var ecsNode = GetEcsNode();
+            ecsNode.DriveEntitySystems(entity, typeof(IDestroy));
+        }
+
+        private void DriveDestroy<T>(T component) where T : EcsComponent, new()
+        {
+            var ecsNode = GetEcsNode();
+            ecsNode.DriveComponentSystems(this, component, typeof(IDestroy));
         }
 
         public void Init()

@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Define
 {
@@ -49,13 +49,22 @@ public class AssemblyLoader : MarshalByRefObject
 
 public class Sample : MonoBehaviour
 {
+    public static bool NeedReload { get; set; } = false;
     private EcsNode EcsNode { get; set; }
     private AppDomain HotReloadDomain { get; set; }
+    private float NextCheckReloadTime {  get; set; }
+    private Dictionary<string, string> ScriptFiles {  get; set; } = new Dictionary<string, string>();
+    public GameObject ReloadPanelObj;
 
     // Start is called before the first frame update
     void Start()
     {
         EcsNode = new EcsNode();
+
+        ET.ETTask.ExceptionHandler = (e) =>
+        {
+            Debug.LogException(e);
+        };
 
         //ConsoleLog.Logger = new ConsoleLogger();
         ConsoleLog.LogAction = Debug.Log;
@@ -69,16 +78,29 @@ public class Sample : MonoBehaviour
         //    Debug.LogError(log);
         //};
 
+        CheckScriptFiles();
+
         RegisterDrives(EcsNode);
 
         LoadSystemAssembly("Init");
+
+        if (ReloadPanelObj)
+        {
+            ReloadPanelObj.transform.Find("Btn_Reload").GetComponent<Button>().onClick.AddListener(() =>
+            {
+                //PlayerPrefs.SetInt("NeedReload", 1);
+                NeedReload = true;
+            });
+        }
     }
 
     private EcsNode RegisterDrives(EcsNode ecsNode)
     {
         ecsNode.RegisterDrive<IAwake>();
+        ecsNode.RegisterDrive<IDestroy>();
         ecsNode.RegisterDrive<IInit>();
         ecsNode.RegisterDrive<IUpdate>();
+        ecsNode.AddComponent<ReloadComponent>();
         return ecsNode;
     }
 
@@ -147,6 +169,8 @@ public class Sample : MonoBehaviour
             //typeList.AddRange(allTypes2);
             //EcsNode.AddSystems(typeList.ToArray());
 
+            EcsNode.GetComponent<ReloadComponent>().SystemAssembly = assembly;
+
             var methodInfo = assembly.GetType("ECSGame.Process_GameSystemInit").GetMethod(method);
             var param = new object[2] { EcsNode, typeList };
             methodInfo.Invoke(null, param);
@@ -194,6 +218,44 @@ public class Sample : MonoBehaviour
     public void Reload()
     {
         LoadSystemAssembly("Reload");
+        if (ReloadPanelObj)
+        {
+            ReloadPanelObj.gameObject.SetActive(false);
+        }
+    }
+
+    bool CheckScriptFiles()
+    {
+        var changed = false;
+#if UNITY_EDITOR
+        var allAssets = UnityEditor.AssetDatabase.FindAssets("t:Script", new string[] { "Assets/Game.System" });
+        var newAssets = new List<string>();
+        foreach (var item in allAssets)
+        {
+            var path = UnityEditor.AssetDatabase.GUIDToAssetPath(item);
+            if (path.EndsWith(".cs"))
+            {
+                var asset = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(path);
+                var time = File.GetLastWriteTimeUtc(Path.Combine(Application.dataPath, "../" + path));
+                if (!ScriptFiles.ContainsKey(path))
+                {
+                    changed = true;
+                    ScriptFiles.Add(path, time.ToString());
+                }
+                else
+                {
+                    if (!ScriptFiles[path].Equals(time.ToString()))
+                    {
+                        changed = true;
+                    }
+                    ScriptFiles[path] = time.ToString();
+                    //ConsoleLog.Debug($"{path} {time.ToString()}");
+                }
+            }
+        }
+#endif
+
+        return changed;
     }
 
     // Update is called once per frame
@@ -205,6 +267,18 @@ public class Sample : MonoBehaviour
             return;
         }
         EcsNode.DriveEntityUpdate();
+
+        if (Time.realtimeSinceStartup > NextCheckReloadTime)
+        {
+            NextCheckReloadTime = Time.realtimeSinceStartup + 1;
+
+            var changed = CheckScriptFiles();
+
+            if (ReloadPanelObj && changed)
+            {
+                ReloadPanelObj.gameObject.SetActive(true);
+            }
+        }
     }
 
     void FixedUpdate()

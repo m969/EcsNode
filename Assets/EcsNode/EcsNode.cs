@@ -59,17 +59,6 @@ namespace ECS
                     continue;
                 }
 
-                //IEcsSystem system;
-                //ConsoleLog.Debug($"AddSystems {systemType.Name}");
-                //if (systemType.Name == "EventSystem")
-                //{
-                //    system = eventSystem;
-                //}
-                //else
-                //{
-                //    system = Activator.CreateInstance(systemType) as IEcsSystem;
-                //}
-
                 var system = Activator.CreateInstance(systemType) as IEcsSystem;
                 allSystems.Add(systemType, system);
 
@@ -160,11 +149,6 @@ namespace ECS
             AllUpdateSystems = allUpdateSystems;
             UpdateEntityTypes = updateEntityTypes;
         }
-
-        //public IEcsSystem RegisterSystem(IEcsSystem system)
-        //{
-        //    return system;
-        //}
 
         public T GetSystem<T>() where T : class, IEcsSystem, new()
         {
@@ -268,6 +252,7 @@ namespace ECS
                         var method = systemInfo.Action;
                         foreach (var entity in entities)
                         {
+                            if (entity.IsDispose) continue;
                             method.Invoke(system, new object[] { entity });
                         }
                     }

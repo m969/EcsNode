@@ -11,8 +11,13 @@ namespace ECS
     {
     }
 
-    public abstract class AEventRun : IEventRun
+    public abstract class AEventRun<T> : IEventRun where T : class, IEventRun, new()
     {
+        public static T GetEvent()
+        {
+            return new T();
+        }
+
         protected abstract ETTask Run();
 
         public async ETTask Handle()
@@ -28,8 +33,13 @@ namespace ECS
         }
     }
 
-    public abstract class AEventRun<A> : IEventRun
+    public abstract class AEventRun<T, A> : IEventRun where T : class, IEventRun, new()
     {
+        public static T GetEvent()
+        {
+            return new T();
+        }
+
         protected abstract ETTask Run(A a);
         public async ETTask Handle(A a)
         {
@@ -44,8 +54,13 @@ namespace ECS
         }
     }
 
-    public abstract class AEventRun<A1, A2> : IEventRun
+    public abstract class AEventRun<T, A1, A2> : IEventRun where T : class, IEventRun, new()
     {
+        public static T GetEvent()
+        {
+            return new T();
+        }
+
         protected abstract ETTask Run(A1 a1, A2 a2);
         public async ETTask Handle(A1 a1, A2 a2)
         {
@@ -60,8 +75,13 @@ namespace ECS
         }
     }
 
-    public abstract class AEventRun<A1, A2,A3> : IEventRun
+    public abstract class AEventRun<T, A1, A2, A3> : IEventRun where T : class, IEventRun, new()
     {
+        public static T GetEvent()
+        {
+            return new T();
+        }
+
         protected abstract ETTask Run(A1 a1, A2 a2, A3 a3);
         public async ETTask Handle(A1 a1, A2 a2, A3 a3)
         {

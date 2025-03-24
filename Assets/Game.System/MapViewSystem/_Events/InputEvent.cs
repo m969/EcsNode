@@ -7,7 +7,7 @@ using TrueSync;
 
 namespace ECSGame
 {
-    public class InputEvent : AEventRun<TrueGame, InputType, Vector3>
+    public class InputEvent : AEventRun<InputEvent, TrueGame, InputType, Vector3>
     {
         protected override async ETTask Run(TrueGame game, InputType inputType, Vector3 direction)
         {

@@ -20,7 +20,7 @@ IAwake<Actor, FireComponent>
             var actorTrans = actor.GetComponent<TransformComponent>();
             TransformSystem.ChangePosition(item, actorTrans.Position);
             TransformSystem.ChangeForward(item, actorTrans.Forward);
-            MoveSystem.SetSpeed(item, 10);
+            MoveSystem.SetSpeed(item, 15);
             MoveSystem.ChangeMove(item, actorTrans.Forward.normalized);
 
             EventSystem.Dispatch(actor.EcsNode, new EntityCreateCmd()

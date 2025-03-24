@@ -26,5 +26,16 @@ IUpdate<Actor>
             //    MoveSystem.Update(entity, component);
             //}
         }
+
+        public static Actor CreateActor(TrueGame game)
+        {
+            var actor = game.AddChild<Actor>(beforeAwake: x => x.Type = 1);
+            actor.AddComponent<MoveComponent>();
+            actor.AddComponent<HealthComponent>();
+            actor.AddComponent<TransformComponent>();
+            actor.AddComponent<EntityViewComponent>();
+            actor.AddComponent<FireComponent>();
+            return actor;
+        }
     } 
 }

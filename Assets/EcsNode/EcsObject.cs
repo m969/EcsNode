@@ -12,6 +12,8 @@ namespace ECS
         {
             if (ecsObject is EcsEntity entity)
             {
+                entity.Id = 0;
+
                 var children = entity.Id2Children.Values.ToArray();
                 foreach (var item in children)
                 {

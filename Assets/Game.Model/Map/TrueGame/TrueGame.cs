@@ -61,11 +61,15 @@ namespace ECSGame
         // 当前逻辑帧编号
         public long CurrentFrame;
 
+        public long StartFrameTime;
+
         // 当前输入帧编号
-        public long _currentInputFrame;
+        public long CurrentInputFrame;
 
         // 逻辑帧间隔（毫秒）
-        public readonly long _frameInterval = 1000 / FPS;
+        public readonly long FrameInterval = 1000 / FPS;
+
+        public TSRandom TSRandom;
 
         public Actor MyActor { get; set; }
     } 

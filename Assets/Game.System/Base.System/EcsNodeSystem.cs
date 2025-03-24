@@ -6,11 +6,15 @@ namespace ECSGame
 {
     public class EcsNodeSystem : IUpdate<EcsNode>
     {
-        public void Update(EcsNode entity)
+        public void Update(EcsNode ecsNode)
         {
-            if (entity.GetComponent<EventComponent>() is { } component)
+            if (ecsNode.GetComponent<TimerComponent>() is { } timerComponent)
             {
-                EventSystem.Update(entity, component);
+                TimerSystem.Update(ecsNode, timerComponent);
+            }
+            if (ecsNode.GetComponent<EventComponent>() is { } eventComponent)
+            {
+                EventSystem.Update(ecsNode, eventComponent);
             }
         }
     } 

@@ -13,6 +13,19 @@ public class GameDebugEditor : OdinEditorWindow
         window.Show();
     }
 
+    private void Update()
+    {
+        if (Application.isPlaying)
+        {
+            if (Sample.NeedReload)
+            {
+                Sample.NeedReload = false;
+
+                CompileAndReload();
+            }
+        }
+    }
+
     [Button("Compile & Play", ButtonHeight = 25)]
     public void CompileAndPlay()
     {

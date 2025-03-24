@@ -33,7 +33,7 @@ IInit<TrueGame, TrueGamePlayComponent>
                         var moveComp = entity.GetComponent<MoveComponent>();
                         var transComp = entity.GetComponent<TransformComponent>();
                         var beforePos = transComp.Position;
-                        var afterPos = transComp.Position + moveComp.TrueDirection * FP.FromFloat(moveComp.Speed * 0.002f);
+                        var afterPos = transComp.Position + moveComp.TrueDirection * FP.FromFloat(moveComp.Speed * 0.1f);
                         framePlay = new FramePlay_Move()
                         {
                             EntityId = entity.Id,
@@ -128,5 +128,5 @@ IInit<TrueGame, TrueGamePlayComponent>
             CreateFramePlays(game, component);
             PalyFramePlays(game, component);
         }
-    } 
+    }
 }

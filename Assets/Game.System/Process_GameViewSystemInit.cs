@@ -12,21 +12,22 @@ namespace ECSGame
             ConsoleLog.Debug($"Process_GameViewSystemInit Init");
 
             ecsNode.AddComponent<EventComponent>();
+            ecsNode.AddComponent<TimerComponent>();
             ecsNode.Init();
 
             var game = ecsNode.AddChild<TrueGame>();
             game.AddComponent<TrueGameExecuteComponent>();
             game.AddComponent<TrueGamePlayComponent>();
+            game.AddComponent<TrueGameCollisionComponent>();
             game.AddComponent<PlayerInputComponent>();
             game.Init();
 
-            var actor = game.AddChild<Actor>(beforeAwake: x => x.Type = 1);
-            actor.AddComponent<MoveComponent>();
-            actor.AddComponent<HealthComponent>();
-            actor.AddComponent<TransformComponent>();
-            actor.AddComponent<EntityViewComponent>();
-            actor.AddComponent<FireComponent>();
+            var actor = ActorSystem.CreateActor(game);
             actor.Init();
+
+            var actor1 = ActorSystem.CreateActor(game);
+            actor1.AddComponent<AIComponent>();
+            actor1.Init();
 
             game.MyActor = actor;
             //_ = MoveSystem.MoveAsync(actor, Vector3.zero);
@@ -36,7 +37,7 @@ namespace ECSGame
         {
             ConsoleLog.Debug($"Process_GameViewSystemInit Reload");
 
-            EventSystem.Reload(ecsNode, ecsNode.GetComponent<EventComponent>());
+            EventSystem.Reload(ecsNode);
 
             foreach (var item in ecsNode.Id2Children.Values)
             {
@@ -46,5 +47,5 @@ namespace ECSGame
                 }
             }
         }
-    } 
+    }
 }

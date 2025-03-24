@@ -27,9 +27,9 @@ IUpdate<TrueGame>
                 PlayerInputSystem.Update(game, inputComp);
 
                 // 帧播放向前推进后，把收集到的输入填入游戏中
-                if (game._currentInputFrame != game.CurrentFrame)
+                if (game.CurrentInputFrame != game.CurrentFrame)
                 {
-                    game._currentInputFrame = game.CurrentFrame;
+                    game.CurrentInputFrame = game.CurrentFrame;
 
                     FrameUpdate(game, inputComp);
                 }

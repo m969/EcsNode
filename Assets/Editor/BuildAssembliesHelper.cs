@@ -133,8 +133,8 @@ namespace ET
             //}
         }
 
-        [MenuItem("EcsNode/ShareSystemCompile")]
-        public static void ShareSystemCompile()
+        //[MenuItem("EcsNode/CompileShare")]
+        public static void CompileShare()
         {
 
         }

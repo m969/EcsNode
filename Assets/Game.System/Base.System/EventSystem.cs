@@ -11,14 +11,15 @@ IAwake<EcsNode, EventComponent>
     {
         public void Awake(EcsNode entity, EventComponent component)
         {
-            Reload(entity, component);
+            Reload(entity);
         }
 
-        public static void Reload(EcsNode entity, EventComponent component)
+        public static void Reload(EcsNode ecsNode)
         {
+            var component = ecsNode.GetComponent<EventComponent>();
             var CommandHandlers = new Dictionary<Type, List<ICommandHandler>>();
 
-            var types = entity.AllTypes;
+            var types = ecsNode.AllTypes;
             foreach (var item in types)
             {
                 if (item.BaseType == null) continue;
@@ -76,28 +77,28 @@ IAwake<EcsNode, EventComponent>
             //AOGame.Root.GetComponent<EventComponent>().RunningEvents.Remove(eventRun);
         }
 
-        public static async ETTask Run<T>(T eventRun) where T : AEventRun
+        public static async ETTask Run<T>(T eventRun) where T : AEventRun<T>, new()
         {
             BeforeRun(eventRun);
             await eventRun.Handle();
             AfterRun(eventRun);
         }
 
-        public static async ETTask Run<T, A>(T eventRun, A a) where T : AEventRun<A>
+        public static async ETTask Run<T, A>(T eventRun, A a) where T : AEventRun<T, A>, new()
         {
             BeforeRun(eventRun);
             await eventRun.Handle(a);
             AfterRun(eventRun);
         }
 
-        public static async ETTask Run<T, A1, A2>(T eventRun, A1 a1, A2 a2) where T : AEventRun<A1, A2>
+        public static async ETTask Run<T, A1, A2>(T eventRun, A1 a1, A2 a2) where T : AEventRun<T, A1, A2>, new()
         {
             BeforeRun(eventRun);
             await eventRun.Handle(a1, a2);
             AfterRun(eventRun);
         }
 
-        public static async ETTask Run<T, A1, A2, A3>(T eventRun, A1 a1, A2 a2, A3 a3) where T : AEventRun<A1, A2, A3>
+        public static async ETTask Run<T, A1, A2, A3>(T eventRun, A1 a1, A2 a2, A3 a3) where T : AEventRun<T, A1, A2, A3>, new()
         {
             BeforeRun(eventRun);
             await eventRun.Handle(a1, a2, a3);

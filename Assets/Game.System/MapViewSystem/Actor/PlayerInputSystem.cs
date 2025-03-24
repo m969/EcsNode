@@ -48,7 +48,7 @@ IInit<TrueGame, PlayerInputComponent>
         {
             var lookJoystick = component.LookJoystick;
             var direction = Vector3.forward * lookJoystick.Vertical + Vector3.right * lookJoystick.Horizontal;
-            if (direction.sqrMagnitude > 0.1f)
+            if (direction.sqrMagnitude > 0.01f)
             {
                 component.LookVector = direction;
             }
@@ -65,14 +65,14 @@ IInit<TrueGame, PlayerInputComponent>
         {
             var moveJoystick = component.MoveJoystick;
             var direction = Vector3.forward * moveJoystick.Vertical + Vector3.right * moveJoystick.Horizontal;
-            if (direction.sqrMagnitude > 0.1f)
+            if (direction.sqrMagnitude > 0.01f)
             {
                 component.MoveVector = direction;
             }
             else
             {
                 direction = Vector3.forward * Input.GetAxis("Vertical") + Vector3.right * Input.GetAxis("Horizontal");
-                if (direction.sqrMagnitude > 0.1f)
+                if (direction.sqrMagnitude > 0.01f)
                 {
                     component.MoveVector = direction;
                 }
@@ -110,7 +110,7 @@ IInit<TrueGame, PlayerInputComponent>
             {
                 component.NextFireTime = nowTime + interval;
                 var direction = Vector3.forward * fireJoystick.Vertical + Vector3.right * fireJoystick.Horizontal;
-                EventSystem.Run(new InputEvent(), game, InputType.Fire, direction).Coroutine();
+                EventSystem.Run(InputEvent.GetEvent(), game, InputType.Fire, direction).Coroutine();
             }
         }
 
