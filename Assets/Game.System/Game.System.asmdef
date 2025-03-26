@@ -7,10 +7,7 @@
         "GUID:645f7d097acee4f40b75a6b9ff1b0822",
         "GUID:33e321a462e19324990117b868abb5be"
     ],
-    "includePlatforms": [
-        "Editor",
-        "Stadia"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -12,7 +12,7 @@ namespace ECS
     public interface ICommandHandler
     {
         Type Type { get; }
-        public ETTask HandleCmd(ICommand cmd);
+        public ETTask HandleCmd(EcsNode ecsNode, ICommand cmd);
     }
 
     public abstract class ACommandHandler<T> : ICommandHandler where T : ICommand
@@ -25,13 +25,13 @@ namespace ECS
             }
         }
 
-        protected abstract ETTask Handle(T cmd);
+        protected abstract ETTask Handle(EcsNode ecsNode, T cmd);
 
-        public async ETTask HandleCmd(ICommand cmd)
+        public async ETTask HandleCmd(EcsNode ecsNode, ICommand cmd)
         {
             try
             {
-                await Handle((T)cmd);
+                await Handle(ecsNode, (T)cmd);
             }
             catch (Exception e)
             {

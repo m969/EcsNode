@@ -1,4 +1,5 @@
 ﻿using ECS;
+using ECS.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,6 +62,8 @@ public class Sample : MonoBehaviour
     {
         EcsNode = new EcsNode();
 
+        StaticUtils.EcsNode = EcsNode;
+
         ET.ETTask.ExceptionHandler = (e) =>
         {
             Debug.LogException(e);
@@ -69,6 +72,7 @@ public class Sample : MonoBehaviour
         //ConsoleLog.Logger = new ConsoleLogger();
         ConsoleLog.LogAction = Debug.Log;
         ConsoleLog.LogErrorAction = Debug.LogError;
+        ConsoleLog.LogExceptionAction = Debug.LogException;
         //ConsoleLog.LogAction = (log) =>
         //{
         //    Debug.Log(log);

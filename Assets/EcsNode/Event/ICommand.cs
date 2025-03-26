@@ -11,7 +11,7 @@ namespace ECS
     /// </summary>
     public interface ICommand
     {
-
+        public EcsEntity Entity { get; set; }
     }
 
     /// <summary>

@@ -49,15 +49,15 @@ IAwake<EcsNode, EventComponent>
                 {
                     foreach (var handler in handlers)
                     {
-                        handler.HandleCmd(cmd);
+                        handler.HandleCmd(entity, cmd);
                     }
                 }
             }
         }
 
-        public static void Dispatch<T>(EcsNode ecsNode, T cmd) where T : struct, ICommand
+        public static void Dispatch<T>(T cmd) where T : struct, ICommand
         {
-            ecsNode.GetComponent<EventComponent>().DispatchCommands.Enqueue(cmd);
+            cmd.Entity.EcsNode.GetComponent<EventComponent>().DispatchCommands.Enqueue(cmd);
         }
 
         public static void Execute<T>(EcsNode ecsNode, T cmd) where T : struct, IExecuteCommand
@@ -65,44 +65,25 @@ IAwake<EcsNode, EventComponent>
             ecsNode.GetComponent<EventComponent>().ExecuteCommands.Enqueue(cmd);
         }
 
-        private static void BeforeRun<T>(T eventRun) where T : IEventRun
+        public static async ETTask Run<T, A>(T eventRun, A a) where T : AEventRun<T, A>, new() where A : EcsEntity
         {
-            //AOGame.Root.GetComponent<EventComponent>().RunningEvents.Add(eventRun);
-            //AOCmd.Dispatch(new BeforeRunEventCmd() { EventRun = eventRun });
-        }
-
-        private static void AfterRun<T>(T eventRun) where T : IEventRun
-        {
-            //AOCmd.Dispatch(new AfterRunEventCmd() { EventRun = eventRun });
-            //AOGame.Root.GetComponent<EventComponent>().RunningEvents.Remove(eventRun);
-        }
-
-        public static async ETTask Run<T>(T eventRun) where T : AEventRun<T>, new()
-        {
-            BeforeRun(eventRun);
-            await eventRun.Handle();
-            AfterRun(eventRun);
-        }
-
-        public static async ETTask Run<T, A>(T eventRun, A a) where T : AEventRun<T, A>, new()
-        {
-            BeforeRun(eventRun);
+            Dispatch(new BeforeRunEventCmd() { Entity = a, EventRun = eventRun, EventEntity = a });
             await eventRun.Handle(a);
-            AfterRun(eventRun);
+            Dispatch(new AfterRunEventCmd() { Entity = a, EventRun = eventRun, EventEntity = a });
         }
 
-        public static async ETTask Run<T, A1, A2>(T eventRun, A1 a1, A2 a2) where T : AEventRun<T, A1, A2>, new()
+        public static async ETTask Run<T, A1, A2>(T eventRun, A1 a1, A2 a2) where T : AEventRun<T, A1, A2>, new() where A1 : EcsEntity
         {
-            BeforeRun(eventRun);
+            Dispatch(new BeforeRunEventCmd() { Entity = a1, EventRun = eventRun, EventEntity = a1, EventArgs2 = a2 });
             await eventRun.Handle(a1, a2);
-            AfterRun(eventRun);
+            Dispatch(new AfterRunEventCmd() { Entity = a1, EventRun = eventRun, EventEntity = a1, EventArgs2 = a2 });
         }
 
-        public static async ETTask Run<T, A1, A2, A3>(T eventRun, A1 a1, A2 a2, A3 a3) where T : AEventRun<T, A1, A2, A3>, new()
+        public static async ETTask Run<T, A1, A2, A3>(T eventRun, A1 a1, A2 a2, A3 a3) where T : AEventRun<T, A1, A2, A3>, new() where A1 : EcsEntity
         {
-            BeforeRun(eventRun);
+            Dispatch(new BeforeRunEventCmd() { Entity = a1, EventRun = eventRun, EventEntity = a1, EventArgs2 = a2, EventArgs3 = a3 });
             await eventRun.Handle(a1, a2, a3);
-            AfterRun(eventRun);
+            Dispatch(new AfterRunEventCmd() { Entity = a1, EventRun = eventRun, EventEntity = a1, EventArgs2 = a2, EventArgs3 = a3 });
         }
     } 
 }

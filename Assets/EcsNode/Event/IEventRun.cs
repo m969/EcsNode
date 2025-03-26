@@ -9,33 +9,34 @@ namespace ECS
 {
     public interface IEventRun
     {
+        //public EcsEntity Entity { get; }
     }
 
-    public abstract class AEventRun<T> : IEventRun where T : class, IEventRun, new()
+    //public abstract class AEventRun<T> : IEventRun where T : class, IEventRun, new()
+    //{
+    //    public static T NewEvent()
+    //    {
+    //        return new T();
+    //    }
+
+    //    protected abstract ETTask Run();
+
+    //    public async ETTask Handle()
+    //    {
+    //        try
+    //        {
+    //            await Run();
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            ConsoleLog.Error(e);
+    //        }
+    //    }
+    //}
+
+    public abstract class AEventRun<T, A> : IEventRun where T : class, IEventRun, new() where A : EcsEntity
     {
-        public static T GetEvent()
-        {
-            return new T();
-        }
-
-        protected abstract ETTask Run();
-
-        public async ETTask Handle()
-        {
-            try
-            {
-                await Run();
-            }
-            catch (Exception e)
-            {
-                ConsoleLog.Error(e);
-            }
-        }
-    }
-
-    public abstract class AEventRun<T, A> : IEventRun where T : class, IEventRun, new()
-    {
-        public static T GetEvent()
+        public static T NewEvent()
         {
             return new T();
         }
@@ -54,9 +55,9 @@ namespace ECS
         }
     }
 
-    public abstract class AEventRun<T, A1, A2> : IEventRun where T : class, IEventRun, new()
+    public abstract class AEventRun<T, A1, A2> : IEventRun where T : class, IEventRun, new() where A1 : EcsEntity
     {
-        public static T GetEvent()
+        public static T NewEvent()
         {
             return new T();
         }
@@ -75,9 +76,9 @@ namespace ECS
         }
     }
 
-    public abstract class AEventRun<T, A1, A2, A3> : IEventRun where T : class, IEventRun, new()
+    public abstract class AEventRun<T, A1, A2, A3> : IEventRun where T : class, IEventRun, new() where A1 : EcsEntity
     {
-        public static T GetEvent()
+        public static T NewEvent()
         {
             return new T();
         }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using ECS.Unity;
 
 namespace ECSGame
 {
@@ -11,22 +12,21 @@ namespace ECSGame
         {
             ConsoleLog.Debug($"Process_GameViewSystemInit Init");
 
-            ecsNode.AddComponent<EventComponent>();
-            ecsNode.AddComponent<TimerComponent>();
+            EcsNodeSystem.Create(ecsNode);
+            ecsNode.AddComponent<SoundComponent>();
             ecsNode.Init();
 
-            var game = ecsNode.AddChild<TrueGame>();
-            game.AddComponent<TrueGameExecuteComponent>();
-            game.AddComponent<TrueGamePlayComponent>();
-            game.AddComponent<TrueGameCollisionComponent>();
+            var game = TrueGameSystem.Create(ecsNode);
             game.AddComponent<PlayerInputComponent>();
             game.Init();
 
             var actor = ActorSystem.CreateActor(game);
+            actor.AddComponent<EntityViewComponent>();
             actor.Init();
 
             var actor1 = ActorSystem.CreateActor(game);
             actor1.AddComponent<AIComponent>();
+            actor1.AddComponent<EntityViewComponent>();
             actor1.Init();
 
             game.MyActor = actor;

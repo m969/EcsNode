@@ -17,5 +17,11 @@ namespace ECSGame
                 EventSystem.Update(ecsNode, eventComponent);
             }
         }
+
+        public static void Create(EcsNode ecsNode)
+        {
+            ecsNode.AddComponent<EventComponent>();
+            ecsNode.AddComponent<TimerComponent>();
+        }
     } 
 }

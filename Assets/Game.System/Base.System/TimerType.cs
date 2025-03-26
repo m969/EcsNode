@@ -8,6 +8,6 @@ namespace ECS
 {
     public class TimerType
     {
-        public const int FrameTimer = 100;
-    } 
+        public const int WaitAIAction_FrameTimer = 100;
+    }
 }
