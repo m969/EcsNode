@@ -14,7 +14,9 @@ namespace ECSGame
             var game = actor.GetParent<TrueGame>();
             var item = game.AddChild<Item>();
             item.AddComponent<TransformComponent>();
+            item.AddComponent<CollisionComponent>();
             item.AddComponent<MoveComponent>();
+            item.GetComponent<CollisionComponent>().Layer = actor.GetComponent<CollisionComponent>().Layer;
             var actorTrans = actor.GetComponent<TransformComponent>();
             TransformSystem.ChangePosition(item, actorTrans.Position);
             TransformSystem.ChangeForward(item, actorTrans.Forward);

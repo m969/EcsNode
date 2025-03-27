@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 590569806584540319}
   - component: {fileID: 2181156168009554436}
   m_Layer: 0
-  m_Name: Sound_OnceFire
+  m_Name: Sound_Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: 85ceac32e38d97547983bb9850987041, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 0.8
+  m_Pitch: 0.5
   Loop: 0
   Mute: 0
   Spatialize: 0

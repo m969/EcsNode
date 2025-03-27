@@ -25,6 +25,38 @@ namespace ECS
 
         public IUpdate<EcsNode> EcsUpdate { get; set; }
 
+        public void AddEntity(EcsEntity entity)
+        {
+            var ecsNode = entity.EcsNode;
+            ecsNode.AllEntities.Add(entity.Id, entity);
+            var entityType = entity.GetType();
+            if (!ecsNode.Type2Entities.TryGetValue(entityType, out var list))
+            {
+                list = new List<EcsEntity>();
+                ecsNode.Type2Entities.Add(entityType, list);
+            }
+            list.Add(entity);
+            if (ecsNode.UpdateEntityTypes.Contains(entityType))
+            {
+                ecsNode.AddEntities.Enqueue(entity);
+            }
+        }
+
+        public void RemoveEntity(EcsEntity entity)
+        {
+            var ecsNode = entity.EcsNode;
+            ecsNode.AllEntities.Remove(entity.Id);
+            var entityType = entity.GetType();
+            if (ecsNode.Type2Entities.TryGetValue(entityType, out var list))
+            {
+                list.Remove(entity);
+                if (ecsNode.UpdateEntityTypes.Contains(entityType))
+                {
+                    ecsNode.RemoveEntities.Enqueue(entity);
+                }
+            }
+        }
+
         public void RegisterDrive<T>()
         {
             DriveTypes.Add(typeof(T));

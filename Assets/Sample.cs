@@ -175,13 +175,13 @@ public class Sample : MonoBehaviour
 
             EcsNode.GetComponent<ReloadComponent>().SystemAssembly = assembly;
 
-            var methodInfo = assembly.GetType("ECSGame.Process_GameSystemInit").GetMethod(method);
+            var methodInfo = assembly.GetType("ECSGame.Process_GameSystem").GetMethod(method);
             var param = new object[2] { EcsNode, typeList };
             methodInfo.Invoke(null, param);
 
-            methodInfo = assembly.GetType("ECSGame.Process_GameViewSystemInit").GetMethod(method);
-            param = new object[2] { EcsNode, typeList };
-            methodInfo.Invoke(null, param);
+            //methodInfo = assembly.GetType("ECSGame.Process_GameViewSystemInit").GetMethod(method);
+            //param = new object[2] { EcsNode, typeList };
+            //methodInfo.Invoke(null, param);
         }
 
         //if (PlayerPrefs.GetInt("MergeSystemLoad", 0) == 1)

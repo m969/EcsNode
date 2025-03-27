@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TrueSync;
+using static UnityEngine.GraphicsBuffer;
 
 namespace ECSGame
 {
@@ -10,6 +11,11 @@ namespace ECSGame
     {
         public void Awake(EcsEntity entity, TransformComponent component)
         {
+        }
+
+        public static TSVector GetPosition(EcsEntity entity)
+        {
+            return entity.GetComponent<TransformComponent>().Position;
         }
 
         public static void ChangePosition(EcsEntity actor, TSVector target)

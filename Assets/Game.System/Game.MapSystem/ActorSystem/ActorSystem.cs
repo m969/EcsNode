@@ -30,9 +30,10 @@ IUpdate<Actor>
         public static Actor CreateActor(TrueGame game)
         {
             var actor = game.AddChild<Actor>(beforeAwake: x => x.Type = 1);
+            actor.AddComponent<TransformComponent>();
+            actor.AddComponent<CollisionComponent>();
             actor.AddComponent<MoveComponent>();
             actor.AddComponent<HealthComponent>();
-            actor.AddComponent<TransformComponent>();
             actor.AddComponent<FireComponent>();
             return actor;
         }

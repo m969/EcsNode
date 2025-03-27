@@ -15,6 +15,19 @@ namespace ECSGame
             {
                 SoundSystem.PlayClip(SoundType.OnceFire);
             }
+            if (cmd.EventRun is CollisionEvent)
+            {
+                var entity1 = cmd.EventEntity;
+                var entity2 = (EcsEntity)cmd.EventArgs2;
+                if (entity1 is Item)
+                {
+                    SoundSystem.PlayClip(SoundType.Explosion);
+                }
+                if (entity2 is Item)
+                {
+                    SoundSystem.PlayClip(SoundType.Explosion);
+                }
+            }
         }
     }
 }

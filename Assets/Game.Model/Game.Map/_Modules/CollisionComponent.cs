@@ -7,6 +7,6 @@ namespace ECSGame
 {
 	public class CollisionComponent : EcsComponent
 	{
-
+		public uint Layer { get; set; }
 	} 
 }

@@ -32,6 +32,11 @@ IDestroy<EcsEntity, EntityViewComponent>
             if (component.ViewObj != null)
             {
                 GameObject.Destroy(component.ViewObj);
+
+                var prefab = Resources.Load<GameObject>("Explosion");
+                var explosion = GameObject.Instantiate(prefab);
+                explosion.transform.position = TransformSystem.GetPosition(entity).ToVector();
+                GameObject.Destroy(explosion, explosion.GetComponent<ScaleTween>().Duration);
             }
         }
 

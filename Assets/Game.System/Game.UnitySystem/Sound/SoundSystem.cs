@@ -42,6 +42,7 @@ IInit<EcsNode, SoundComponent>
             {
                 var prefabName = string.Empty;
                 if (clipType == SoundType.OnceFire) prefabName = "Sound_OnceFire";
+                if (clipType == SoundType.Explosion) prefabName = "Sound_Explosion";
 
                 var prefab = Resources.Load<GameObject>(prefabName);
                 var obj = GameObject.Instantiate(prefab);
