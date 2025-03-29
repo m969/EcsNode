@@ -52,6 +52,7 @@ public class Sample : MonoBehaviour
 {
     public static bool NeedReload { get; set; } = false;
     private EcsNode EcsNode { get; set; }
+    private EcsNode PrePlayEcsNode { get; set; }
     private AppDomain HotReloadDomain { get; set; }
     private float NextCheckReloadTime {  get; set; }
     private Dictionary<string, string> ScriptFiles {  get; set; } = new Dictionary<string, string>();
@@ -60,10 +61,6 @@ public class Sample : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        EcsNode = new EcsNode();
-
-        StaticUtils.EcsNode = EcsNode;
-
         ET.ETTask.ExceptionHandler = (e) =>
         {
             Debug.LogException(e);
@@ -84,7 +81,15 @@ public class Sample : MonoBehaviour
 
         CheckScriptFiles();
 
+        EcsNode = new EcsNode();
+        StaticObject.EcsNode = EcsNode;
         RegisterDrives(EcsNode);
+        EcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);
+
+        //PrePlayEcsNode = new EcsNode();
+        //StaticObject.PrePlayEcsNode = PrePlayEcsNode;
+        //RegisterDrives(PrePlayEcsNode);
+        //PrePlayEcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);
 
         LoadSystemAssembly("Init");
 
@@ -104,7 +109,6 @@ public class Sample : MonoBehaviour
         ecsNode.RegisterDrive<IDestroy>();
         ecsNode.RegisterDrive<IInit>();
         ecsNode.RegisterDrive<IUpdate>();
-        ecsNode.AddComponent<ReloadComponent>();
         return ecsNode;
     }
 
@@ -166,22 +170,10 @@ public class Sample : MonoBehaviour
             var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
             var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
             var assembly = Assembly.Load(assBytes, pdbBytes);
-            var allTypes = assembly.GetTypes();
-
-            var typeList = new List<Type>();
-            typeList.AddRange(allTypes);
-            //typeList.AddRange(allTypes2);
-            //EcsNode.AddSystems(typeList.ToArray());
-
-            EcsNode.GetComponent<ReloadComponent>().SystemAssembly = assembly;
-
             var methodInfo = assembly.GetType("ECSGame.Process_GameSystem").GetMethod(method);
-            var param = new object[2] { EcsNode, typeList };
-            methodInfo.Invoke(null, param);
 
-            //methodInfo = assembly.GetType("ECSGame.Process_GameViewSystemInit").GetMethod(method);
-            //param = new object[2] { EcsNode, typeList };
-            //methodInfo.Invoke(null, param);
+            methodInfo.Invoke(null, new object[2] { EcsNode, assembly });
+            //methodInfo.Invoke(null, new object[2] { PrePlayEcsNode, assembly });
         }
 
         //if (PlayerPrefs.GetInt("MergeSystemLoad", 0) == 1)
@@ -265,12 +257,13 @@ public class Sample : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (EcsNode == null)
-        {
-            ConsoleLog.Debug("EcsNode == null");
-            return;
-        }
-        EcsNode.DriveEntityUpdate();
+        //if (EcsNode == null)
+        //{
+        //    ConsoleLog.Debug("EcsNode == null");
+        //    return;
+        //}
+        EcsNode?.DriveEntityUpdate();
+        PrePlayEcsNode?.DriveEntityUpdate();
 
         if (Time.realtimeSinceStartup > NextCheckReloadTime)
         {

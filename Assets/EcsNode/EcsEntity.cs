@@ -8,8 +8,9 @@ namespace ECS
     /// </summary>
     public class EcsEntity : EcsObject
     {
-        public static int IdIndex;
         public long Id { get; set; }
+        //public long InstanceId { get; set; }
+        //public long UniqueId { get; set; }
         public bool IsDispose
         {
             get
@@ -43,8 +44,13 @@ namespace ECS
 
         public T AddChild<T>(Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
+            return AddChild(EcsNode.NewId(), beforeAwake);
+        }
+
+        public T AddChild<T>(long id, Action<T> beforeAwake = null) where T : EcsEntity, new()
+        {
             var entity = new T();
-            entity.Id = ++IdIndex;
+            entity.Id = id;
             entity.Parent = this;
             Id2Children.Add(entity.Id, entity);
             beforeAwake?.Invoke(entity);

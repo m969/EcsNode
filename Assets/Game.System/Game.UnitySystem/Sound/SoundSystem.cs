@@ -22,7 +22,7 @@ IInit<EcsNode, SoundComponent>
 
         public static void PlayClip(int clipType)
         {
-            var component = StaticUtils.EcsNode.GetComponent<SoundComponent>();
+            var component = StaticObject.EcsNode.GetComponent<SoundComponent>();
             //if (!component.Id2Clip.TryGetValue(clipType, out var audioClip))
             //{
             //    audioClip = Resources.Load<AudioClip>("Smith & Wesson M&P 40C Shot 3");
@@ -30,7 +30,7 @@ IInit<EcsNode, SoundComponent>
             //}
 
             component.Id2Source.TryGetValue(clipType, out var audioSource);
-            if (StaticUtils.SoundEditorTest)
+            if (StaticObject.SoundEditorTest)
             {
                 if (audioSource != null)
                 {

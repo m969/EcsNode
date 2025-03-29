@@ -7,5 +7,5 @@ namespace ECSGame
 	public class Actor : EcsEntity
 	{
 		public int Type { get; set; }
-	} 
+	}
 }

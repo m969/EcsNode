@@ -6,9 +6,10 @@ using System.Reflection;
 
 namespace ECS.Unity
 {
-    public static class StaticUtils
+    public static class StaticObject
     {
         public static EcsNode EcsNode { get; set; }
+        public static EcsNode PrePlayEcsNode { get; set; }
         public static bool SoundEditorTest { get; set; } = true;
     }
 }

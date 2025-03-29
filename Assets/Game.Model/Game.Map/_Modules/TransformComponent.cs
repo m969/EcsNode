@@ -24,5 +24,11 @@ namespace ECSGame
             get;
             set;
         }
+
+        public TSVector ForecastPosition
+        {
+            get;
+            set;
+        }
     }
 }

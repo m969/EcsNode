@@ -133,6 +133,72 @@ IInit<TrueGame, PlayerInputComponent>
             CheckMove(game, component);
             CheckLook(game, component);
             CheckFire(game, component);
+
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                var transComp = game.MyActor.GetComponent<TransformComponent>();
+                ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
+            }
         }
-    } 
+
+        public static void FrameUpdate(TrueGame game, PlayerInputComponent inputComp, long determineFrame, long advanceFrame)
+        {
+            if (inputComp.LookVector != Vector3.zero)
+            {
+                var input = new PlayerInput()
+                {
+                    Frame = advanceFrame,
+                    PlayerId = game.MyActor.Id,
+                    InputType = InputType.Look,
+                    InputVector = inputComp.LookVector.ToTSVector(),
+                };
+                inputComp.PlayerInputs.Add(input);
+            }
+
+            if (inputComp.MoveVector != Vector3.zero)
+            {
+                var input = new PlayerInput()
+                {
+                    Frame = advanceFrame,
+                    PlayerId = game.MyActor.Id,
+                    InputType = InputType.Move,
+                    InputVector = inputComp.MoveVector.ToTSVector(),
+                };
+                inputComp.PlayerInputs.Add(input);
+            }
+
+            //if (inputComp.FireState)
+            //{
+            //    var input = new PlayerInput()
+            //    {
+            //        PlayerId = game.MyActor.Id,
+            //        InputType = PlayerInputType.Fire,
+            //        InputVector = inputComp.FireVector.ToTSVector(),
+            //    };
+            //    TrueGameExecuteSystem.AddPlayerInput(game, input);
+            //}
+
+            var framePlayComp = game.MyActor.GetComponent<FramePlayComponent>();
+            //ConsoleLog.Debug($"PlayerInputSystem {framePlayComp.AdvanceFrameInputs.Count} {determineFrame} {advanceFrame}");
+            if (framePlayComp.AdvanceFrameInputs.TryGetValue(determineFrame, out var playerInputs))
+            {
+                if (framePlayComp.DetermineFrameInputs.ContainsKey(determineFrame) == false)
+                {
+                    framePlayComp.DetermineFrameInputs.Add(determineFrame, new List<PlayerInput>(playerInputs));
+                }
+                //framePlayComp.DetermineFrameInputs[determineFrame].Add(input);
+                //foreach (var input in playerInputs)
+                //{
+                //    ActorPlaySystem.ProcessNetworkPlayerInput(game.MyActor, input, determineFrame);
+                //}
+            }
+            foreach (var item in inputComp.PlayerInputs)
+            {
+                ActorPlaySystem.ProcessLocalPlayerInput(game.MyActor, item, advanceFrame);
+                //TrueGameExecuteSystem.AddPlayerInput(game, item);
+            }
+
+            inputComp.PlayerInputs.Clear();
+        }
+    }
 }

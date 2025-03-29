@@ -20,87 +20,57 @@ IInit<TrueGame, TrueGamePlayComponent>
         {
         }
 
-        public static IFramePlay FillFramePlay(TrueGame game, TrueGamePlayComponent component, StatePlayType playType, EcsEntity entity)
+        public static IFramePlay FillFramePlay(TrueGame game, TrueGamePlayComponent component, StatePlayType playType, EcsEntity entity, long determineFrame)
         {
             IFramePlay framePlay = null;
 
-            switch (playType)
+            if (playType == StatePlayType.Move)
             {
-                case StatePlayType.None:
-                    break;
-                case StatePlayType.Move:
-                    {
-                        var moveComp = entity.GetComponent<MoveComponent>();
-                        var transComp = entity.GetComponent<TransformComponent>();
-                        var beforePos = transComp.Position;
-                        var afterPos = transComp.Position + moveComp.TrueDirection * FP.FromFloat(moveComp.Speed * 0.1f);
-                        framePlay = new FramePlay_Move()
-                        {
-                            EntityId = entity.Id,
-                            Position = beforePos,
-                            AfterPosition = afterPos
-                        };
-                        AddFramePlay(game, component, framePlay);
-                    }
-                    break;
-                case StatePlayType.Fire:
-                    //{
-                    //    var fireComp = entity.GetComponent<FireComponent>();
-                    //    framePlay = new FramePlay_Fire()
-                    //    {
-                    //        EntityId = entity.Id,
-                    //        Direction = fireComp.TrueDirection,
-                    //    };
-                    //    AddFramePlay(game, component, framePlay);
-                    //}
-                    break;
-                default:
-                    break;
+                var moveComp = entity.GetComponent<MoveComponent>();
+                var transComp = entity.GetComponent<TransformComponent>();
+                var beforePos = transComp.Position;
+                var afterPos = transComp.Position + moveComp.TrueDirection * FP.FromFloat(moveComp.Speed * 0.1f);
+                framePlay = new FramePlay_Move()
+                {
+                    EntityId = entity.Id,
+                    Position = beforePos,
+                    AfterPosition = afterPos
+                };
+            }
+
+            if (framePlay != null)
+            {
+                component.FramePlays[determineFrame].Add(framePlay);
             }
 
             return framePlay;
         }
 
-        public static void AddFramePlay(TrueGame game, TrueGamePlayComponent component, IFramePlay framePlay)
-        {
-            var frame = game.CurrentFrame;
-            component.FramePlays[frame].Add(framePlay);
-        }
-
         /// <summary>
         /// 根据游戏状态创建运行帧
         /// </summary>
-        public static void CreateFramePlays(TrueGame game, TrueGamePlayComponent component)
+        public static void CreateFramePlays(TrueGame game, TrueGamePlayComponent component, long determineFrame)
         {
             var actors = game.Id2Children.Values;
             foreach (var entity in actors)
             {
+                if (entity is Actor) continue;
                 if (entity.GetComponent<MoveComponent>() is { } moveComponent)
                 {
                     if (moveComponent.TrueDirection != TSVector.zero)
                     {
-                        FillFramePlay(game, component, StatePlayType.Move, entity);
+                        FillFramePlay(game, component, StatePlayType.Move, entity, determineFrame);
                     }
                 }
-
-                //if (entity.GetComponent<FireComponent>() is { } fireComponent)
-                //{
-                //    if (fireComponent.FireState)
-                //    {
-                //        FillFramePlay(game, component, StatePlayType.Fire, entity);
-                //    }
-                //}
             }
         }
 
         /// <summary>
         /// 播放运行帧序列改变游戏状态
         /// </summary>
-        public static void PalyFramePlays(TrueGame game, TrueGamePlayComponent component)
+        public static void PlayFramePlays(TrueGame game, TrueGamePlayComponent component, long determineFrame)
         {
-            var frame = game.CurrentFrame;
-
-            foreach (var framePlay in component.FramePlays[frame])
+            foreach (var framePlay in component.FramePlays[determineFrame])
             {
                 var actor = game.GetChild<EcsEntity>(framePlay.EntityId);
 
@@ -108,25 +78,18 @@ IInit<TrueGame, TrueGamePlayComponent>
                 {
                     MoveSystem.SetMovePosition(actor, movePlay.AfterPosition);
                 }
-
-                //if (framePlay is FramePlay_Fire firePlay)
-                //{
-                //    FireSystem.Shoot(game, (Actor)actor, firePlay.Direction);
-                //}
             }
         }
 
-        public static void FrameUpdate(TrueGame game, TrueGamePlayComponent component)
+        public static void FrameUpdate(TrueGame game, TrueGamePlayComponent component, long determineFrame)
         {
-            //ConsoleLog.Log($"TrueGamePlaySystem Update");
-            var frame = game.CurrentFrame;
-            if (!component.FramePlays.ContainsKey(frame))
+            if (!component.FramePlays.ContainsKey(determineFrame))
             {
-                component.FramePlays[frame] = new List<IFramePlay>();
+                component.FramePlays[determineFrame] = new List<IFramePlay>();
             }
 
-            CreateFramePlays(game, component);
-            PalyFramePlays(game, component);
+            CreateFramePlays(game, component, determineFrame);
+            PlayFramePlays(game, component, determineFrame);
         }
     }
 }

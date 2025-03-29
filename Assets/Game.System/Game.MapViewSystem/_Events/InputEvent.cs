@@ -12,17 +12,26 @@ namespace ECSGame
         protected override async ETTask Run(TrueGame game, InputType inputType, Vector3 direction)
         {
             var component = game.GetComponent<PlayerInputComponent>();
+            var myActor = game.MyActor;
+            var advanceFrame = game.DetermineFrame + TrueGame.ForecastFrame;
 
             if (inputType == InputType.Fire)
             {
                 component.FireVector = direction;
                 var input = new PlayerInput()
                 {
-                    PlayerId = game.MyActor.Id,
+                    Frame = advanceFrame,
+                    PlayerId = myActor.Id,
                     InputType = InputType.Fire,
                     InputVector = direction.ToTSVector(),
                 };
-                TrueGameExecuteSystem.AddPlayerInput(game, input);
+                //TrueGameExecuteSystem.AddPlayerInput(game, input);
+
+                //var execute = game.GetComponent<TrueGameExecuteComponent>();
+                //var frame = game.CurrentFrame;
+                //input.Frame = frame;
+                //var actor = game.GetChild<Actor>(input.PlayerId);
+                ActorPlaySystem.ProcessLocalPlayerInput(myActor, input, advanceFrame);
             }
         }
     }

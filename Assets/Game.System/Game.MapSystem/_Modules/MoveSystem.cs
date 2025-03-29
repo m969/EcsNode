@@ -27,11 +27,54 @@ IAwake<EcsEntity, MoveComponent>
             moveComp.TrueDirection = target;
         }
 
+        public static FramePlay_Move MoveFrame(EcsEntity entity, TSVector target)
+        {
+            var moveComp = entity.GetComponent<MoveComponent>();
+            var transComp = entity.GetComponent<TransformComponent>();
+            var beforePos = transComp.Position;
+            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * 0.1f);
+            var framePlay = new FramePlay_Move()
+            {
+                EntityId = entity.Id,
+                Position = beforePos,
+                AfterPosition = afterPos
+            };
+            return framePlay;
+        }
+
+        public static FramePlay_Move MoveForecastFrame(EcsEntity entity, TSVector target)
+        {
+            var moveComp = entity.GetComponent<MoveComponent>();
+            var transComp = entity.GetComponent<TransformComponent>();
+            var beforePos = transComp.ForecastPosition;
+            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * 0.1f);
+            var framePlay = new FramePlay_Move()
+            {
+                EntityId = entity.Id,
+                Position = beforePos,
+                AfterPosition = afterPos
+            };
+            return framePlay;
+        }
+
         public static void SetMovePosition(EcsEntity actor, TSVector position)
         {
             var transComp = actor.GetComponent<TransformComponent>();
             var beforePos = transComp.Position;
             transComp.Position = position;
+
+            //EventSystem.Dispatch(new EntityUpdateCmd()
+            //{
+            //    Entity = actor,
+            //    ChangeComponent = actor.GetComponent<MoveComponent>(),
+            //});
+        }
+
+        public static void SetForecastPosition(EcsEntity actor, TSVector position)
+        {
+            var transComp = actor.GetComponent<TransformComponent>();
+            var beforePos = transComp.ForecastPosition;
+            transComp.ForecastPosition = position;
 
             EventSystem.Dispatch(new EntityUpdateCmd()
             {

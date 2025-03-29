@@ -42,15 +42,25 @@ IDestroy<EcsEntity, EntityViewComponent>
 
         public static void Update(EcsEntity entity, EntityViewComponent component)
         {
-            if (component.ViewObj == null)
+            var viewObj = component.ViewObj;
+            if (viewObj == null)
             {
                 return;
             }
 
-            var viewObj = component.ViewObj;
-            var newPos = entity.GetComponent<TransformComponent>().Position.ToVector();
-            //viewObj.transform.position = newPos;
-            viewObj.transform.position = Vector3.Lerp(viewObj.transform.position, newPos, 0.5f);
+            if (entity is Actor)
+            {
+                var newPos = entity.GetComponent<TransformComponent>().ForecastPosition.ToVector();
+                viewObj.transform.position = Vector3.Lerp(viewObj.transform.position, newPos, 0.5f);
+
+                var newPos2 = entity.GetComponent<TransformComponent>().Position.ToVector();
+                viewObj.transform.GetChild(1).position = Vector3.Lerp(viewObj.transform.GetChild(1).position, newPos2, 0.5f);
+            }
+            else
+            {
+                var newPos = entity.GetComponent<TransformComponent>().Position.ToVector();
+                viewObj.transform.position = Vector3.Lerp(viewObj.transform.position, newPos, 0.5f);
+            }
         }
 
         public static void SetScale(EcsEntity entity, TSVector scale)

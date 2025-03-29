@@ -58,8 +58,10 @@ namespace ECSGame
         // 游戏逻辑帧率（每秒帧数）
         public const int FPS = 20;
 
+        public const int ForecastFrame = FPS / 10 + 1;
+
         // 当前逻辑帧编号
-        public long CurrentFrame;
+        public long DetermineFrame;
 
         public long StartFrameTime;
 

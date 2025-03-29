@@ -9,9 +9,9 @@ namespace ECSGame
 {
     public class TrueGameAISystem
     {
-        public static void FrameUpdate(TrueGame game)
+        public static void FrameUpdate(TrueGame game, long determineFrame)
         {
-            var frame = game.CurrentFrame;
+            var frame = determineFrame;
 
             var allEntities = game.Id2Children.Values.ToArray();
 

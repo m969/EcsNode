@@ -12,6 +12,14 @@ namespace ECS
 
     public class EcsNode : EcsEntity
     {
+        private long IdIndex;
+        private int NodeType;
+
+        public long NewId()
+        {
+            return ++IdIndex;
+        }
+
         public Dictionary<long, EcsEntity> AllEntities { get; set; } = new();
         public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; }= new();
 

@@ -27,57 +27,21 @@ IUpdate<TrueGame>
             {
                 PlayerInputSystem.Update(game, inputComp);
 
-                // 帧播放向前推进一帧，把收集到的输入填入最新的一帧游戏中
-                if (game.CurrentInputFrame != game.CurrentFrame)
-                {
-                    game.CurrentInputFrame = game.CurrentFrame;
+                var myActor = game.MyActor;
+                var determineFrame = game.DetermineFrame;
+                var advanceFrame = determineFrame + TrueGame.ForecastFrame;
 
-                    FrameUpdate(game, inputComp);
+                // 帧播放向前推进一帧，把收集到的输入填入最新的一帧中
+                if (myActor.GetComponent<FramePlayComponent>().CurrentInputFrame != advanceFrame)
+                {
+                    myActor.GetComponent<FramePlayComponent>().CurrentInputFrame = advanceFrame;
+                    PlayerInputSystem.FrameUpdate(game, inputComp, determineFrame, advanceFrame);
                 }
             }
         }
 
-        public void FrameUpdate(TrueGame game, PlayerInputComponent inputComp)
-        {
-            if (inputComp.LookVector != Vector3.zero)
-            {
-                var input = new PlayerInput()
-                {
-                    PlayerId = game.MyActor.Id,
-                    InputType = InputType.Look,
-                    InputVector = inputComp.LookVector.ToTSVector(),
-                };
-                TrueGameExecuteSystem.AddPlayerInput(game, input);
-            }
-
-            if (inputComp.MoveVector != Vector3.zero)
-            {
-                var input = new PlayerInput()
-                {
-                    PlayerId = game.MyActor.Id,
-                    InputType = InputType.Move,
-                    InputVector = inputComp.MoveVector.ToTSVector(),
-                };
-                TrueGameExecuteSystem.AddPlayerInput(game, input);
-            }
-
-            //if (inputComp.FireState)
-            //{
-            //    var input = new PlayerInput()
-            //    {
-            //        PlayerId = game.MyActor.Id,
-            //        InputType = PlayerInputType.Fire,
-            //        InputVector = inputComp.FireVector.ToTSVector(),
-            //    };
-            //    TrueGameExecuteSystem.AddPlayerInput(game, input);
-            //}
-
-            foreach (var item in inputComp.PlayerInputs)
-            {
-                TrueGameExecuteSystem.AddPlayerInput(game, item);
-            }
-
-            inputComp.PlayerInputs.Clear();
-        }
+        //public static void FrameUpdate(TrueGame game, PlayerInputComponent inputComp)
+        //{
+        //}
     }
 }

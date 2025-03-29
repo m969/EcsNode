@@ -19,9 +19,9 @@ IInit<TrueGame, TrueGameCollisionComponent>
         {
         }
 
-        public static void FrameUpdate(TrueGame game, TrueGameCollisionComponent component)
+        public static void FrameUpdate(TrueGame game, TrueGameCollisionComponent component, long determineFrame)
         {
-            var frame = game.CurrentFrame;
+            var frame = determineFrame;
 
             var allEntities = game.Id2Children.Values.ToArray();
 

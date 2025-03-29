@@ -27,9 +27,9 @@ IUpdate<Actor>
             //}
         }
 
-        public static Actor CreateActor(TrueGame game)
+        public static Actor Create(TrueGame game, long actorId)
         {
-            var actor = game.AddChild<Actor>(beforeAwake: x => x.Type = 1);
+            var actor = game.AddChild<Actor>(actorId, beforeAwake: x => x.Type = 1);
             actor.AddComponent<TransformComponent>();
             actor.AddComponent<CollisionComponent>();
             actor.AddComponent<MoveComponent>();

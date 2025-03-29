@@ -7,13 +7,9 @@ using System.Threading;
 
 namespace ECSGame
 {
-	public class TrueGamePlayComponent : EcsComponent
+	public class TrueGamePlayForecastComponent : EcsComponent
 	{
-        // 本地播放运行帧
+        // 预测播放运行帧
         public readonly Dictionary<long, List<IFramePlay>> FramePlays = new();
-
-        // 本地输入先行表现播放
-
-        // 服务器权威播放运行帧
     }
 }

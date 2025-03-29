@@ -16,4 +16,9 @@ namespace ECS
     {
         public EcsEntity Entity { get; set; }
     }
+
+    public class EcsComponent<T> : EcsComponent where T : EcsEntity
+    {
+        public new T Entity { get; set; }
+    }
 }

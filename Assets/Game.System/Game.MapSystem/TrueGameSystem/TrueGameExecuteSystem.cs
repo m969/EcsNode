@@ -21,58 +21,43 @@ IInit<TrueGame, TrueGameExecuteComponent>
         // 添加玩家输入
         public static void AddPlayerInput(TrueGame game, PlayerInput input)
         {
-            var execute = game.GetComponent<TrueGameExecuteComponent>();
-            var frame = game.CurrentFrame;
-            if (!execute.InputQueue.ContainsKey(frame))
-            {
-                execute.InputQueue[frame] = new List<PlayerInput>();
-            }
-            input.Frame = frame;
-            execute.InputQueue[frame].Add(input);
+            //var execute = game.GetComponent<TrueGameExecuteComponent>();
+            //var frame = game.DetermineFrame;
+            //input.Frame = frame;
+            //var actor = game.GetChild<Actor>(input.PlayerId);
+            //ActorPlaySystem.AddPlayerInput(actor, input);
+
+            //if (!execute.InputQueue.ContainsKey(frame))
+            //{
+            //    execute.InputQueue[frame] = new List<PlayerInput>();
+            //}
+            //execute.InputQueue[frame].Add(input);
         }
 
-        public static void FrameUpdate(TrueGame game, TrueGameExecuteComponent component)
+        public static void FrameUpdate(TrueGame game, TrueGameExecuteComponent component, long determineFrame)
         {
-            var frame = game.CurrentFrame;
+            //var frame = game.CurrentFrame;
 
-            // 取出当前帧所有输入
-            component.InputQueue.TryGetValue(frame, out var inputs);
-            component.InputQueue.Remove(frame);
+            //// 取出当前帧所有输入
+            //component.InputQueue.TryGetValue(frame, out var inputs);
+            //component.InputQueue.Remove(frame);
 
-            // 执行当前帧玩家所有输入
-            if (inputs != null)
-            {
-                foreach (var input in inputs)
-                {
-                    var playerId = input.PlayerId;
-                    var actor = game.GetChild<Actor>(playerId);
+            //// 执行当前帧玩家所有输入
+            //if (inputs != null)
+            //{
+            //    foreach (var input in inputs)
+            //    {
+            //        var playerId = input.PlayerId;
+            //        var actor = game.GetChild<Actor>(playerId);
 
-                    // 根据输入改变游戏状态
-                    switch (input.InputType)
-                    {
-                        case InputType.None:
-                            break;
-                        case InputType.Move:
-                            MoveSystem.ChangeMove(actor, input.InputVector);
-                            break;
-                        case InputType.StopMove:
-                            MoveSystem.ChangeMove(actor, TSVector.zero);
-                            break;
-                        case InputType.Look:
-                            TransformSystem.ChangeForward(actor, input.InputVector);
-                            break;
-                        case InputType.Fire:
-                            //FireSystem.ChangeFire(actor, input.InputVector);
-                            FireSystem.FireOnce(actor, input.InputVector);
-                            break;
-                        case InputType.StopFire:
-                            //FireSystem.StopFire(actor);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
+            //        var inputType = input.InputType;
+            //        // 根据输入改变游戏状态
+            //        if (inputType == InputType.Move) MoveSystem.ChangeMove(actor, input.InputVector);
+            //        if (inputType == InputType.StopMove) MoveSystem.ChangeMove(actor, TSVector.zero);
+            //        if (inputType == InputType.Look) TransformSystem.ChangeForward(actor, input.InputVector);
+            //        if (inputType == InputType.Fire) FireSystem.FireOnce(actor, input.InputVector);
+            //    }
+            //}
         }
     }
 }
