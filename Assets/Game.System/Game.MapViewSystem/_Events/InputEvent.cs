@@ -13,7 +13,7 @@ namespace ECSGame
         {
             var component = game.GetComponent<PlayerInputComponent>();
             var myActor = game.MyActor;
-            var advanceFrame = game.DetermineFrame + TrueGame.ForecastFrame;
+            var advanceFrame = game.CurrentFrame + TrueGame.ForecastFrame;
 
             if (inputType == InputType.Fire)
             {

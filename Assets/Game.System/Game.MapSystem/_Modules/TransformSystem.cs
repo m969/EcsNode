@@ -18,6 +18,11 @@ namespace ECSGame
             return entity.GetComponent<TransformComponent>().Position;
         }
 
+        public static TSVector GetForecastPosition(EcsEntity entity)
+        {
+            return entity.GetComponent<TransformComponent>().ForecastPosition;
+        }
+
         public static void ChangePosition(EcsEntity actor, TSVector target)
         {
             actor.GetComponent<TransformComponent>().Position = target;

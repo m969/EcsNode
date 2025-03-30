@@ -38,6 +38,32 @@ namespace ECSGame
         public long EntityId { get; set; }
         public TSVector Position;
         public TSVector AfterPosition;
+
+        public override bool Equals(object obj)
+        {
+            var movePlay = (FramePlay_Move)obj;
+            //ConsoleLog.Debug($"FramePlay_Move Equals 1 {Position} {AfterPosition}");
+            //ConsoleLog.Debug($"FramePlay_Move Equals 2 {movePlay.Position} {movePlay.AfterPosition}");
+            return movePlay.EntityId == EntityId && movePlay.Position.Equals(Position) && movePlay.AfterPosition.Equals(AfterPosition);
+        }
+    }
+
+    public struct FramePlay_MoveStop : IFramePlay
+    {
+        public long EntityId { get; set; }
+        public TSVector Position;
+        public TSVector AfterPosition;
+
+        public override bool Equals(object obj)
+        {
+            var movePlay = (FramePlay_MoveStop)obj;
+            return movePlay.EntityId == EntityId && movePlay.Position.Equals(Position) && movePlay.AfterPosition.Equals(AfterPosition);
+        }
+    }
+
+    public struct FramePlay_StopMove : IFramePlay
+    {
+        public long EntityId { get; set; }
     }
 
     public struct FramePlay_Fire : IFramePlay
@@ -61,7 +87,7 @@ namespace ECSGame
         public const int ForecastFrame = FPS / 10 + 1;
 
         // 当前逻辑帧编号
-        public long DetermineFrame;
+        public long CurrentFrame;
 
         public long StartFrameTime;
 

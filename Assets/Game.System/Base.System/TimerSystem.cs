@@ -58,7 +58,7 @@ IAwake<EcsNode, TimerComponent>
 
             if (timerComp.FrameTimers.ContainsKey(timerType))
             {
-                var result = timerComp.FrameTimers[timerType].EndFrame <= game.DetermineFrame;
+                var result = timerComp.FrameTimers[timerType].EndFrame <= game.CurrentFrame;
                 if (result)
                 {
                     timerComp.FrameTimers.Remove(timerType);
@@ -69,7 +69,7 @@ IAwake<EcsNode, TimerComponent>
             {
                 timerComp.FrameTimers.Add(timerType, new FrameTimer()
                 {
-                    EndFrame = game.DetermineFrame + frameCount,
+                    EndFrame = game.CurrentFrame + frameCount,
                     TimerFrame = frameCount,
                     Repeat = false
                 });
@@ -92,12 +92,12 @@ IAwake<EcsNode, TimerComponent>
             if (timerComp.FrameTimers.ContainsKey(timerType))
             {
                 var frameTimer = timerComp.FrameTimers[timerType];
-                var result = frameTimer.EndFrame <= game.DetermineFrame;
+                var result = frameTimer.EndFrame <= game.CurrentFrame;
                 if (result)
                 {
                     if (frameTimer.Repeat)
                     {
-                        frameTimer.EndFrame = game.DetermineFrame + frameCount;
+                        frameTimer.EndFrame = game.CurrentFrame + frameCount;
                     }
                     return TimerProgress.Ended;
                 }
@@ -106,7 +106,7 @@ IAwake<EcsNode, TimerComponent>
             {
                 timerComp.FrameTimers.Add(timerType, new FrameTimer()
                 {
-                    EndFrame = game.DetermineFrame + frameCount,
+                    EndFrame = game.CurrentFrame + frameCount,
                     TimerFrame = frameCount,
                     Repeat = true
                 });

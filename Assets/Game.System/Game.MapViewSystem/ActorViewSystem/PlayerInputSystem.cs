@@ -134,10 +134,16 @@ IInit<TrueGame, PlayerInputComponent>
             CheckLook(game, component);
             CheckFire(game, component);
 
-            if (Input.GetKeyUp(KeyCode.Escape))
+            if (Input.GetKeyUp(KeyCode.Space))
             {
-                var transComp = game.MyActor.GetComponent<TransformComponent>();
-                ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
+                foreach (var item in game.Id2Children.Values)
+                {
+                    if (item != game.MyActor)
+                    {
+                        var transComp = item.GetComponent<TransformComponent>();
+                        ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
+                    }
+                }
             }
         }
 

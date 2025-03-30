@@ -24,5 +24,8 @@ namespace ECSGame
 		public Dictionary<long, AIActionQueue> AIActionQueues { get; set; } = new();
 		public Dictionary<long, Queue<AINode>> NodeMap { get; set; } = new();
 		public Dictionary<long, AINode> RunningNodes { get; set; } = new();
+
+		public TSVector MoveDirection { get; set; }
+		public long DetermineFrame { get; set; }
     }
 }

@@ -68,17 +68,22 @@ IAwake<EcsEntity, AIComponent>
                 Id = 1,
                 AIBehaviour = AIBehaviourType.Patrol,
                 Entity = entity,
-                AIAction = ReloadSystem.CreateInstance(entity.EcsNode, typeof(MoveAIAction).FullName) as IAIAction
+                AIAction = ReloadSystem.CreateInstance(entity.EcsNode, typeof(MoveInputAIAction).FullName) as IAIAction
             };
 
             StartNode(aiNode);
         }
 
-        public static void FrameUpdate(EcsEntity entity, AIComponent component)
+        public static void FrameUpdate(EcsEntity entity, AIComponent component, long determineFrame)
         {
             //ConsoleLog.Debug($"AISystem FrameUpdate {component.NodeMap.Count}");
+            component.DetermineFrame = determineFrame;
             foreach (var queue in component.NodeMap.Values)
             {
+                if (queue.Count == 0)
+                {
+                    continue;
+                }
                 var node = queue.Peek();
                 //ConsoleLog.Debug($"{node.AIAction.GetType().Name}");
                 node.AIAction.Run(node);
@@ -116,24 +121,38 @@ IAwake<EcsEntity, AIComponent>
         {
             var component = aiNode.Entity.GetComponent<AIComponent>();
             var queue = component.NodeMap[aiNode.Id];
-            if (aiNode.AIAction is WaitAIAction)
+
+            if (aiNode.AIAction is MoveInputAIAction)
             {
-                if (aiNode.PreNode != null)
-                {
-                    if (aiNode.PreNode.AIAction is IdleAIAction)
-                    {
-                        aiNode.NextAction<MoveAIAction>().StartNode();
-                    }
-                    if (aiNode.PreNode.AIAction is MoveAIAction)
-                    {
-                        aiNode.NextAction<IdleAIAction>().StartNode();
-                    }
-                }
+                aiNode.NextAction<StopMoveInputAIAction>().StartNode();
             }
-            if (aiNode.AIAction is IdleAIAction || aiNode.AIAction is MoveAIAction)
+            if (aiNode.AIAction is StopMoveInputAIAction)
             {
                 aiNode.NextAction<WaitAIAction>().StartNode();
             }
+            if (aiNode.AIAction is WaitAIAction)
+            {
+                aiNode.NextAction<MoveInputAIAction>().StartNode();
+            }
+
+            //if (aiNode.AIAction is WaitAIAction)
+            //{
+            //    if (aiNode.PreNode != null)
+            //    {
+            //        if (aiNode.PreNode.AIAction is StopMoveAIAction)
+            //        {
+            //            aiNode.NextAction<MoveAIAction>().StartNode();
+            //        }
+            //        if (aiNode.PreNode.AIAction is MoveAIAction)
+            //        {
+            //            aiNode.NextAction<StopMoveAIAction>().StartNode();
+            //        }
+            //    }
+            //}
+            //if (aiNode.AIAction is StopMoveAIAction || aiNode.AIAction is MoveAIAction)
+            //{
+            //    aiNode.NextAction<WaitAIAction>().StartNode();
+            //}
             queue.Dequeue();
         }
 

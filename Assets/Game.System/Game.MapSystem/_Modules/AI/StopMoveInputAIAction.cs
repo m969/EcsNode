@@ -7,13 +7,17 @@ using TrueSync;
 
 namespace ECSGame
 {
-    public class IdleAIAction : IAIAction
+    public class StopMoveInputAIAction : IAIAction
     {
         public void Start(AINode aiNode)
         {
             //ConsoleLog.Debug("IdleAIAction Start");
             var game = aiNode.Entity.GetParent<TrueGame>();
-            TrueGameExecuteSystem.AddPlayerInput(game, new PlayerInput() { InputType = InputType.StopMove, PlayerId = aiNode.Entity.Id });
+            //TrueGameExecuteSystem.AddPlayerInput(game, );
+            var actor = (Actor)aiNode.Entity;
+            var component = actor.GetComponent<AIComponent>();
+            var input = new PlayerInput() { InputType = InputType.StopMove, PlayerId = aiNode.Entity.Id };
+            ActorPlaySystem.ProcessNetworkPlayerInput(actor, input, component.DetermineFrame);
             AISystem.FinishAndNext(aiNode);
         }
 

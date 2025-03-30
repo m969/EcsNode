@@ -59,10 +59,10 @@ namespace ECSGame
                 actor.Init();
 
                 var actor1 = ActorSystem.Create(game, ecsNode.NewId());
-                actor1.AddComponent<AIComponent>();
                 actor1.AddComponent<FramePlayComponent>();
                 actor1.AddComponent<EntityViewComponent>();
                 actor1.GetComponent<CollisionComponent>().Layer = 2;
+                actor1.AddComponent<AIComponent>();
                 actor1.Init();
 
                 game.MyActor = actor;

@@ -28,7 +28,7 @@ IUpdate<TrueGame>
                 PlayerInputSystem.Update(game, inputComp);
 
                 var myActor = game.MyActor;
-                var determineFrame = game.DetermineFrame;
+                var determineFrame = game.CurrentFrame;
                 var advanceFrame = determineFrame + TrueGame.ForecastFrame;
 
                 // 帧播放向前推进一帧，把收集到的输入填入最新的一帧中

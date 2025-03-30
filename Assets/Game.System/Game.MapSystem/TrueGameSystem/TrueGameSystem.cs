@@ -36,16 +36,16 @@ IUpdate<TrueGame>
         public static void FrameSeal(TrueGame game)
         {
             // 确定帧推进
-            game.DetermineFrame++;
+            game.CurrentFrame++;
         }
 
         // 帧同步核心逻辑
         public void Update(TrueGame game)
         {
-            var determineFrame = game.DetermineFrame;
+            var currentFrame = game.CurrentFrame;
 
             // 计算下一帧理论执行时间
-            long nextFrameTime = determineFrame * game.FrameInterval + game.StartFrameTime;
+            long nextFrameTime = currentFrame * game.FrameInterval + game.StartFrameTime;
 
             // 等待到下一帧时间
             while ((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) < nextFrameTime)
@@ -53,6 +53,7 @@ IUpdate<TrueGame>
                 return;
             }
 
+            var determineFrame = currentFrame;
             FrameSeal(game);
 
             // 处理确定帧逻辑
@@ -63,8 +64,10 @@ IUpdate<TrueGame>
                 TrueGameCollisionSystem.FrameUpdate(game, component1, determineFrame);
             }
 
-            // AI逻辑处理
-            TrueGameAISystem.FrameUpdate(game, determineFrame);
+            {
+                // AI逻辑处理
+                TrueGameAISystem.FrameUpdate(game, determineFrame);
+            }
 
             if (game.GetComponent<TrueGameExecuteComponent>() is { } component2)
             {
