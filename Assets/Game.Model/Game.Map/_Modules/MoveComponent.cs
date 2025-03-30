@@ -10,7 +10,8 @@ namespace ECSGame
 		public int Speed { get; set; }
 		public int StopSpeed { get; set; }
 		public int LeftStopStep { get; set; }
-		public TSVector TrueDirection { get; set; }
-		public bool Moving { get; set; }
+		public int ForecastLeftStopStep { get; set; }
+        public TSVector TrueDirection { get; set; }
+		//public bool Moving { get; set; }
     } 
 }

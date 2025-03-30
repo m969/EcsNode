@@ -73,6 +73,21 @@ IAwake<EcsEntity, MoveComponent>
             return framePlay;
         }
 
+        public static FramePlay_MoveStop MoveForecastStopFrame(EcsEntity entity, TSVector target)
+        {
+            var moveComp = entity.GetComponent<MoveComponent>();
+            var transComp = entity.GetComponent<TransformComponent>();
+            var beforePos = transComp.ForecastPosition;
+            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * 0.1f);
+            var framePlay = new FramePlay_MoveStop()
+            {
+                EntityId = entity.Id,
+                Position = beforePos,
+                AfterPosition = afterPos
+            };
+            return framePlay;
+        }
+
         public static FramePlay_Move MoveForecastFrame(EcsEntity entity, TSVector target)
         {
             var moveComp = entity.GetComponent<MoveComponent>();
@@ -101,7 +116,7 @@ IAwake<EcsEntity, MoveComponent>
             //});
         }
 
-        public static void SetForecastPosition(EcsEntity actor, TSVector position)
+        public static void SetMoveForecastPosition(EcsEntity actor, TSVector position)
         {
             var transComp = actor.GetComponent<TransformComponent>();
             var beforePos = transComp.ForecastPosition;

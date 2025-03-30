@@ -89,12 +89,12 @@ IAwake<Actor, FramePlayComponent>
             {
                 if (framePlay is FramePlay_Move movePlay)
                 {
-                    moveComp.Moving = true;
+                    //moveComp.Moving = true;
                     MoveSystem.SetMovePosition(actor, movePlay.AfterPosition);
                 }
                 if (framePlay is FramePlay_StopMove stopMovePlay)
                 {
-                    moveComp.Moving = false;
+                    //moveComp.Moving = false;
                     if (moveComp.LeftStopStep == 0)
                     {
                         moveComp.LeftStopStep = moveComp.StopSpeed;
@@ -232,6 +232,7 @@ IAwake<Actor, FramePlayComponent>
         public static void PredictionFramePlays(Actor actor, long frame)
         {
             var component = actor.GetComponent<FramePlayComponent>();
+            var moveComp = actor.GetComponent<MoveComponent>();
             component.PredictionFramePlays.TryGetValue(frame, out var framePlays);
             if (framePlays != null)
             {
@@ -239,7 +240,19 @@ IAwake<Actor, FramePlayComponent>
                 {
                     if (framePlay is FramePlay_Move movePlay)
                     {
-                        MoveSystem.SetForecastPosition(actor, movePlay.AfterPosition);
+                        MoveSystem.SetMoveForecastPosition(actor, movePlay.AfterPosition);
+                    }
+                    if (framePlay is FramePlay_StopMove stopMovePlay)
+                    {
+                        if (moveComp.ForecastLeftStopStep == 0)
+                        {
+                            moveComp.ForecastLeftStopStep = moveComp.StopSpeed;
+                        }
+                    }
+                    if (framePlay is FramePlay_MoveStop moveStopPlay)
+                    {
+                        moveComp.ForecastLeftStopStep--;
+                        MoveSystem.SetMoveForecastPosition(actor, moveStopPlay.AfterPosition);
                     }
                 }
             }
@@ -249,6 +262,7 @@ IAwake<Actor, FramePlayComponent>
         {
             var game = actor.GetParent<TrueGame>();
             var component = actor.GetComponent<FramePlayComponent>();
+            var moveComp = actor.GetComponent<MoveComponent>();
             var predictFrame = determineFrame + TrueGame.ForecastFrame;
             var alreadyPredictFrame = component.AlreadyPredictFrame;
             var nextPredict = alreadyPredictFrame + 1;
@@ -258,53 +272,46 @@ IAwake<Actor, FramePlayComponent>
             {
                 var nowPredict = i;
                 component.AlreadyPredictFrame = nowPredict;
+
                 if (!component.PredictionFramePlays.ContainsKey(nowPredict))
                 {
                     component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
+                }
+                var playList = component.PredictionFramePlays[nowPredict];
 
-                    // 取出先行帧输入
-                    //component.AdvanceFrameInputs.TryGetValue(nowPredict, out var inputs);
-                    //component.AdvanceFrameInputs.Remove(nowPredict);
+                IFramePlay framePlay = null;
 
-                    //if (inputs != null)
-                    //{
-                    //    lastInputs = inputs;
-                    //}
-                    //else
-                    //{
-                    //    inputs = lastInputs;
-                    //}
-
-                    IFramePlay framePlay = null;
-
-                    // 执行先行帧输入
-                    if (lastInputs != null)
+                // 执行先行帧输入
+                if (lastInputs != null)
+                {
+                    foreach (var input in lastInputs)
                     {
-                        foreach (var input in lastInputs)
+                        var inputType = input.InputType;
+                        // 根据输入立即创建预测运行帧
+                        if (inputType == InputType.Move)
                         {
-                            var inputType = input.InputType;
-                            // 根据输入立即创建预测运行帧
-                            if (inputType == InputType.Move)
-                            {
-                                framePlay = MoveSystem.MoveForecastFrame(actor, input.InputVector);
-                                var movePlay = (FramePlay_Move)framePlay;
-                                //ConsoleLog.Debug($"{determineFrame} {nowPredict} Move {input.InputVector} {movePlay.AfterPosition}");
-                            }
+                            framePlay = MoveSystem.MoveForecastFrame(actor, input.InputVector);
+                            playList.Add(framePlay);
+                            //var movePlay = (FramePlay_Move)framePlay;
+                            //ConsoleLog.Debug($"{determineFrame} {nowPredict} Move {input.InputVector} {movePlay.AfterPosition}");
+                        }
+                        if (inputType == InputType.StopMove)
+                        {
+                            framePlay = MoveSystem.StopMoveFrame(actor);
+                            playList.Add(framePlay);
+                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
+                            playList.Add(framePlay);
                         }
                     }
-
-                    if (!component.PredictionFramePlays.ContainsKey(nowPredict))
-                    {
-                        component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
-                    }
-
-                    if (framePlay != null)
-                    {
-                        component.PredictionFramePlays[nowPredict].Add(framePlay);
-                    }
-
-                    PredictionFramePlays(actor, nowPredict);
                 }
+
+                if (moveComp.ForecastLeftStopStep > 0)
+                {
+                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
+                    playList.Add(framePlay);
+                }
+
+                PredictionFramePlays(actor, nowPredict);
             }
         }
 
