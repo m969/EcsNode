@@ -1,11 +1,11 @@
 ﻿using ECS;
-using ECS.Unity;
+using ECSUnity;
 using ET;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ECS
+namespace ECSUnity
 {
     public class SoundType
     {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace ECS.Unity
+namespace ECSUnity
 {
     public class SoundComponent : EcsComponent
     {

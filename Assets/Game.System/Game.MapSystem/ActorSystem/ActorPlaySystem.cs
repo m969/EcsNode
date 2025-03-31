@@ -154,8 +154,8 @@ IAwake<Actor, FramePlayComponent>
                         playList.Add(framePlay);
                     }
                     //if (inputType == InputType.StopMove) MoveSystem.ChangeMove(actor, TSVector.zero);
-                    //if (inputType == InputType.Look) TransformSystem.ChangeForward(actor, input.InputVector);
-                    //if (inputType == InputType.Fire) FireSystem.FireOnce(actor, input.InputVector);
+                    if (inputType == InputType.Look) TransformSystem.ChangeForward(actor, input.InputVector);
+                    if (inputType == InputType.Fire) FireSystem.FireOnce(actor, input.InputVector);
                 }
             }
 
@@ -319,6 +319,7 @@ IAwake<Actor, FramePlayComponent>
         {
             var game = actor.GetParent<TrueGame>();
             var component = actor.GetComponent<FramePlayComponent>();
+            var moveComp = actor.GetComponent<MoveComponent>();
             var advanceFrame = determineFrame + TrueGame.ForecastFrame;
             var alreadyPredictFrame = component.AlreadyPredictFrame;
             var nextPredict = alreadyPredictFrame + 1;
@@ -335,16 +336,12 @@ IAwake<Actor, FramePlayComponent>
 
                     // 取出先行帧输入
                     component.AdvanceFrameInputs.TryGetValue(nowPredict, out var inputs);
-                    //component.AdvanceFrameInputs.Remove(nowPredict);
 
-                    //if (inputs != null)
-                    //{
-                    //    lastInputs = inputs;
-                    //}
-                    //else
-                    //{
-                    //    inputs = lastInputs;
-                    //}
+                    if (!component.PredictionFramePlays.ContainsKey(nowPredict))
+                    {
+                        component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
+                    }
+                    var playList = component.PredictionFramePlays[nowPredict];
 
                     IFramePlay framePlay = null;
 
@@ -358,20 +355,24 @@ IAwake<Actor, FramePlayComponent>
                             if (inputType == InputType.Move)
                             {
                                 framePlay = MoveSystem.MoveForecastFrame(actor, input.InputVector);
-                                var movePlay = (FramePlay_Move)framePlay;
+                                playList.Add(framePlay);
+                                //var movePlay = (FramePlay_Move)framePlay;
                                 //ConsoleLog.Debug($"LocalAdvanceCreate {nowPredict} Move {input.InputVector} {movePlay.AfterPosition}");
+                            }
+                            if (inputType == InputType.StopMove)
+                            {
+                                framePlay = MoveSystem.StopMoveFrame(actor);
+                                playList.Add(framePlay);
+                                framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
+                                playList.Add(framePlay);
                             }
                         }
                     }
 
-                    if (!component.PredictionFramePlays.ContainsKey(nowPredict))
+                    if (moveComp.ForecastLeftStopStep > 0)
                     {
-                        component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
-                    }
-
-                    if (framePlay != null)
-                    {
-                        component.PredictionFramePlays[nowPredict].Add(framePlay);
+                        framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
+                        playList.Add(framePlay);
                     }
 
                     PredictionFramePlays(actor, nowPredict);

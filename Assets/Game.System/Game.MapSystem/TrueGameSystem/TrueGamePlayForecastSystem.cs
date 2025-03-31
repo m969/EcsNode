@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TrueSync;
 
 namespace ECSGame
@@ -21,7 +22,7 @@ IInit<TrueGame, TrueGamePlayForecastComponent>
         public static void FrameUpdate(TrueGame game, TrueGamePlayForecastComponent component, long determineFrame)
         {
             //ConsoleLog.Debug("TrueGamePlayForecastSystem FrameUpdate");
-            var actors = game.Id2Children.Values;
+            var actors = game.Id2Children.Values.ToArray();
             foreach (var entity in actors)
             {
                 if (entity is Actor actor)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ECS;
-using ECS.Unity;
+using ECSUnity;
 using ET;
 
 namespace ECSGame

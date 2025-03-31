@@ -1,12 +1,12 @@
 ﻿using ECS;
-using ECS.Unity;
+using ECSUnity;
 using ET;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ECS.Unity
+namespace ECSUnity
 {
     public class SoundSystem : AComponentSystem<EcsNode, SoundComponent>,
 IAwake<EcsNode, SoundComponent>,

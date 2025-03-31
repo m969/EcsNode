@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ECS.Unity
+namespace ECSUnity
 {
     public static class StaticObject
     {

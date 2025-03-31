@@ -141,7 +141,7 @@ IInit<TrueGame, PlayerInputComponent>
                     if (item != game.MyActor)
                     {
                         var transComp = item.GetComponent<TransformComponent>();
-                        ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
+                        //ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
                     }
                 }
             }

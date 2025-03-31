@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af908aa4e3b1ee043b6d25a3c76c2861, type: 3}
+  m_Name: MixerConfig
+  m_EditorClassIdentifier: 
+  MixerGroup: {fileID: 24300002, guid: d82cc5fa9af3bf543bdcb3a7f0d35be2, type: 2}
+  SoundDatas:
+  - Type: OnceFire
+    AudioClip: {fileID: 8300000, guid: 85ceac32e38d97547983bb9850987041, type: 3}
+    Duration: 0
+    Volume: 1
+    Pitch: 0.8
+  - Type: Explosion
+    AudioClip: {fileID: 8300000, guid: 85ceac32e38d97547983bb9850987041, type: 3}
+    Duration: 0
+    Volume: 1
+    Pitch: 0.5
