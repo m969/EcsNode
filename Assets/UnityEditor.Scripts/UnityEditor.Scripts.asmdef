@@ -1,0 +1,18 @@
+{
+    "name": "UnityEditor.Scripts",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6c58b67f420144d48877664ae73bd9a7"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

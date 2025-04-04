@@ -1,0 +1,60 @@
+﻿using ECS;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TrueSync;
+
+namespace ECSGame
+{
+    public class TrueGameCollisionSystem : AComponentSystem<TrueGame, TrueGameCollisionComponent>,
+IAwake<TrueGame, TrueGameCollisionComponent>,
+IInit<TrueGame, TrueGameCollisionComponent>
+    {
+        public void Awake(TrueGame game, TrueGameCollisionComponent component)
+        {
+        }
+
+        public void Init(TrueGame game, TrueGameCollisionComponent component)
+        {
+        }
+
+        public static void FrameUpdate(TrueGame game, TrueGameCollisionComponent component, long determineFrame)
+        {
+            var frame = determineFrame;
+
+            var allEntities = game.Id2Children.Values.ToArray();
+
+            foreach ( var entity in allEntities)
+            {
+                if (entity.IsDispose) continue;
+                var collision1 = entity.GetComponent<CollisionComponent>();
+                if (collision1 == null) continue;
+                foreach ( var entity2 in allEntities)
+                {
+                    if (entity2.IsDispose) continue;
+                    if (entity == entity2) continue;
+                    if (entity is Item && entity2 is Item) continue;
+                    var collision2 = entity2.GetComponent<CollisionComponent>();
+                    if (collision2 == null) continue;
+                    if (collision1.Layer == collision2.Layer) continue;
+
+                    var dist = TSVector.Distance(TransformSystem.GetPosition(entity), TransformSystem.GetPosition(entity2));
+                    if (dist < 2)
+                    {
+                        EventSystem.Run(CollisionEvent.NewEvent(), entity, entity2).Coroutine();
+                    }
+                }
+
+                if (entity is Item item)
+                {
+                    var pos = item.GetComponent<TransformComponent>().Position;
+                    if (FP.Abs(pos.x) > 10 || FP.Abs(pos.z) > 10)
+                    {
+                        EventSystem.Run(CollisionEvent.NewEvent(), entity, entity).Coroutine();
+                    }
+                }
+            }
+        }
+    }
+}

@@ -5042,7 +5042,7 @@ GameObject:
   - component: {fileID: 1622712945}
   - component: {fileID: 1622712946}
   m_Layer: 0
-  m_Name: EcsNodeTest
+  m_Name: AppInit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5072,7 +5072,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1622712944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1047c38fb3480ca4999b9bcfa9a4444f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9352e2357701a3941bc915444dcd5bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ReloadPanelObj: {fileID: 1375333862}

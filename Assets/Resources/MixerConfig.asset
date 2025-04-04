@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MixerGroup: {fileID: 24300002, guid: d82cc5fa9af3bf543bdcb3a7f0d35be2, type: 2}
   SoundDatas:
-  - Type: OnceFire
+  - Enable: 1
+    Type: OnceFire
     AudioClip: {fileID: 8300000, guid: 85ceac32e38d97547983bb9850987041, type: 3}
     Duration: 0
     Volume: 1
     Pitch: 0.8
-  - Type: Explosion
+  - Enable: 1
+    Type: Explosion
     AudioClip: {fileID: 8300000, guid: 85ceac32e38d97547983bb9850987041, type: 3}
     Duration: 0
     Volume: 1

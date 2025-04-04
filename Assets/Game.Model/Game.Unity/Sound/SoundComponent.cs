@@ -11,5 +11,6 @@ namespace ECSUnity
     {
         public Dictionary<int, AudioClip> Id2Clip { get; set; } = new();
         public Dictionary<int, AudioSource> Id2Source { get; set; } = new();
+        public List<MixerConfigObject> MixerConfigs { get; set; } = new();
     }
 }
