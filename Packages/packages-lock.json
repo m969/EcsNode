@@ -14,6 +14,20 @@
       "dependencies": {},
       "hash": "36d3260fdca03bf6feb105c67022d1fd7629dd2f"
     },
+    "com.tencent.puerts.core": {
+      "version": "file:com.tencent.puerts.core",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.tencent.puerts.ts-loader": {
+      "version": "file:com.tencent.puerts.ts-loader",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.tencent.puerts.core": "2.0.5"
+      }
+    },
     "com.unity.adaptiveperformance": {
       "version": "4.0.1",
       "depth": 1,

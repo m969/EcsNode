@@ -20,9 +20,9 @@ public class GameDebugEditor : OdinEditorWindow
     {
         if (Application.isPlaying)
         {
-            if (AppInit.NeedReload)
+            if (AppLoad.NeedReload)
             {
-                AppInit.NeedReload = false;
+                AppLoad.NeedReload = false;
 
                 CompileAndReload();
             }
@@ -115,7 +115,7 @@ public class GameDebugEditor : OdinEditorWindow
         {
             //PlayerPrefs.SetInt("GameSystemLoad", 1);
             //PlayerPrefs.SetInt("MergeSystemLoad", 0);
-            var appInit = GameObject.FindFirstObjectByType<AppInit>();
+            var appInit = GameObject.FindFirstObjectByType<AppLoad>();
             appInit.Reload();
         }
     }

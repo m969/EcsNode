@@ -1,0 +1,4 @@
+import str from './base/lib.mjs';
+console.log(str);
+export default str;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi5tanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9UeXBlU2NyaXB0cy9tYWluLm10cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLEdBQUcsTUFBTSxnQkFBZ0IsQ0FBQTtBQUNoQyxPQUFPLENBQUMsR0FBRyxDQUFDLEdBQUcsQ0FBQyxDQUFDO0FBQ2pCLGVBQWUsR0FBRyxDQUFBIn0=
