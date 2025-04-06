@@ -44,6 +44,10 @@ public class GameDebugEditor : OdinEditorWindow
             {
                 continue;
             }
+            if (folderName.Contains("UISystem"))
+            {
+                continue;
+            }
             var diretory = Directory.CreateDirectory(diretoryName);
             TryAddFolder(diretory.FullName.Replace(shareFolder, "Game.CompileShare"));
             var allFolders = diretory.GetDirectories("*", SearchOption.AllDirectories);
@@ -69,7 +73,7 @@ public class GameDebugEditor : OdinEditorWindow
         }
     }
 
-    [HorizontalGroup]
+    [HorizontalGroup("Compile")]
     [Button("CompilePlay ▶", ButtonHeight = 35)]// ◌▲◂◀◁▷◷◯≌≋≊◌↟↝↺↻⇑⇈⇡⇧⇪⇭⇮⇫⇯⇬
     public void CompileAndPlay()
     {
@@ -106,7 +110,7 @@ public class GameDebugEditor : OdinEditorWindow
         }
     }
 
-    [HorizontalGroup]
+    [HorizontalGroup("Compile")]
     [Button("CompileReload ↻", ButtonHeight = 35)]
     public void CompileAndReload()
     {
@@ -118,6 +122,27 @@ public class GameDebugEditor : OdinEditorWindow
             var appInit = GameObject.FindFirstObjectByType<AppLoad>();
             appInit.Reload();
         }
+    }
+
+    [HorizontalGroup("PuerTs")]
+    [Button("Generate d.ts", ButtonHeight = 35)]
+    public void GenerateDTS()
+    {
+        Puerts.Editor.Generator.UnityMenu.GenerateDTS();
+    }
+
+    [HorizontalGroup("PuerTs")]
+    [Button("Release ts", ButtonHeight = 35)]
+    public void ReleaseToResources()
+    {
+        Puerts.TSLoader.TSReleaser.ReleaseToResources();
+    }
+
+    [HorizontalGroup("PuerTs")]
+    [Button("ReloadFGUI", ButtonHeight = 35)]
+    public void ReloadFGUI()
+    {
+        //Puerts.TSLoader.TSReleaser.ReleaseToResources();
     }
 
     //[Button("FastCompile & Play", ButtonHeight = 25)]

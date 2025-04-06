@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1280,720">
+  <displayList>
+    <text id="n0_lhda" name="nFrame1" xy="21,27" size="189,46" fontSize="30" color="#ffffff" autoSize="none" strokeColor="#000000" text="123"/>
+    <text id="n1_9li5" name="nFrame2" xy="230,27" size="189,46" fontSize="30" color="#ffffff" autoSize="none" strokeColor="#000000" text="123"/>
+    <component id="n2_9li5" name="nBtn" src="9li51" fileName="Button1.xml" xy="25,96"/>
+  </displayList>
+</component>

@@ -57,6 +57,8 @@ public class PuertsConfig
             {
                 "UnityEngine",
                 "UnityEngine.UI",
+                "FairyGUI",
+                "FairyGUI.Utils",
             };
             var unityTypes = (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                               where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)
@@ -64,7 +66,10 @@ public class PuertsConfig
                               where type.Namespace != null && namespaces.Contains(type.Namespace) && !IsExcluded(type)
                               select type);
             string[] customAssemblys = new string[] {
-                "Assembly-CSharp",
+                "Game.Model",
+                "Game.System",
+                "Game.ThirdParty",
+                "Unity.Scripts",
             };
             var customTypes = (from assembly in customAssemblys.Select(s => Assembly.Load(s))
                                where !(assembly.ManifestModule is System.Reflection.Emit.ModuleBuilder)

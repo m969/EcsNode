@@ -12,6 +12,8 @@ using System.Linq;
 using System.Collections.Generic;
 using Puerts.TypeMapping;
 using System.Reflection;
+using UnityEngine;
+
 #if CSHARP_7_3_OR_NEWER
 using System.Threading.Tasks;
 #endif

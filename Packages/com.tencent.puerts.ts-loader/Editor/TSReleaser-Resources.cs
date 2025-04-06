@@ -2,6 +2,7 @@ using UnityEditor;
 using System;
 using System.Linq;
 using System.IO;
+using UnityEngine;
 
 namespace Puerts.TSLoader
 {

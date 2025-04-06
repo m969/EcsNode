@@ -12,15 +12,28 @@ using Puerts.TSLoader;
 
 public class TestLoader : ILoader
 {
+    public Dictionary<string, string> TextMaps = new();
+
     public bool FileExists(string specifier)
     {
-        return specifier == "test.mjs";
+        ConsoleLog.Debug($"FileExists {specifier}");
+        //return specifier.EndsWith(".mjs");
+        return false;
     }
 
     public string ReadFile(string specifier, out string debugpath)
     {
-        debugpath = "test.mjs";
-        return "console.log('test Runtime')";
+        if (specifier.EndsWith(".mjs"))
+        {
+            debugpath = specifier.Replace(".mjs", "");
+        }
+        else
+        {
+            debugpath = specifier;
+        }
+        //return "console.log('test Runtime')";
+        ConsoleLog.Debug($"ReadFile {debugpath}");
+        return Resources.Load<TextAsset>(debugpath).text;
     }
 }
 
@@ -73,6 +86,7 @@ public class AppLoad : MonoBehaviour
     private float NextCheckReloadTime {  get; set; }
     private Dictionary<string, string> ScriptFiles {  get; set; } = new Dictionary<string, string>();
     public GameObject ReloadPanelObj;
+    public JsEnv Env { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -109,18 +123,18 @@ public class AppLoad : MonoBehaviour
             });
         }
 
-        var loader = new TSLoader();
-        // UseRuntimeLoader在Runtime下会形成链式处理。在Editor下不生效。
-        // 执行顺序是Loader加入顺序的倒序
+        //var loader = new TSLoader();
+        //// UseRuntimeLoader在Runtime下会形成链式处理。在Editor下不生效。
+        //// 执行顺序是Loader加入顺序的倒序
 
-        // 通过菜单命令可以快速把TS构建到Resources目录供DefaultLoader使用   
-        loader.UseRuntimeLoader(new DefaultLoader());
-        // Editor下打开PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE可以测试runtime下的效果。
-        loader.UseRuntimeLoader(new TestLoader());
+        //// 通过菜单命令可以快速把TS构建到Resources目录供DefaultLoader使用   
+        //loader.UseRuntimeLoader(new DefaultLoader());
+        //// Editor下打开PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE可以测试runtime下的效果。
+        //loader.UseRuntimeLoader(new TestLoader());
 
-        JsEnv env = new JsEnv(loader);
-        env.ExecuteModule("test.mts");
-        env.ExecuteModule("main.mts");
+        //Env = new JsEnv(loader);
+        ////env.ExecuteModule("test.mts");
+        //Env.ExecuteModule("main.mts");
     }
 
     private EcsNode RegisterDrives(EcsNode ecsNode)
@@ -284,6 +298,7 @@ public class AppLoad : MonoBehaviour
         //}
         EcsNode?.DriveEntityUpdate();
         PrePlayEcsNode?.DriveEntityUpdate();
+        Env?.Tick();
 
         if (Time.realtimeSinceStartup > NextCheckReloadTime)
         {

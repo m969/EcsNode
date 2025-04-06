@@ -4,6 +4,24 @@ using System.Collections.Generic;
 using System;
 using ECSUnity;
 using System.Reflection;
+using FairyGUI;
+using Puerts;
+using Puerts.TSLoader;
+using Login;
+
+//public class TestLoader : ILoader
+//{
+//    public bool FileExists(string specifier)
+//    {
+//        return specifier == "test.mjs";
+//    }
+
+//    public string ReadFile(string specifier, out string debugpath)
+//    {
+//        debugpath = "test.mjs";
+//        return "console.log('test Runtime')";
+//    }
+//}
 
 namespace ECSGame
 {
@@ -67,6 +85,39 @@ namespace ECSGame
 
                 game.MyActor = actor;
             }
+
+            var groot = GRoot.inst;
+            ReloadUI();
+
+            //var loader = new TSLoader();
+            //// UseRuntimeLoader在Runtime下会形成链式处理。在Editor下不生效。
+            //// 执行顺序是Loader加入顺序的倒序
+
+            //// 通过菜单命令可以快速把TS构建到Resources目录供DefaultLoader使用   
+            //loader.UseRuntimeLoader(new DefaultLoader());
+            //// Editor下打开PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE可以测试runtime下的效果。
+            //loader.UseRuntimeLoader(new TestLoader());
+
+            //var env = new JsEnv(loader);
+            ////env.ExecuteModule("test.mts");
+            //env.ExecuteModule("main.mts");
+        }
+
+        public static void ReloadUI()
+        {
+            foreach (var item in GRoot.inst.GetChildren())
+            {
+                item.Dispose();
+            }
+
+            UIObjectFactory.Clear();
+            UIPackage.RemoveAllPackages();
+
+            LoginBinder.BindAll();
+            UIPackage.AddPackage("FGUI/Login");
+            var uiobject = UI_LoginWindow.CreateInstance();
+            uiobject.Awake();
+            GRoot.inst.AddChild(uiobject);
         }
 
         public static void Reload(EcsNode ecsNode, Assembly assembly)
@@ -84,6 +135,8 @@ namespace ECSGame
             ecsNode.EcsUpdate = new EcsNodeSystem();
 
             EventSystem.Reload(ecsNode);
+
+            ReloadUI();
 
             //foreach (var item in ecsNode.Id2Children.Values)
             //{

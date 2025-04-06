@@ -1,0 +1,11 @@
+{
+  "name": "export-ts",
+  "displayName": "生成ts代码",
+  "description": "",
+  "version": "1.0",
+  "author": {
+    "name": "Administrator"
+  },
+  "icon": "",
+  "main": "main.js"
+}

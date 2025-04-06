@@ -9,6 +9,9 @@
         "experimentalDecorators": true,
         "noImplicitAny": true,
         "typeRoots": [
-        ],
+            "../../Packages/com.tencent.puerts.core/Typing",
+            "../Gen/Typing",
+            "./node_modules/@types"
+          ],
     }
 }
