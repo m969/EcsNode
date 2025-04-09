@@ -13,7 +13,7 @@ namespace ECSGame
         {
             var component = game.GetComponent<PlayerInputComponent>();
             var myActor = game.MyActor;
-            var advanceFrame = game.CurrentFrame + TrueGame.ForecastFrame;
+            var advanceFrame = game.DetermineFrame + TrueGame.ForecastFrame;
 
             if (inputType == InputType.Fire)
             {
@@ -25,12 +25,7 @@ namespace ECSGame
                     InputType = InputType.Fire,
                     InputVector = direction.ToTSVector(),
                 };
-                //TrueGameExecuteSystem.AddPlayerInput(game, input);
 
-                //var execute = game.GetComponent<TrueGameExecuteComponent>();
-                //var frame = game.CurrentFrame;
-                //input.Frame = frame;
-                //var actor = game.GetChild<Actor>(input.PlayerId);
                 ActorPlaySystem.ProcessLocalPlayerInput(myActor, input, advanceFrame);
             }
         }

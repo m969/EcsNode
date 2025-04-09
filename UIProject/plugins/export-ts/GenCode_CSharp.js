@@ -26,7 +26,11 @@ function genCode(handler) {
         writer.writeln();
         writer.writeln('namespace %s', namespaceName);
         writer.startBlock();
-        writer.writeln('public partial class %s : %s', classInfo.className, classInfo.superClassName);
+        var superClass = classInfo.superClassName;
+        if (superClass == "GComponent"){
+            superClass = "ECSUnity.UIPanel";
+        }
+        writer.writeln('public partial class %s : %s', classInfo.className, superClass);
         writer.startBlock();
         let memberCnt = members.Count;
         for (let j = 0; j < memberCnt; j++) {

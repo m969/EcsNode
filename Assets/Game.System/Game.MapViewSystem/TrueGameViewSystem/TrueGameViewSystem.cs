@@ -17,7 +17,7 @@ IUpdate<TrueGame>
 
         public void Init(TrueGame game)
         {
-
+            game.OnFrameUpdate += FrameUpdate;
         }
 
         public void Update(TrueGame game)
@@ -27,21 +27,25 @@ IUpdate<TrueGame>
             {
                 PlayerInputSystem.Update(game, inputComp);
 
-                var myActor = game.MyActor;
-                var determineFrame = game.CurrentFrame;
-                var advanceFrame = determineFrame + TrueGame.ForecastFrame;
+                //var myActor = game.MyActor;
+                //var determineFrame = game.DetermineFrame;
+                //var newInputFrame = determineFrame + TrueGame.ForecastFrame + 1;
 
-                // 帧播放向前推进一帧，把收集到的输入填入最新的一帧中
-                if (myActor.GetComponent<FramePlayComponent>().CurrentInputFrame != advanceFrame)
-                {
-                    myActor.GetComponent<FramePlayComponent>().CurrentInputFrame = advanceFrame;
-                    PlayerInputSystem.FrameUpdate(game, inputComp, determineFrame, advanceFrame);
-                }
+                //// 帧播放向前推进一帧，把收集到的输入填入最新的一帧中
+                //if (myActor.GetComponent<FramePlayComponent>().CurrentInputFrame != newInputFrame)
+                //{
+                //    myActor.GetComponent<FramePlayComponent>().CurrentInputFrame = newInputFrame;
+                //    PlayerInputSystem.FrameUpdate(game, inputComp, determineFrame, newInputFrame);
+                //}
             }
         }
 
-        //public static void FrameUpdate(TrueGame game, PlayerInputComponent inputComp)
-        //{
-        //}
+        public static void FrameUpdate(TrueGame game, long determineFrame)
+        {
+            var myActor = game.MyActor;
+            var inputComp = game.GetComponent<PlayerInputComponent>();
+            var newInputFrame = determineFrame + TrueGame.ForecastFrame;
+            PlayerInputSystem.FrameUpdate(game, inputComp, determineFrame, newInputFrame);
+        }
     }
 }

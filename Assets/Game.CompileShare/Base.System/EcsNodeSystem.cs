@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ECSGame
 {
-    public class EcsNodeSystem : IUpdate<EcsNode>
+    public class EcsNodeSystem : AEntitySystem<EcsNode>, IUpdate<EcsNode>
     {
         public void Update(EcsNode ecsNode)
         {

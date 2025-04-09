@@ -14,7 +14,7 @@ IInit<EcsNode, SoundComponent>
     {
         public void Awake(EcsNode entity, SoundComponent component)
         {
-            component.MixerConfigs.Add(Resources.Load<MixerConfigObject>("MixerConfig"));
+            component.MixerConfigs.Add(Resources.Load<MixerConfigObject>("Audios/MixerConfig"));
         }
 
         public void Init(EcsNode entity, SoundComponent component)

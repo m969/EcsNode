@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <packageDescription id="g9o3wgyh">
   <resources>
-    <component id="pggt0" name="LoginWindow.xml" path="/" exported="true"/>
+    <component id="pggt0" name="LoginMenuWindow.xml" path="/" exported="true"/>
     <component id="9li51" name="Button1.xml" path="/"/>
+    <component id="rsu72" name="HomePageWindow.xml" path="/" exported="true"/>
   </resources>
   <publish name="" genCode="true"/>
 </packageDescription>

@@ -41,11 +41,12 @@ namespace ECSGame
 
             EcsNodeSystem.Create(ecsNode);
             ecsNode.AddComponent<SoundComponent>();
+            ecsNode.AddComponent<UIComponent>();
             ecsNode.Init();
 
             ecsNode.GetComponent<ReloadComponent>().SystemAssembly = assembly;
 
-            ecsNode.EcsUpdate = new EcsNodeSystem();
+            //ecsNode.EcsUpdate = new EcsNodeSystem();
 
             //if (nodeType == EcsNodeType.TrueAuthority)
             //{
@@ -70,6 +71,8 @@ namespace ECSGame
                 game.AddComponent<PlayerInputComponent>();
                 game.Init();
 
+                StaticObject.TrueGame = game;
+
                 var actor = ActorSystem.Create(game, ecsNode.NewId());
                 actor.AddComponent<FramePlayComponent>();
                 actor.AddComponent<EntityViewComponent>();
@@ -84,10 +87,11 @@ namespace ECSGame
                 actor1.Init();
 
                 game.MyActor = actor;
+                game.OtherActor = actor1;
             }
 
             var groot = GRoot.inst;
-            ReloadUI();
+            ReloadUI(ecsNode);
 
             //var loader = new TSLoader();
             //// UseRuntimeLoader在Runtime下会形成链式处理。在Editor下不生效。
@@ -103,21 +107,24 @@ namespace ECSGame
             //env.ExecuteModule("main.mts");
         }
 
-        public static void ReloadUI()
+        public static void ReloadUI(EcsNode ecsNode)
         {
             foreach (var item in GRoot.inst.GetChildren())
             {
                 item.Dispose();
             }
-
+            var uiComp = ecsNode.GetComponent<UIComponent>();
+            uiComp.Type2Windows.Clear();
             UIObjectFactory.Clear();
             UIPackage.RemoveAllPackages();
 
             LoginBinder.BindAll();
             UIPackage.AddPackage("FGUI/Login");
-            var uiobject = UI_LoginWindow.CreateInstance();
-            uiobject.Awake();
-            GRoot.inst.AddChild(uiobject);
+
+            UISystem.Show<UI_HomePageWindow>(beforeAwake: x =>
+            {
+                x.TrueGame = StaticObject.TrueGame;
+            });
         }
 
         public static void Reload(EcsNode ecsNode, Assembly assembly)
@@ -132,11 +139,11 @@ namespace ECSGame
 
             ecsNode.AddSystems(typeList.ToArray());
 
-            ecsNode.EcsUpdate = new EcsNodeSystem();
+            //ecsNode.EcsUpdate = new EcsNodeSystem();
 
             EventSystem.Reload(ecsNode);
 
-            ReloadUI();
+            ReloadUI(ecsNode);
 
             //foreach (var item in ecsNode.Id2Children.Values)
             //{

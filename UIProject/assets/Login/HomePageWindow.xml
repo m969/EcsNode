@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1280,720">
+  <displayList>
+    <text id="n0_lhda" name="nDetermineFrame" xy="21,27" size="290,46" fontSize="30" color="#ffcc33" autoSize="none" strokeColor="#000000" text="123"/>
+    <text id="n1_9li5" name="nAdvancedFrame" xy="325,27" size="291,46" fontSize="30" color="#ffffff" autoSize="none" strokeColor="#000000" text="123"/>
+    <text id="n3_c0sc" name="nConflictFrame" xy="635,27" size="297,46" fontSize="30" color="#ff0000" autoSize="none" strokeColor="#000000" text="123"/>
+    <text id="n4_c0sc" name="nConflictFrameCount" xy="952,27" size="279,46" fontSize="30" color="#ff0000" autoSize="none" strokeColor="#000000" text="123"/>
+    <component id="n2_9li5" name="nBtn" src="9li51" fileName="Button1.xml" xy="25,244"/>
+    <text id="n5_c0sc" name="nPredictionFrame" xy="230,90" size="189,46" visible="false" fontSize="30" color="#ffffff" autoSize="none" strokeColor="#000000" text="123"/>
+    <text id="n6_c0sc" name="nConflictPlay" xy="23,89" size="1210,46" fontSize="30" color="#ff0000" autoSize="none" strokeColor="#000000" text="123"/>
+  </displayList>
+</component>

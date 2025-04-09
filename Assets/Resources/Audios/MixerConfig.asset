@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MixerConfig
   m_EditorClassIdentifier: 
   MixerGroup: {fileID: 24300002, guid: d82cc5fa9af3bf543bdcb3a7f0d35be2, type: 2}
+  AudioFolder: {fileID: 102900000, guid: bd707307b076e7946af78db29c97613c, type: 3}
   SoundDatas:
   - Enable: 1
     Type: OnceFire

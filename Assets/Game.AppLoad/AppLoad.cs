@@ -1,5 +1,4 @@
 ﻿using ECS;
-using ECSUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Puerts;
 using Puerts.TSLoader;
+using ECSUnity;
 
 public class TestLoader : ILoader
 {
@@ -103,6 +103,7 @@ public class AppLoad : MonoBehaviour
         CheckScriptFiles();
 
         EcsNode = new EcsNode();
+        EcsNode.Id = EcsNode.NewId();
         StaticObject.EcsNode = EcsNode;
         RegisterDrives(EcsNode);
         EcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);

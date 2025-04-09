@@ -5,16 +5,16 @@ using FairyGUI.Utils;
 
 namespace Login
 {
-    public partial class UI_LoginWindow : GComponent
+    public partial class UI_LoginMenuWindow : ECSUnity.UIPanel
     {
         public GTextField m_nFrame1;
         public GTextField m_nFrame2;
         public GButton m_nBtn;
         public const string URL = "ui://g9o3wgyhpggt0";
 
-        public static UI_LoginWindow CreateInstance()
+        public static UI_LoginMenuWindow CreateInstance()
         {
-            return (UI_LoginWindow)UIPackage.CreateObject("Login", "LoginWindow");
+            return (UI_LoginMenuWindow)UIPackage.CreateObject("Login", "LoginMenuWindow");
         }
 
         public override void ConstructFromXML(XML xml)

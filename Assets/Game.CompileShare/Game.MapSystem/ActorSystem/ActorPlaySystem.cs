@@ -16,17 +16,14 @@ IAwake<Actor, FramePlayComponent>
 
         public static void FrameUpdate(Actor actor, FramePlayComponent component, long determineFrame)
         {
-            //ConsoleLog.Debug("ActorPlaySystem");
             var game = actor.GetParent<TrueGame>();
-            //var frame = game.DetermineFrame;
+            component.DetermineFrame = determineFrame;
 
             DetermineCreate(actor, determineFrame);
             if (game.MyActor == actor)
             {
                 // 本地先行
                 LocalAdvanceCreate(actor, determineFrame);
-                //var transComp = actor.GetComponent<TransformComponent>();
-                //ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
             }
             else
             {
@@ -81,7 +78,6 @@ IAwake<Actor, FramePlayComponent>
 
             // 取出确定帧输入
             component.DetermineFrameInputs.TryGetValue(determineFrame, out var inputs);
-            //component.DetermineFrameInputs.Remove(determineFrame);
             var moveComp = actor.GetComponent<MoveComponent>();
 
             IFramePlay framePlay = null;
@@ -127,10 +123,10 @@ IAwake<Actor, FramePlayComponent>
             }
 
             PlayFramePlays(actor, determineFrame);
-            DetermineConfictCheck(actor, determineFrame);
+            DetermineConflictCheck(actor, determineFrame);
         }
 
-        public static void DetermineConfictCheck(Actor actor, long determineFrame)
+        public static void DetermineConflictCheck(Actor actor, long determineFrame)
         {
             var component = actor.GetComponent<FramePlayComponent>();
             if (component.AlreadyPredictFrame < determineFrame)
@@ -142,18 +138,19 @@ IAwake<Actor, FramePlayComponent>
             component.FramePlays.TryGetValue(determineFrame, out var determineFramePlays);
             component.PredictionFramePlays.TryGetValue(determineFrame, out var predictionFramePlays);
             var needReset = false;
+            var conflictType = string.Empty;
             if (predictionFramePlays == null)
             {
                 needReset = true;
                 component.PredictionFramePlays[determineFrame] = new List<IFramePlay>();
-                //ConsoleLog.Debug($"DetermineConfictCheck predictionFramePlays null");
+                conflictType = $"predictionFramePlays=null";
             }
             else
             {
                 if (determineFramePlays.Count != predictionFramePlays.Count)
                 {
                     needReset = true;
-                    //ConsoleLog.Debug($"DetermineConfictCheck Count false");
+                    conflictType = $"determine={determineFramePlays.Count} prediction={predictionFramePlays.Count}";
                 }
                 else
                 {
@@ -164,12 +161,21 @@ IAwake<Actor, FramePlayComponent>
                         if (prePlay.GetType() != determinePlay.GetType())
                         {
                             needReset = true;
+                            conflictType = $"{prePlay.GetType().Name} {determinePlay.GetType().Name}";
                             break;
                         }
                         if (prePlay.Equals(determinePlay) == false)
                         {
                             needReset = true;
-                            //ConsoleLog.Debug($"DetermineConfictCheck Equals false");
+                            conflictType = $"{prePlay.GetType().Name} {determinePlay.GetType().Name} !Equals";
+                            //if (prePlay is FramePlay_MoveStop movePlay)
+                            //{
+                            //    ConsoleLog.Debug($"DetermineConflictCheck prePlay {movePlay.Position} {movePlay.AfterPosition}");
+                            //}
+                            //if (determinePlay is FramePlay_MoveStop movePlay2)
+                            //{
+                            //    ConsoleLog.Debug($"DetermineConflictCheck determinePlay {movePlay2.Position} {movePlay2.AfterPosition}");
+                            //}
                             break;
                         }
                     }
@@ -178,13 +184,14 @@ IAwake<Actor, FramePlayComponent>
 
             if (needReset)
             {
+                component.ConflictType = conflictType;
+                component.ConflictFrame = determineFrame;
+                component.ConflictFrameCount++;
                 component.AlreadyPredictFrame = determineFrame;
                 component.PredictionFramePlays[determineFrame].Clear();
                 component.PredictionFramePlays[determineFrame].AddRange(determineFramePlays);
                 PredictionFramePlays(actor, determineFrame - 1);
                 PredictionFramePlays(actor, determineFrame);
-                //ConsoleLog.Debug($"DetermineConfictCheck {TransformSystem.GetPosition(actor)} {TransformSystem.GetForecastPosition(actor)} {TSVector.Distance(TransformSystem.GetForecastPosition(actor), TransformSystem.GetPosition(actor))}");
-                //ConsoleLog.Debug($"DetermineConfictCheck needReset {determineFrame} {TransformSystem.GetPosition(actor)} {TransformSystem.GetForecastPosition(actor)}");
             }
         }
 
@@ -239,10 +246,7 @@ IAwake<Actor, FramePlayComponent>
                 var nowPredict = i;
                 component.AlreadyPredictFrame = nowPredict;
 
-                //if (!component.PredictionFramePlays.ContainsKey(nowPredict))
-                {
-                    component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
-                }
+                component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
                 var playList = component.PredictionFramePlays[nowPredict];
 
                 IFramePlay framePlay = null;
@@ -258,14 +262,12 @@ IAwake<Actor, FramePlayComponent>
                         {
                             framePlay = MoveSystem.MoveForecastFrame(actor, input.InputVector);
                             playList.Add(framePlay);
-                            //var movePlay = (FramePlay_Move)framePlay;
-                            //ConsoleLog.Debug($"{determineFrame} {nowPredict} Move {input.InputVector} {movePlay.AfterPosition}");
                         }
-                        if (inputType == InputType.StopMove)
+                        if (inputType == InputType.StopMove && moveComp.ForecastLeftStopStep == 0)
                         {
                             framePlay = MoveSystem.StopMoveFrame(actor);
                             playList.Add(framePlay);
-                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
+                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
                             playList.Add(framePlay);
                         }
                     }
@@ -273,8 +275,9 @@ IAwake<Actor, FramePlayComponent>
 
                 if (moveComp.ForecastLeftStopStep > 0)
                 {
-                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
+                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
                     playList.Add(framePlay);
+                    ConsoleLog.Debug($"PredictCreate {nowPredict} {moveComp.ForecastLeftStopStep}");
                 }
 
                 PredictionFramePlays(actor, nowPredict);
@@ -289,60 +292,54 @@ IAwake<Actor, FramePlayComponent>
             var advanceFrame = determineFrame + TrueGame.ForecastFrame;
             var alreadyPredictFrame = component.AlreadyPredictFrame;
             var nextPredict = alreadyPredictFrame + 1;
+            //ConsoleLog.Debug($"LocalAdvanceCreate {advanceFrame}");
 
-            //List<PlayerInput> lastInputs = null;
             for (var i = nextPredict; i <= advanceFrame; i++)
             {
                 var nowPredict = i;
                 component.AlreadyPredictFrame = nowPredict;
-                //ConsoleLog.Debug($"LocalAdvanceCreate {determineFrame} {advanceFrame} {nowPredict}");
-                //if (!component.PredictionFramePlays.ContainsKey(nowPredict))
+                component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
+
+                // 取出先行帧输入
+                component.AdvanceFrameInputs.TryGetValue(nowPredict, out var inputs);
+
+                if (!component.PredictionFramePlays.ContainsKey(nowPredict))
                 {
                     component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
+                }
+                var playList = component.PredictionFramePlays[nowPredict];
 
-                    // 取出先行帧输入
-                    component.AdvanceFrameInputs.TryGetValue(nowPredict, out var inputs);
+                IFramePlay framePlay = null;
 
-                    if (!component.PredictionFramePlays.ContainsKey(nowPredict))
+                // 执行先行帧输入
+                if (inputs != null)
+                {
+                    foreach (var input in inputs)
                     {
-                        component.PredictionFramePlays[nowPredict] = new List<IFramePlay>();
-                    }
-                    var playList = component.PredictionFramePlays[nowPredict];
-
-                    IFramePlay framePlay = null;
-
-                    // 执行先行帧输入
-                    if (inputs != null)
-                    {
-                        foreach (var input in inputs)
+                        var inputType = input.InputType;
+                        // 根据输入立即创建预测运行帧
+                        if (inputType == InputType.Move)
                         {
-                            var inputType = input.InputType;
-                            // 根据输入立即创建预测运行帧
-                            if (inputType == InputType.Move)
-                            {
-                                framePlay = MoveSystem.MoveForecastFrame(actor, input.InputVector);
-                                playList.Add(framePlay);
-                                //var movePlay = (FramePlay_Move)framePlay;
-                                //ConsoleLog.Debug($"LocalAdvanceCreate {TransformSystem.GetPosition(actor)} {TransformSystem.GetForecastPosition(actor)} {TSVector.Distance(TransformSystem.GetForecastPosition(actor), TransformSystem.GetPosition(actor))}");
-                            }
-                            if (inputType == InputType.StopMove)
-                            {
-                                framePlay = MoveSystem.StopMoveFrame(actor);
-                                playList.Add(framePlay);
-                                framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
-                                playList.Add(framePlay);
-                            }
+                            framePlay = MoveSystem.MoveForecastFrame(actor, input.InputVector);
+                            playList.Add(framePlay);
+                        }
+                        if (inputType == InputType.StopMove)
+                        {
+                            framePlay = MoveSystem.StopMoveFrame(actor);
+                            playList.Add(framePlay);
+                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
+                            playList.Add(framePlay);
                         }
                     }
-
-                    if (moveComp.ForecastLeftStopStep > 0)
-                    {
-                        framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.TrueDirection);
-                        playList.Add(framePlay);
-                    }
-
-                    PredictionFramePlays(actor, nowPredict);
                 }
+
+                if (moveComp.ForecastLeftStopStep > 0)
+                {
+                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
+                    playList.Add(framePlay);
+                }
+
+                PredictionFramePlays(actor, nowPredict);
             }
         }
 
@@ -351,20 +348,12 @@ IAwake<Actor, FramePlayComponent>
         {
             var game = actor.GetParent<TrueGame>();
             var component = actor.GetComponent<FramePlayComponent>();
-            //var determineFrame = game.DetermineFrame;
 
             if (component.DetermineFrameInputs.ContainsKey(determineFrame) == false)
             {
                 component.DetermineFrameInputs.Add(determineFrame, new List<PlayerInput>());
             }
             component.DetermineFrameInputs[determineFrame].Add(input);
-            //ConsoleLog.Debug($"ProcessNetworkPlayerInput {determineFrame}");
-
-            //if (component.AdvanceFrameInputs.ContainsKey(determineFrame) == false)
-            //{
-            //    component.AdvanceFrameInputs.Add(determineFrame, new List<PlayerInput>());
-            //}
-            //component.AdvanceFrameInputs[determineFrame].Add(input);
         }
 
         // 本地玩家输入
@@ -378,7 +367,6 @@ IAwake<Actor, FramePlayComponent>
                 component.AdvanceFrameInputs.Add(advanceFrame, new List<PlayerInput>());
             }
             component.AdvanceFrameInputs[advanceFrame].Add(input);
-            //ConsoleLog.Debug($"ProcessLocalPlayerInput {advanceFrame} {component.AdvanceFrameInputs[advanceFrame].Count}");
         }
     }
 }

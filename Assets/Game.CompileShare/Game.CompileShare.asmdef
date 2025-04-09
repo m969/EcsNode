@@ -2,7 +2,6 @@
     "name": "Game.CompileShare",
     "rootNamespace": "",
     "references": [
-        "GUID:056340643d9aef44dbc392abf802867d",
         "GUID:645f7d097acee4f40b75a6b9ff1b0822"
     ],
     "includePlatforms": [

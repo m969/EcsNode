@@ -8,7 +8,8 @@ namespace Login
     {
         public static void BindAll()
         {
-            UIObjectFactory.SetPackageItemExtension(UI_LoginWindow.URL, typeof(UI_LoginWindow));
+            UIObjectFactory.SetPackageItemExtension(UI_LoginMenuWindow.URL, typeof(UI_LoginMenuWindow));
+            UIObjectFactory.SetPackageItemExtension(UI_HomePageWindow.URL, typeof(UI_HomePageWindow));
         }
     }
 }

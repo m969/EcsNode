@@ -31,7 +31,7 @@ namespace ECS
         public List<Type> DriveTypes { get; set; } = new();
         public Type[] AllTypes { get; set; }
 
-        public IUpdate<EcsNode> EcsUpdate { get; set; }
+        //public IUpdate<EcsNode> EcsUpdate { get; set; }
 
         public void AddEntity(EcsEntity entity)
         {
@@ -283,6 +283,19 @@ namespace ECS
             foreach (var item in systems)
             {
                 var entityType = item.Key;
+                if (entityType == typeof(EcsNode))
+                {
+                    var systemList = item.Value;
+                    foreach (var systemInfo in systemList)
+                    {
+                        var system = systemInfo.System;
+                        var method = systemInfo.Action;
+                        if (this.IsDispose) continue;
+                        method.Invoke(system, new object[] { this });
+                    }
+                    continue;
+                }
+
                 if (UpdateEntities.TryGetValue(entityType, out var entities))
                 {
                     var systemList = item.Value;
@@ -299,7 +312,7 @@ namespace ECS
                 }
             }
 
-            EcsUpdate?.Update(this);
+            //EcsUpdate?.Update(this);
         }
 
         //public void DriveFixedUpdate()

@@ -16,7 +16,11 @@ namespace ECSGame
 
         public readonly Dictionary<long, List<PlayerInput>> AdvanceFrameInputs = new();
 
+        public long DetermineFrame;
         public long AlreadyPredictFrame;
         public long CurrentInputFrame;
+        public long ConflictFrame;
+        public long ConflictFrameCount;
+        public string ConflictType;
     }
 }

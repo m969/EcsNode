@@ -92,6 +92,7 @@ IAwake<EcsEntity, MoveComponent>
         {
             var moveComp = entity.GetComponent<MoveComponent>();
             var transComp = entity.GetComponent<TransformComponent>();
+            moveComp.ForecastTrueDirection = target;
             var beforePos = transComp.ForecastPosition;
             var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * 0.1f);
             var framePlay = new FramePlay_Move()

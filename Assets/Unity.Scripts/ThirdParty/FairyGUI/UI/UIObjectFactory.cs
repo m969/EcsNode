@@ -15,7 +15,8 @@ namespace FairyGUI
         public delegate GComponent GComponentCreator();
         public delegate GLoader GLoaderCreator();
 
-        static Dictionary<string, GComponentCreator> packageItemExtensions = new Dictionary<string, GComponentCreator>();
+        public static Dictionary<string, GComponentCreator> packageItemExtensions = new Dictionary<string, GComponentCreator>();
+        public static Dictionary<Type, string> packageType2Items = new();
         static GLoaderCreator loaderCreator;
 
         /// <summary>
@@ -26,6 +27,7 @@ namespace FairyGUI
         public static void SetPackageItemExtension(string url, System.Type type)
         {
             SetPackageItemExtension(url, () => { return (GComponent)Activator.CreateInstance(type); });
+            packageType2Items.Add(type, url);
         }
 
         /// <summary>
@@ -91,6 +93,7 @@ namespace FairyGUI
         public static void Clear()
         {
             packageItemExtensions.Clear();
+            packageType2Items.Clear();
             loaderCreator = null;
         }
 

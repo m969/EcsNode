@@ -9,7 +9,7 @@
   "compressPNG": false,
   "codeGeneration": {
     "allowGenCode": true,
-    "codePath": "D:\\Documents\\MyGithub\\EcsNode\\Assets\\Game.System\\Game.UISystem\\UIObject.Generate",
+    "codePath": "D:\\Documents\\MyGithub\\EcsNode\\Assets\\Game.System\\Game.UnitySystem\\UI\\UIObject.Generate",
     "classNamePrefix": "UI_",
     "memberNamePrefix": "m_",
     "packageName": null,
