@@ -32,7 +32,7 @@ namespace ECSGame
             var actor = (Actor)aiNode.Entity;
             var component = actor.GetComponent<AIComponent>();
             var input = new PlayerInput() { InputType = InputType.Move, InputVector = component.MoveDirection, PlayerId = aiNode.Entity.Id };
-            ActorPlaySystem.ProcessNetworkPlayerInput(actor, input, component.DetermineFrame);
+            ActorPredictPlaySystem.AddNetworkPlayerInput(actor, input, component.DetermineFrame);
             var timerProgress = TimerSystem.FrameTimer(aiNode.Entity, TimerType.RunAIAction_FrameTimer, 40);
             if (timerProgress == TimerProgress.Ended)
             {

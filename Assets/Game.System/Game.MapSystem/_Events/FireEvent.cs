@@ -20,7 +20,7 @@ namespace ECSGame
             var actorTrans = actor.GetComponent<TransformComponent>();
             TransformSystem.ChangePosition(item, actorTrans.Position);
             TransformSystem.ChangeForward(item, actorTrans.Forward);
-            MoveSystem.SetSpeed(item, 15);
+            MoveSystem.SetSpeed(item, 150);
             MoveSystem.ChangeMove(item, actorTrans.Forward.normalized);
 
             EventSystem.Dispatch(new EntityCreateCmd()

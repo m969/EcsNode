@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using FairyGUI;
 using Login;
+using System.Threading.Tasks;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace ECSUnity
 {
@@ -20,6 +22,13 @@ IInit<EcsNode, UIComponent>
 
         public void Init(EcsNode entity, UIComponent component)
         {
+            
+        }
+
+        public static async ETTask WaitDelay(EcsNode entity, long time)
+        {
+            await TimerSystem.WaitAsync(entity, time);
+            //ConsoleLog.Debug("UISystem WaitDelay2");
         }
 
         public static void Update(EcsNode entity, UIComponent component)
@@ -50,6 +59,7 @@ IInit<EcsNode, UIComponent>
         public static T Show<T>(Action<T> beforeAwake = null) where T : UIPanel, IUIWindow
         {
             var ecsNode = StaticObject.EcsNode;
+            //WaitDelay(ecsNode, 1000).Coroutine();
             var uiComp = ecsNode.GetComponent<UIComponent>();
             var type = typeof(T);
 

@@ -29,7 +29,7 @@ IInit<TrueGame, TrueGamePlayComponent>
                 var moveComp = entity.GetComponent<MoveComponent>();
                 var transComp = entity.GetComponent<TransformComponent>();
                 var beforePos = transComp.Position;
-                var afterPos = transComp.Position + moveComp.TrueDirection * FP.FromFloat(moveComp.Speed * 0.1f);
+                var afterPos = transComp.Position + moveComp.TrueDirection * FP.FromFloat(moveComp.Speed * MoveSystem.SpeedAdaptive);
                 framePlay = new FramePlay_Move()
                 {
                     EntityId = entity.Id,

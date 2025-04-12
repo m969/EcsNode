@@ -1,0 +1,20 @@
+{
+    "name": "Unity.AppLoad",
+    "rootNamespace": "",
+    "references": [
+        "GUID:44b68c5cb5bdd2941899f32aad657861",
+        "GUID:935b598d871a8c24b9f6f74d78c1e93a",
+        "GUID:645f7d097acee4f40b75a6b9ff1b0822",
+        "GUID:9b79b96f12870c2449e05764a16cea5f",
+        "GUID:c3b659e7ea1be4c759dbe1d9ab2a3abe"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -184,7 +184,7 @@ IInit<TrueGame, PlayerInputComponent>
             foreach (var item in inputComp.PlayerInputs)
             {
                 //ConsoleLog.Debug($"ProcessLocalPlayerInput {newInputFrame}");
-                ActorPlaySystem.ProcessLocalPlayerInput(game.MyActor, item, newInputFrame);
+                ActorAdvancePlaySystem.AddLocalPlayerInput(game.MyActor, item, newInputFrame);
             }
 
             inputComp.PlayerInputs.Clear();

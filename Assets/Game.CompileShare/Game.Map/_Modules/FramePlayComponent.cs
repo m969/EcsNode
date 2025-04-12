@@ -18,7 +18,7 @@ namespace ECSGame
 
         public long DetermineFrame;
         public long AlreadyPredictFrame;
-        public long CurrentInputFrame;
+
         public long ConflictFrame;
         public long ConflictFrameCount;
         public string ConflictType;

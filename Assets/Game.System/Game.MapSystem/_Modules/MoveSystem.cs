@@ -33,13 +33,15 @@ IAwake<EcsEntity, MoveComponent>
             moveComp.TrueDirection = target;
         }
 
+        public const float SpeedAdaptive = 0.01f;
+
         public static FramePlay_Move MoveFrame(EcsEntity entity, TSVector target)
         {
             var moveComp = entity.GetComponent<MoveComponent>();
             var transComp = entity.GetComponent<TransformComponent>();
             moveComp.TrueDirection = target;
             var beforePos = transComp.Position;
-            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * 0.1f);
+            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
             var framePlay = new FramePlay_Move()
             {
                 EntityId = entity.Id,
@@ -63,7 +65,7 @@ IAwake<EcsEntity, MoveComponent>
             var moveComp = entity.GetComponent<MoveComponent>();
             var transComp = entity.GetComponent<TransformComponent>();
             var beforePos = transComp.Position;
-            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * 0.1f);
+            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
             var framePlay = new FramePlay_MoveStop()
             {
                 EntityId = entity.Id,
@@ -78,7 +80,7 @@ IAwake<EcsEntity, MoveComponent>
             var moveComp = entity.GetComponent<MoveComponent>();
             var transComp = entity.GetComponent<TransformComponent>();
             var beforePos = transComp.ForecastPosition;
-            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * 0.1f);
+            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
             var framePlay = new FramePlay_MoveStop()
             {
                 EntityId = entity.Id,
@@ -94,7 +96,7 @@ IAwake<EcsEntity, MoveComponent>
             var transComp = entity.GetComponent<TransformComponent>();
             moveComp.ForecastTrueDirection = target;
             var beforePos = transComp.ForecastPosition;
-            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * 0.1f);
+            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
             var framePlay = new FramePlay_Move()
             {
                 EntityId = entity.Id,

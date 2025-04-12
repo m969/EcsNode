@@ -17,7 +17,7 @@ IUpdate<TrueGame>
         public static TrueGame Create(EcsNode ecsNode)
         {
             var game = ecsNode.AddChild<TrueGame>();
-            game.AddComponent<TrueGameExecuteComponent>();
+            //game.AddComponent<TrueGameExecuteComponent>();
             game.AddComponent<TrueGamePlayComponent>();
             game.AddComponent<TrueGameCollisionComponent>();
             game.AddComponent<TrueGamePlayForecastComponent>();

@@ -26,7 +26,7 @@ namespace ECSGame
                     InputVector = direction.ToTSVector(),
                 };
 
-                ActorPlaySystem.ProcessLocalPlayerInput(myActor, input, advanceFrame);
+                ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, input, advanceFrame);
             }
         }
     }

@@ -11,12 +11,13 @@ IUpdate<Actor>
     {
         public void Awake(Actor entity)
         {
+            
         }
 
         public void Init(Actor entity)
         {
-            MoveSystem.SetSpeed(entity, 2);
-            MoveSystem.SetStopSpeed(entity, 4);
+            MoveSystem.SetSpeed(entity, 15);
+            MoveSystem.SetStopSpeed(entity, 5);
             FireSystem.SetSpeed(entity, 5);
         }
 

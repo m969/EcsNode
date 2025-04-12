@@ -5,8 +5,6 @@ using System;
 using ECSUnity;
 using System.Reflection;
 using FairyGUI;
-using Puerts;
-using Puerts.TSLoader;
 using Login;
 
 //public class TestLoader : ILoader
@@ -139,11 +137,9 @@ namespace ECSGame
 
             ecsNode.AddSystems(typeList.ToArray());
 
-            //ecsNode.EcsUpdate = new EcsNodeSystem();
-
             EventSystem.Reload(ecsNode);
 
-            ReloadUI(ecsNode);
+            //ReloadUI(ecsNode);
 
             //foreach (var item in ecsNode.Id2Children.Values)
             //{
