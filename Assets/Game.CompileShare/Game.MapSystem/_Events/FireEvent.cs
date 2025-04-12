@@ -18,7 +18,7 @@ namespace ECSGame
             item.AddComponent<MoveComponent>();
             item.GetComponent<CollisionComponent>().Layer = actor.GetComponent<CollisionComponent>().Layer;
             var actorTrans = actor.GetComponent<TransformComponent>();
-            TransformSystem.ChangePosition(item, actorTrans.Position);
+            TransformSystem.ChangePosition(item, actorTrans.ForecastPosition);
             TransformSystem.ChangeForward(item, actorTrans.Forward);
             MoveSystem.SetSpeed(item, 150);
             MoveSystem.ChangeMove(item, actorTrans.Forward.normalized);

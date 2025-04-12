@@ -16,7 +16,7 @@ IUpdate<Actor>
 
         public void Init(Actor entity)
         {
-            MoveSystem.SetSpeed(entity, 15);
+            MoveSystem.SetSpeed(entity, 10);
             MoveSystem.SetStopSpeed(entity, 5);
             FireSystem.SetSpeed(entity, 5);
         }
