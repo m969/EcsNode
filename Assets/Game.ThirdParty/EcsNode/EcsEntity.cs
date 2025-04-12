@@ -44,7 +44,7 @@ namespace ECS
 
         public T AddChild<T>(Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
-            return AddChild(EcsNode.NewId(), beforeAwake);
+            return AddChild(EcsNode.NewInstanceId(), beforeAwake);
         }
 
         public T AddChild<T>(long id, Action<T> beforeAwake = null) where T : EcsEntity, new()

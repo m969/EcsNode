@@ -12,12 +12,40 @@ namespace ECS
 
     public class EcsNode : EcsEntity
     {
-        private long IdIndex;
-        private int NodeType;
+        public int IdIndex { get; private set; }
+        public long IdBaseTime { get; private set; }
+        public ushort EcsIndex { get; private set; }
 
-        public long NewId()
+        public const int Mask14bit = 0x3fff;
+        public const int Mask30bit = 0x3fffffff;
+        public const int Mask20bit = 0xfffff;
+
+        public EcsNode(ushort ecsIndex)
         {
-            return ++IdIndex;
+            this.EcsIndex = ecsIndex;
+            this.IdBaseTime = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000;
+        }
+
+        public long NewInstanceId()
+        {
+            uint timeAddition = (uint)((DateTime.UtcNow.Ticks / 10000 - this.IdBaseTime) / 1000);
+            int v = 0;
+            lock (this)
+            {
+                if (++IdIndex > Mask20bit - 1)
+                {
+                    IdIndex = 0;
+                }
+                v = IdIndex;
+            }
+
+            ulong result = 0;
+            result |= EcsIndex;
+            result <<= 30;
+            result |= timeAddition;
+            result <<= 20;
+            result |= (uint)IdIndex;
+            return (long)result;
         }
 
         public Dictionary<long, EcsEntity> AllEntities { get; set; } = new();
@@ -27,11 +55,8 @@ namespace ECS
         public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; }= new();
         public Dictionary<(Type, Type), Dictionary<Type, SystemInfo>> AllEntityComponentSystems { get; set; }= new();
         public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; }= new();
-        //public Dictionary<Type, Dictionary<Type, SystemInfo>> AllUpdateComponentSystems { get; set; }= new();
         public List<Type> DriveTypes { get; set; } = new();
         public Type[] AllTypes { get; set; }
-
-        //public IUpdate<EcsNode> EcsUpdate { get; set; }
 
         public void AddEntity(EcsEntity entity)
         {

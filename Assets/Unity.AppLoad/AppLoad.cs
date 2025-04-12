@@ -106,8 +106,8 @@ public class AppLoad : MonoBehaviour
 
         CheckScriptFiles();
 
-        EcsNode = new EcsNode();
-        EcsNode.Id = EcsNode.NewId();
+        EcsNode = new EcsNode(1);
+        EcsNode.Id = EcsNode.NewInstanceId();
         StaticObject.EcsNode = EcsNode;
         RegisterDrives(EcsNode);
         EcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);

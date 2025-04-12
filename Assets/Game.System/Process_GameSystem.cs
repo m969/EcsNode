@@ -71,13 +71,13 @@ namespace ECSGame
 
                 StaticObject.TrueGame = game;
 
-                var actor = ActorSystem.Create(game, ecsNode.NewId());
+                var actor = ActorSystem.Create(game, ecsNode.NewInstanceId());
                 actor.AddComponent<FramePlayComponent>();
                 actor.AddComponent<EntityViewComponent>();
                 actor.GetComponent<CollisionComponent>().Layer = 1;
                 actor.Init();
 
-                var actor1 = ActorSystem.Create(game, ecsNode.NewId());
+                var actor1 = ActorSystem.Create(game, ecsNode.NewInstanceId());
                 actor1.AddComponent<FramePlayComponent>();
                 actor1.AddComponent<EntityViewComponent>();
                 actor1.GetComponent<CollisionComponent>().Layer = 2;
