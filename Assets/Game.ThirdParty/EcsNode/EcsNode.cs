@@ -315,7 +315,7 @@ namespace ECS
                     {
                         var system = systemInfo.System;
                         var method = systemInfo.Action;
-                        if (this.IsDispose) continue;
+                        if (this.IsDisposed) continue;
                         method.Invoke(system, new object[] { this });
                     }
                     continue;
@@ -330,7 +330,7 @@ namespace ECS
                         var method = systemInfo.Action;
                         foreach (var entity in entities)
                         {
-                            if (entity.IsDispose) continue;
+                            if (entity.IsDisposed) continue;
                             method.Invoke(system, new object[] { entity });
                         }
                     }

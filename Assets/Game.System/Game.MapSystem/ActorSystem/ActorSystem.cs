@@ -19,14 +19,16 @@ IUpdate<Actor>
             MoveSystem.SetSpeed(entity, 10);
             MoveSystem.SetStopSpeed(entity, 5);
             FireSystem.SetSpeed(entity, 5);
+
+            if (entity.GetComponent<AIComponent>() is { } component)
+            {
+                component.Enable = true;
+            }
         }
 
         public void Update(Actor entity)
         {
-            //if (entity.GetComponent<MoveComponent>() is { } component)
-            //{
-            //    MoveSystem.Update(entity, component);
-            //}
+
         }
 
         public static Actor Create(TrueGame game, long actorId)

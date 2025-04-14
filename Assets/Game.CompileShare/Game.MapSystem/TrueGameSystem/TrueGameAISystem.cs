@@ -14,8 +14,8 @@ namespace ECSGame
             var allEntities = game.Id2Children.Values.ToArray();
             foreach ( var entity in allEntities)
             {
-                if (entity.IsDispose) continue;
-                if (entity.GetComponent<AIComponent>() is { } component)
+                if (entity.IsDisposed) continue;
+                if (entity.GetComponent<AIComponent>() is { Enable:true } component)
                 {
                     AISystem.FrameUpdate(entity, component, determineFrame);
                 }

@@ -19,7 +19,7 @@ namespace ECSGame
     }
 
     public class AIComponent : EcsComponent
-	{
+    {
 		public long ActionQueueIndex {  get; set; }
 		public Dictionary<long, AIActionQueue> AIActionQueues { get; set; } = new();
 		public Dictionary<long, Queue<AINode>> NodeMap { get; set; } = new();

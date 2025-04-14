@@ -106,5 +106,5 @@ namespace ECSGame
         public Actor OtherActor { get; set; }
 
         public Action<TrueGame, long> OnFrameUpdate { get; set; }
-    } 
+    }
 }

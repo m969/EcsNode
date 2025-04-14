@@ -27,12 +27,12 @@ IInit<TrueGame, TrueGameCollisionComponent>
 
             foreach ( var entity in allEntities)
             {
-                if (entity.IsDispose) continue;
+                if (entity.IsDisposed) continue;
                 var collision1 = entity.GetComponent<CollisionComponent>();
                 if (collision1 == null) continue;
                 foreach ( var entity2 in allEntities)
                 {
-                    if (entity2.IsDispose) continue;
+                    if (entity2.IsDisposed) continue;
                     if (entity == entity2) continue;
                     if (entity is Item && entity2 is Item) continue;
                     var collision2 = entity2.GetComponent<CollisionComponent>();

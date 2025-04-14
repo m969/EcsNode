@@ -51,18 +51,17 @@ namespace ECSGame
     }
 
     public class AISystem : AComponentSystem<EcsEntity, AIComponent>,
-IAwake<EcsEntity, AIComponent>
+        IAwake<EcsEntity, AIComponent>,
+        IEnable<EcsEntity, AIComponent>,
+        IDisable<EcsEntity, AIComponent>
     {
         public void Awake(EcsEntity entity, AIComponent component)
         {
-            //var actionQueue = CreateActionQueue(entity);
-            //actionQueue.OnNext<MoveAIAction>().OnNext<IdleAIAction>();
-            //RepeatAction(entity, actionQueue).Coroutine();
+            
+        }
 
-            //var actionQueue2 = CreateActionQueue(entity);
-            //actionQueue2.OnNext<PatrolAIAction>();
-            //RunAction(entity, actionQueue2).Coroutine();
-
+        public void Enable(EcsEntity entity, AIComponent component)
+        {
             var aiNode = new AINode()
             {
                 Id = 1,
@@ -70,8 +69,12 @@ IAwake<EcsEntity, AIComponent>
                 Entity = entity,
                 AIAction = ReloadSystem.CreateInstance(entity.EcsNode, typeof(MoveInputAIAction).FullName) as IAIAction
             };
-
             StartNode(aiNode);
+        }
+
+        public void Disable(EcsEntity entity, AIComponent component)
+        {
+
         }
 
         public static void FrameUpdate(EcsEntity entity, AIComponent component, long determineFrame)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace ECS
 {
@@ -11,7 +12,7 @@ namespace ECS
         public long Id { get; set; }
         //public long InstanceId { get; set; }
         //public long UniqueId { get; set; }
-        public bool IsDispose
+        public bool IsDisposed
         {
             get
             {
@@ -21,6 +22,23 @@ namespace ECS
         public Dictionary<long, EcsEntity> Id2Children = new();
         public Dictionary<Type, EcsComponent> Components { get; set; } = new();
         public EcsEntity Parent { get; set; }
+        private bool enable;
+        public bool Enable
+        {
+            get { return enable; }
+            set
+            {
+                if (!enable && value)
+                {
+                    enable = value;
+                    foreach (var item in Components.Values)
+                    {
+                        item.Enable = value;
+                    }
+                    EcsNode.DriveEntitySystems(this, typeof(IEnable));
+                }
+            }
+        }
 
         public EcsNode EcsNode
         {
@@ -121,11 +139,11 @@ namespace ECS
 
         public void Init()
         {
-            EcsNode.DriveEntitySystems(this, typeof(IInit));
             foreach (var item in Components.Values)
             {
                 EcsNode.DriveComponentSystems(this, item, typeof(IInit));
             }
+            EcsNode.DriveEntitySystems(this, typeof(IInit));
         }
     }
 }

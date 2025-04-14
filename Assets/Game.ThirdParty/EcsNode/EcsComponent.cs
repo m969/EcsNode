@@ -15,6 +15,19 @@ namespace ECS
     public class EcsComponent : EcsObject, IEcsComponent
     {
         public EcsEntity Entity { get; set; }
+        private bool enable;
+        public bool Enable
+        {
+            get {  return enable; }
+            set
+            {
+                if (!enable && value)
+                {
+                    enable = value;
+                    Entity.EcsNode.DriveComponentSystems(Entity, this, typeof(IEnable));
+                }
+            }
+        }
     }
 
     public class EcsComponent<T> : EcsComponent where T : EcsEntity

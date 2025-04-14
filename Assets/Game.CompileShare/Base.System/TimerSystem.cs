@@ -47,7 +47,7 @@ IAwake<EcsNode, TimerComponent>
 
         public static TimerProgress FrameTimer(EcsEntity entity, int timerType, long frameCount)
         {
-            if (entity.IsDispose)
+            if (entity.IsDisposed)
             {
                 return TimerProgress.Disposed;
             }
@@ -80,7 +80,7 @@ IAwake<EcsNode, TimerComponent>
 
         public static TimerProgress FrameRepeatTimer(EcsEntity entity, int timerType, long frameCount, bool preTrigger = false)
         {
-            if (entity.IsDispose)
+            if (entity.IsDisposed)
             {
                 return TimerProgress.Disposed;
             }

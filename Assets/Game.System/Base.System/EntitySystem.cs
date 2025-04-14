@@ -14,7 +14,6 @@ namespace ECS
         /// </summary>
         public void Awake(EcsEntity entity)
         {
-            //Debug.Log($"EntitySystem Awake {entity.GetType().Name}");
         }
 
         /// <summary>
@@ -22,7 +21,6 @@ namespace ECS
         /// </summary>
         public void Init(EcsEntity entity)
         {
-            //Debug.Log($"EntitySystem Init {entity.GetType().Name}");
         }
     }
 }

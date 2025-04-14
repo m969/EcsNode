@@ -109,7 +109,12 @@ public class AppLoad : MonoBehaviour
         EcsNode = new EcsNode(1);
         EcsNode.Id = EcsNode.NewInstanceId();
         StaticObject.EcsNode = EcsNode;
-        RegisterDrives(EcsNode);
+        EcsNode.RegisterDrive<IAwake>();
+        EcsNode.RegisterDrive<IEnable>();
+        EcsNode.RegisterDrive<IDisable>();
+        EcsNode.RegisterDrive<IDestroy>();
+        EcsNode.RegisterDrive<IInit>();
+        EcsNode.RegisterDrive<IUpdate>();
         EcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);
 
         //PrePlayEcsNode = new EcsNode();
@@ -139,15 +144,6 @@ public class AppLoad : MonoBehaviour
         //Env = new JsEnv(loader);
         ////env.ExecuteModule("test.mts");
         //Env.ExecuteModule("main.mts");
-    }
-
-    private EcsNode RegisterDrives(EcsNode ecsNode)
-    {
-        ecsNode.RegisterDrive<IAwake>();
-        ecsNode.RegisterDrive<IDestroy>();
-        ecsNode.RegisterDrive<IInit>();
-        ecsNode.RegisterDrive<IUpdate>();
-        return ecsNode;
     }
 
     //private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
