@@ -18,22 +18,20 @@ public class GameDebugEditor : OdinEditorWindow
 
     private void Update()
     {
-        if (Application.isPlaying)
-        {
-            if (AppLoad.NeedReload)
-            {
-                AppLoad.NeedReload = false;
+        //if (Application.isPlaying)
+        //{
+        //    if (AppLoad.NeedReload)
+        //    {
+        //        AppLoad.NeedReload = false;
+        //        ReloadFGUI();
+        //    }
 
-                ReloadFGUI();
-            }
-
-            if (AppLoad.NeedReloadShare)
-            {
-                AppLoad.NeedReloadShare = false;
-
-                CompileShare();
-            }
-        }
+        //    if (AppLoad.NeedReloadShare)
+        //    {
+        //        AppLoad.NeedReloadShare = false;
+        //        CompileShare();
+        //    }
+        //}
     }
 
     public void CopyShareScripts(string shareFolder)
@@ -83,7 +81,7 @@ public class GameDebugEditor : OdinEditorWindow
         CopyShareScripts("Game.Model");
         CopyShareScripts("Game.System");
         AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-        BuildAssembliesHelper.DoCompile();
+        BuildAssembliesHelper.CompileShareAssemblies();
         //if (!Application.isPlaying)
         //{
         //    EditorApplication.isPlaying = true;

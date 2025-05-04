@@ -44,7 +44,7 @@ IUpdate<TrueGame>
         public void Update(TrueGame game)
         {
             var currentFrame = game.NextFrame;
-
+            //TrueGameViewSystem.FrameUpdate(game, currentFrame);
             // 计算下一帧理论执行时间
             long nextFrameTime = currentFrame * game.FrameInterval + game.StartFrameTime;
 

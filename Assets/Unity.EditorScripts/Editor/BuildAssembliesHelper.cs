@@ -44,31 +44,42 @@ namespace ET
         //}
 
         //[MenuItem("ECSNode/Compile MergeSystem")]
-        public static void CompileAssemblies()
+        public static void CompileShareAssemblies()
         {
             // 获取所有 asmdef 程序集的源代码文件
             var sourceFiles = new List<string>();
             var assemblies = CompilationPipeline.GetAssemblies();
             foreach (var assembly in assemblies)
             {
+                //if (assembly.name.StartsWith("Game.CompileShare"))
+                //{
+                //    sourceFiles.AddRange(assembly.sourceFiles);
+                //}
                 if (assembly.name.StartsWith("Game.System"))
                 {
                     sourceFiles.AddRange(assembly.sourceFiles);
                 }
-                if (assembly.name.StartsWith("Game.ViewSystem"))
+                if (assembly.name.StartsWith("Game.Model"))
                 {
                     sourceFiles.AddRange(assembly.sourceFiles);
                 }
             }
 
             // 使用 Roslyn 编译
-            var syntaxTrees = sourceFiles.Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file)));
+            var syntaxTrees = sourceFiles.Where(file => !file.Contains("View") && !file.Contains("Unity")).Select(file =>
+            {
+                return CSharpSyntaxTree.ParseText(File.ReadAllText(file));
+            });
             var allAss = AppDomain.CurrentDomain.GetAssemblies();
-            var reloadDll = "MergeSystem";
+            var reloadDll = "CompileShare";
             var references = allAss
                 .Where(a => !a.IsDynamic)
-                .Where(a => a.GetName().Name != reloadDll)
-                .Select(a => MetadataReference.CreateFromFile(a.Location))
+                .Where(a => a.GetName().Name != "Game.System" && a.GetName().Name != "Game.Model")
+                .Where(a => string.IsNullOrEmpty(a.Location) == false)
+                .Select(a =>
+                {
+                    return MetadataReference.CreateFromFile(a.Location);
+                })
                 .Cast<MetadataReference>()
                 .ToList();
 
@@ -108,8 +119,12 @@ namespace ET
                 {
                     foreach (var diagnostic in result.Diagnostics)
                     {
-                        Debug.Log(diagnostic.ToString());
+                        if (diagnostic.Severity == DiagnosticSeverity.Error)
+                        {
+                            Debug.LogError(diagnostic.ToString());
+                        }
                     }
+                    Debug.LogError("共享程序集编译报错！请修复错误！");
                 }
             }
 

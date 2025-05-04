@@ -21,10 +21,18 @@ namespace ECS
             get {  return enable; }
             set
             {
-                if (!enable && value)
+                if (enable != value)
                 {
-                    enable = value;
-                    Entity.EcsNode.DriveComponentSystems(Entity, this, typeof(IEnable));
+                    if (!enable && value)
+                    {
+                        enable = value;
+                        Entity.EcsNode.DriveComponentSystems(Entity, this, typeof(IEnable));
+                    }
+                    if (enable && !value)
+                    {
+                        enable = value;
+                        Entity.EcsNode.DriveComponentSystems(Entity, this, typeof(IDisable));
+                    }
                 }
             }
         }

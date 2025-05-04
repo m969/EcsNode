@@ -112,6 +112,7 @@ namespace SingularityGroup.HotReload.Editor {
                                                 RenderAutoRecompileUnsupportedChangesOnExitPlayMode();
                                                 RenderAutoRecompileUnsupportedChangesInPlayMode();
                                                 RenderAutoRecompilePartiallyUnsupportedChanges();
+                                                RenderDisplayNewMonobehaviourMethodsAsPartiallySupported();
                                             }
                                         }
                                         EditorGUILayout.Space();
@@ -460,6 +461,18 @@ namespace SingularityGroup.HotReload.Editor {
                 toggleDescription = "Hot Reload will recompile partially unsupported changes.";
             } else {
                 toggleDescription = "Enable to recompile partially unsupported changes.";
+            }
+            EditorGUILayout.LabelField(toggleDescription, HotReloadWindowStyles.WrapStyle);
+            EditorGUILayout.EndToggleGroup();
+        }
+        
+        void RenderDisplayNewMonobehaviourMethodsAsPartiallySupported() {
+            HotReloadPrefs.DisplayNewMonobehaviourMethodsAsPartiallySupported = EditorGUILayout.BeginToggleGroup(new GUIContent("Display new Monobehaviour methods as partially supported"), HotReloadPrefs.DisplayNewMonobehaviourMethodsAsPartiallySupported);
+            string toggleDescription;
+            if (HotReloadPrefs.DisplayNewMonobehaviourMethodsAsPartiallySupported) {
+                toggleDescription = "Hot Reload will display new monobehaviour methods as partially unsupported.";
+            } else {
+                toggleDescription = "Enable to display new monobehaviour methods as partially unsupported.";
             }
             EditorGUILayout.LabelField(toggleDescription, HotReloadWindowStyles.WrapStyle);
             EditorGUILayout.EndToggleGroup();

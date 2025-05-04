@@ -8,75 +8,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using ECSUnity;
 using ECSGame;
-//using Puerts;
-//using Puerts.TSLoader;
-
-//public class TestLoader : ILoader
-//{
-//    public Dictionary<string, string> TextMaps = new();
-
-//    public bool FileExists(string specifier)
-//    {
-//        ConsoleLog.Debug($"FileExists {specifier}");
-//        //return specifier.EndsWith(".mjs");
-//        return false;
-//    }
-
-//    public string ReadFile(string specifier, out string debugpath)
-//    {
-//        if (specifier.EndsWith(".mjs"))
-//        {
-//            debugpath = specifier.Replace(".mjs", "");
-//        }
-//        else
-//        {
-//            debugpath = specifier;
-//        }
-//        //return "console.log('test Runtime')";
-//        ConsoleLog.Debug($"ReadFile {debugpath}");
-//        return Resources.Load<TextAsset>(debugpath).text;
-//    }
-//}
 
 public class Define
 {
     public static string BuildOutputDir = "./DllDatas";
 }
-
-//public class AssemblyLoader : MarshalByRefObject
-//{
-//    public Assembly Load(byte[] ass, byte[] pdb)
-//    {
-//        Assembly assembly = Assembly.Load(ass, pdb);
-//        return assembly;
-//    }
-
-//    public Assembly LoadFile(string assemblyPath)
-//    {
-//        // 加载程序集
-//        Assembly assembly = Assembly.LoadFrom(assemblyPath);
-
-//        //// 使用反射调用方法
-//        //Type type = assembly.GetType("MyNamespace.MyClass");
-//        //object instance = Activator.CreateInstance(type);
-//        //type.GetMethod("MyMethod").Invoke(instance, null);
-
-//        return assembly;
-//    }
-//}
-
-//public class ConsoleLogger : IConsoleLogger
-//{
-//    public void Log(object log)
-//    {
-//        Debug.Log(log);
-//    }
-
-//    public void LogError(object log)
-//    {
-//        Debug.LogError(log);
-//    }
-//}
 
 public class AppLoad : MonoBehaviour
 {
@@ -88,7 +24,6 @@ public class AppLoad : MonoBehaviour
     private float NextCheckReloadTime {  get; set; }
     private Dictionary<string, string> ScriptFiles {  get; set; } = new Dictionary<string, string>();
     public GameObject ReloadPanelObj;
-    //public JsEnv Env { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -117,47 +52,8 @@ public class AppLoad : MonoBehaviour
         EcsNode.RegisterDrive<IUpdate>();
         EcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);
 
-        //PrePlayEcsNode = new EcsNode();
-        //StaticObject.PrePlayEcsNode = PrePlayEcsNode;
-        //RegisterDrives(PrePlayEcsNode);
-        //PrePlayEcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);
-
         Process_GameSystem.Init(EcsNode, typeof(Process_GameSystem).Assembly);
-        //LoadSystemAssembly("Init");
-        //if (ReloadPanelObj)
-        //{
-        //    ReloadPanelObj.transform.Find("Btn_Reload").GetComponent<Button>().onClick.AddListener(() =>
-        //    {
-        //        NeedReload = true;
-        //    });
-        //}
-
-        //var loader = new TSLoader();
-        //// UseRuntimeLoader在Runtime下会形成链式处理。在Editor下不生效。
-        //// 执行顺序是Loader加入顺序的倒序
-
-        //// 通过菜单命令可以快速把TS构建到Resources目录供DefaultLoader使用   
-        //loader.UseRuntimeLoader(new DefaultLoader());
-        //// Editor下打开PUERTS_TSLOADER_DISABLE_EDITOR_FEATURE可以测试runtime下的效果。
-        //loader.UseRuntimeLoader(new TestLoader());
-
-        //Env = new JsEnv(loader);
-        ////env.ExecuteModule("test.mts");
-        //Env.ExecuteModule("main.mts");
     }
-
-    //private static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
-    //{
-    //    string assemblyName = new AssemblyName(args.Name).Name;
-    //    string assemblyPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll");
-    //    Debug.Log($"OnAssemblyResolve {assemblyPath}");
-    //    if (File.Exists(assemblyPath))
-    //    {
-    //        return Assembly.LoadFrom(assemblyPath);
-    //    }
-
-    //    return null;
-    //}
 
     private void LoadSystemAssembly(string method)
     {
@@ -168,16 +64,9 @@ public class AppLoad : MonoBehaviour
         methodInfo.Invoke(null, new object[2] { EcsNode, assembly });
     }
 
-    //[ContextMenu("Reload")]
     public void Reload()
     {
         Process_GameSystem.Reload(EcsNode, typeof(Process_GameSystem).Assembly);
-
-        //LoadSystemAssembly("Reload");
-        //if (ReloadPanelObj)
-        //{
-        //    ReloadPanelObj.gameObject.SetActive(false);
-        //}
     }
 
     public void ReloadUI()
@@ -222,14 +111,7 @@ public class AppLoad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (EcsNode == null)
-        //{
-        //    ConsoleLog.Debug("EcsNode == null");
-        //    return;
-        //}
         EcsNode?.DriveEntityUpdate();
-        PrePlayEcsNode?.DriveEntityUpdate();
-        //Env?.Tick();
 
         //if (Time.realtimeSinceStartup > NextCheckReloadTime)
         //{
@@ -244,6 +126,6 @@ public class AppLoad : MonoBehaviour
 
     void FixedUpdate()
     {
-        //EcsNode.DriveUpdate();
+        EcsNode?.DriveEntityFixedUpdate();
     }
 }

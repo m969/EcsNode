@@ -55,6 +55,7 @@ namespace ECS
         public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; }= new();
         public Dictionary<(Type, Type), Dictionary<Type, SystemInfo>> AllEntityComponentSystems { get; set; }= new();
         public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; }= new();
+        public Dictionary<Type, List<SystemInfo>> AllFixedUpdateSystems { get; set; }= new();
         public List<Type> DriveTypes { get; set; } = new();
         public Type[] AllTypes { get; set; }
 
@@ -103,6 +104,7 @@ namespace ECS
             var allEntitySystems = new Dictionary<Type, Dictionary<Type, List<SystemInfo>>>();
             var allEntityComponentSystems = new Dictionary<(Type, Type), Dictionary<Type, SystemInfo>>();
             var allUpdateSystems = new Dictionary<Type, List<SystemInfo>>();
+            var allFixedUpdateSystems = new Dictionary<Type, List<SystemInfo>>();
             var updateEntityTypes = new List<Type>();
 
             foreach (var systemType in types)
@@ -164,7 +166,25 @@ namespace ECS
                                         allUpdateSystems.Add(entityType, new List<SystemInfo>());
                                     }
                                     allUpdateSystems[entityType].Add(systemInfo);
-                                    updateEntityTypes.Add(entityType);
+
+                                    if (updateEntityTypes.Contains(entityType) == false)
+                                    {
+                                        updateEntityTypes.Add(entityType);
+                                    }
+                                }
+
+                                if (item == typeof(IFixedUpdate))
+                                {
+                                    if (allFixedUpdateSystems.ContainsKey(entityType) == false)
+                                    {
+                                        allFixedUpdateSystems.Add(entityType, new List<SystemInfo>());
+                                    }
+                                    allFixedUpdateSystems[entityType].Add(systemInfo);
+
+                                    if (updateEntityTypes.Contains(entityType) == false)
+                                    {
+                                        updateEntityTypes.Add(entityType);
+                                    }
                                 }
 
                                 break;
@@ -212,6 +232,7 @@ namespace ECS
             AllEntitySystems = allEntitySystems;
             AllEntityComponentSystems = allEntityComponentSystems;
             AllUpdateSystems = allUpdateSystems;
+            AllFixedUpdateSystems = allFixedUpdateSystems;
             UpdateEntityTypes = updateEntityTypes;
         }
 
@@ -336,24 +357,42 @@ namespace ECS
                     }
                 }
             }
-
-            //EcsUpdate?.Update(this);
         }
 
-        //public void DriveFixedUpdate()
-        //{
-        //    foreach (var item in AllUpdateSystems)
-        //    {
-        //        var entityType = item.Key;
-        //        var entities = UpdateEntities[entityType];
-        //        var systemInfo = item.Value;
-        //        var system = systemInfo.System;
-        //        var method = systemInfo.Action;
-        //        foreach (var entity in entities)
-        //        {
-        //            method.Invoke(system, new object[] { entity });
-        //        }
-        //    }
-        //}
+        public void DriveEntityFixedUpdate()
+        {
+            var systems = AllFixedUpdateSystems;
+            foreach (var item in systems)
+            {
+                var entityType = item.Key;
+                if (entityType == typeof(EcsNode))
+                {
+                    var systemList = item.Value;
+                    foreach (var systemInfo in systemList)
+                    {
+                        var system = systemInfo.System;
+                        var method = systemInfo.Action;
+                        if (this.IsDisposed) continue;
+                        method.Invoke(system, new object[] { this });
+                    }
+                    continue;
+                }
+
+                if (UpdateEntities.TryGetValue(entityType, out var entities))
+                {
+                    var systemList = item.Value;
+                    foreach (var systemInfo in systemList)
+                    {
+                        var system = systemInfo.System;
+                        var method = systemInfo.Action;
+                        foreach (var entity in entities)
+                        {
+                            if (entity.IsDisposed) continue;
+                            method.Invoke(system, new object[] { entity });
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -7,10 +7,13 @@ namespace SingularityGroup.HotReload.Editor {
         private const string ShowingRedDotKey = "HotReloadWindow.ShowingRedDot";
         private const string ShowedEditorsWithoutHRKey = "HotReloadWindow.ShowedEditorWithoutHR";
         private const string ShowedFieldInitializerWithSideEffectsKey = "HotReloadWindow.ShowedFieldInitializerWithSideEffects";
+        private const string ShowedAddMonobehaviourMethodsKey = "HotReloadWindow.ShowedAddMonobehaviourMethods";
         private const string ShowedFieldInitializerExistingInstancesEditedKey = "HotReloadWindow.ShowedFieldInitializerExistingInstancesEdited";
         private const string ShowedFieldInitializerExistingInstancesUneditedKey = "HotReloadWindow.ShowedFieldInitializerExistingInstancesUnedited";
         private const string RecompiledUnsupportedChangesOnExitPlaymodeKey = "HotReloadWindow.RecompiledUnsupportedChangesOnExitPlaymode";
         private const string RecompiledUnsupportedChangesInPlaymodeKey = "HotReloadWindow.RecompiledUnsupportedChangesInPlaymode";
+        private const string EditorCodePatcherInitKey = "HotReloadWindow.EditorCodePatcherInit";
+        
 
         public static int ServerPort {
             get { return SessionState.GetInt(ServerPortKey, RequestHelper.defaultPort); }
@@ -37,6 +40,11 @@ namespace SingularityGroup.HotReload.Editor {
             set { SessionState.SetBool(ShowedFieldInitializerWithSideEffectsKey, value); }
         }
         
+        public static bool ShowedAddMonobehaviourMethods {
+            get { return SessionState.GetBool(ShowedAddMonobehaviourMethodsKey, false); }
+            set { SessionState.SetBool(ShowedAddMonobehaviourMethodsKey, value); }
+        }
+        
         public static bool ShowedFieldInitializerExistingInstancesEdited {
             get { return SessionState.GetBool(ShowedFieldInitializerExistingInstancesEditedKey, false); }
             set { SessionState.SetBool(ShowedFieldInitializerExistingInstancesEditedKey, value); }
@@ -55,6 +63,11 @@ namespace SingularityGroup.HotReload.Editor {
         public static bool RecompiledUnsupportedChangesInPlaymode {
             get { return SessionState.GetBool(RecompiledUnsupportedChangesInPlaymodeKey, false); }
             set { SessionState.SetBool(RecompiledUnsupportedChangesInPlaymodeKey, value); }
+        }
+        
+        public static bool EditorCodePatcherInit {
+            get { return SessionState.GetBool(EditorCodePatcherInitKey, false); }
+            set { SessionState.SetBool(EditorCodePatcherInitKey, value); }
         }
     }
 

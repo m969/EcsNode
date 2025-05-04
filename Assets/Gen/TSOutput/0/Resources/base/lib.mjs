@@ -1,2 +1,0 @@
-export default 'hello world';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGliLm1qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uL0dhbWUuVHlwZVNjcmlwdHMvYmFzZS9saWIubXRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLGVBQWUsYUFBYSxDQUFBIn0=

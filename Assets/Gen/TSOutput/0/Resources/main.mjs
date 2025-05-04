@@ -1,7 +1,0 @@
-import "csharp";
-import str from './base/lib.mjs';
-import LoginBinder from './ui_scripts/Login/LoginBinder.mjs';
-LoginBinder.bindAll();
-console.log(str);
-export default str;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi5tanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9HYW1lLlR5cGVTY3JpcHRzL21haW4ubXRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sUUFBUSxDQUFBO0FBQ2YsT0FBTyxHQUFHLE1BQU0sZ0JBQWdCLENBQUE7QUFDaEMsT0FBTyxXQUFXLE1BQU0sb0NBQW9DLENBQUM7QUFDN0QsV0FBVyxDQUFDLE9BQU8sRUFBRSxDQUFDO0FBQ3RCLE9BQU8sQ0FBQyxHQUFHLENBQUMsR0FBRyxDQUFDLENBQUM7QUFDakIsZUFBZSxHQUFHLENBQUEifQ==

@@ -28,14 +28,26 @@ namespace ECS
             get { return enable; }
             set
             {
-                if (!enable && value)
+                if (enable != value)
                 {
-                    enable = value;
-                    foreach (var item in Components.Values)
+                    if (!enable && value)
                     {
-                        item.Enable = value;
+                        enable = value;
+                        foreach (var item in Components.Values)
+                        {
+                            item.Enable = value;
+                        }
+                        EcsNode.DriveEntitySystems(this, typeof(IEnable));
                     }
-                    EcsNode.DriveEntitySystems(this, typeof(IEnable));
+                    if (enable && !value)
+                    {
+                        enable = value;
+                        foreach (var item in Components.Values)
+                        {
+                            item.Enable = value;
+                        }
+                        EcsNode.DriveEntitySystems(this, typeof(IDisable));
+                    }
                 }
             }
         }

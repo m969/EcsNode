@@ -40,12 +40,6 @@ namespace SingularityGroup.HotReload.Editor {
         const string sessionFilePath = PackageConst.LibraryCachePath + "/sessionId.txt";
         const string patchesFilePath = PackageConst.LibraryCachePath + "/patches.json";
         
-        #if ODIN_INSPECTOR
-        const bool hasOdin = true;
-        #else
-        const bool hasOdin = false;
-        #endif
-        
         internal static readonly ServerDownloader serverDownloader;
         internal static bool _compileError;
         internal static bool _applyingFailed;
@@ -84,6 +78,20 @@ namespace SingularityGroup.HotReload.Editor {
         internal static MethodInfo DrawOdinInspectorInfo = null;
         #endif
 
+        internal static MethodInfo GetDrawVInspectorInfo() {
+            // performance optimization
+            if (!Directory.Exists("Assets/vInspector")) {
+                return null;
+            }
+            try {
+                var t = Type.GetType("VInspector.AbstractEditor, VInspector");
+                return t?.GetMethod("OnInspectorGUI", BindingFlags.Public | BindingFlags.Instance);
+            } catch {
+                // ignore
+            }
+            return null;
+        }
+
         internal static ICompileChecker compileChecker;
         static bool quitting;
         static EditorCodePatcher() {
@@ -113,7 +121,7 @@ namespace SingularityGroup.HotReload.Editor {
             }
             
             // ReSharper disable ExpressionIsAlwaysNull
-            UnityFieldHelper.Init(Log.Warning, HotReloadRunTab.Recompile, DrawOdinInspectorInfo, OdinPropertyDrawInfo, OdinPropertyDrawPrefixInfo, typeof(UnityFieldDrawerPatchHelper));
+            UnityFieldHelper.Init(Log.Warning, HotReloadRunTab.Recompile, DrawOdinInspectorInfo, OdinPropertyDrawInfo, OdinPropertyDrawPrefixInfo, GetDrawVInspectorInfo(), typeof(UnityFieldDrawerPatchHelper));
             
             timer = new Timer(OnIntervalThreaded, (Action) OnIntervalMainThread, 500, 500);
 
@@ -189,6 +197,10 @@ namespace SingularityGroup.HotReload.Editor {
                 HotReloadSuggestionsHelper.SetSuggestionInactive(HotReloadSuggestionKind.SwitchToDebugModeForInlinedMethods);
             }
 #endif
+            if (!HotReloadState.EditorCodePatcherInit) {
+                ClearPersistence();
+                HotReloadState.EditorCodePatcherInit = true;
+            }
         }
 
         static void ResetSettingsOnQuit() {
@@ -700,6 +712,11 @@ namespace SingularityGroup.HotReload.Editor {
 
             var partiallySupportedChangesFiltered = new List<PartiallySupportedChange>(response.partiallySupportedChanges ?? Array.Empty<PartiallySupportedChange>());
             partiallySupportedChangesFiltered.RemoveAll(x => !HotReloadTimelineHelper.GetPartiallySupportedChangePref(x));
+            if (!HotReloadPrefs.DisplayNewMonobehaviourMethodsAsPartiallySupported && partiallySupportedChangesFiltered.Remove(PartiallySupportedChange.AddMonobehaviourMethod)) {
+                if (HotReloadSuggestionsHelper.CanShowServerSuggestion(HotReloadSuggestionKind.AddMonobehaviourMethod)) {
+                    HotReloadSuggestionsHelper.SetServerSuggestionShown(HotReloadSuggestionKind.AddMonobehaviourMethod);
+                }
+            }
             var failuresDeduplicated = new HashSet<string>(response.failures ?? Array.Empty<string>());
 
             foreach (var hotReloadSuggestionKind in response.suggestions) {
@@ -867,6 +884,10 @@ namespace SingularityGroup.HotReload.Editor {
                 firstPatchAttempted = false;
                 RequestCompile().Forget();
             }
+            ClearPersistence();
+        }
+        
+        static void ClearPersistence() {
             Task.Run(() => File.Delete(patchesFilePath));
             HotReloadTimelineHelper.ClearPersistance();
         }
