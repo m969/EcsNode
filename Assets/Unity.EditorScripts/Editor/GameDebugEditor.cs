@@ -78,9 +78,9 @@ public class GameDebugEditor : OdinEditorWindow
     [Button("CompileShare", ButtonHeight = 35)]// ◌▲◂◀◁▷◷◯≌≋≊◌↟↝↺↻⇑⇈⇡⇧⇪⇭⇮⇫⇯⇬ Play ▶
     public void CompileShare()
     {
-        CopyShareScripts("Game.Model");
-        CopyShareScripts("Game.System");
-        AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+        //CopyShareScripts("Game.Model");
+        //CopyShareScripts("Game.System");
+        //AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         BuildAssembliesHelper.CompileShareAssemblies();
         //if (!Application.isPlaying)
         //{
