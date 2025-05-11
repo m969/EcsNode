@@ -19,7 +19,6 @@ namespace ECSGame
             {
                 if (framePlay is FramePlay_Move movePlay)
                 {
-                    //moveComp.Moving = true;
                     MoveSystem.SetMovePosition(actor, movePlay.AfterPosition);
                     if (moveComp.LeftStopStep != 0)
                     {
@@ -28,16 +27,18 @@ namespace ECSGame
                 }
                 if (framePlay is FramePlay_StopMove stopMovePlay)
                 {
-                    //moveComp.Moving = false;
-                    if (moveComp.LeftStopStep == 0)
-                    {
-                        moveComp.LeftStopStep = moveComp.StopSpeed;
-                    }
+                    moveComp.LeftStopStep = stopMovePlay.LeftStopStep;
+                    //if (moveComp.LeftStopStep == 0)
+                    //{
+                    //    moveComp.LeftStopStep = moveComp.StopSpeed;
+                    //}
                 }
                 if (framePlay is FramePlay_MoveStop moveStopPlay)
                 {
-                    moveComp.LeftStopStep--;
+                    moveComp.LeftStopStep = moveStopPlay.LeftStopStep;
+                    //moveComp.LeftStopStep--;
                     MoveSystem.SetMovePosition(actor, moveStopPlay.AfterPosition);
+                    //ConsoleLog.Debug($"ActorDeterminePlaySystem PlayFramePlays {determineFrame} {moveStopPlay.AfterPosition}");
                 }
             }
         }
@@ -81,9 +82,9 @@ namespace ECSGame
                     }
                     if (inputType == InputType.StopMove)
                     {
-                        framePlay = MoveSystem.StopMoveFrame(actor);
-                        playList.Add(framePlay);
-                        framePlay = MoveSystem.MoveStopFrame(actor, moveComp.TrueDirection);
+                        //framePlay = MoveSystem.StopMoveFrame(actor);
+                        //playList.Add(framePlay);
+                        framePlay = MoveSystem.MoveStopFrame(actor, moveComp.TrueDirection, moveComp.StopSpeed - 1);
                         playList.Add(framePlay);
                     }
                     //if (inputType == InputType.StopMove) MoveSystem.ChangeMove(actor, TSVector.zero);
@@ -94,7 +95,7 @@ namespace ECSGame
 
             if (moveComp.LeftStopStep > 0)
             {
-                framePlay = MoveSystem.MoveStopFrame(actor, moveComp.TrueDirection);
+                framePlay = MoveSystem.MoveStopFrame(actor, moveComp.TrueDirection, moveComp.LeftStopStep - 1);
                 playList.Add(framePlay);
             }
 

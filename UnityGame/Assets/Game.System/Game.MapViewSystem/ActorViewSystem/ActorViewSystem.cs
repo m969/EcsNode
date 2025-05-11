@@ -23,10 +23,7 @@ IUpdate<Actor>
 
         public void Update(Actor entity)
         {
-            if (entity.GetComponent<ModelViewComponent>() is { } component)
-            {
-                ModelViewSystem.Update(entity, component);
-            }
+            EntityViewSystem.Update(entity);
         }
     }
 }

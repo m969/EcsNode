@@ -30,15 +30,18 @@ namespace ECSGame
                     }
                     if (framePlay is FramePlay_StopMove stopMovePlay)
                     {
-                        if (moveComp.ForecastLeftStopStep == 0)
-                        {
-                            moveComp.ForecastLeftStopStep = moveComp.StopSpeed;
-                        }
+                        moveComp.ForecastLeftStopStep = stopMovePlay.LeftStopStep;
+                        //if (moveComp.ForecastLeftStopStep == 0)
+                        //{
+                        //    moveComp.ForecastLeftStopStep = moveComp.StopSpeed;
+                        //}
                     }
                     if (framePlay is FramePlay_MoveStop moveStopPlay)
                     {
-                        moveComp.ForecastLeftStopStep--;
+                        moveComp.ForecastLeftStopStep = moveStopPlay.LeftStopStep;
+                        //moveComp.ForecastLeftStopStep--;
                         MoveSystem.SetMoveForecastPosition(actor, moveStopPlay.AfterPosition);
+                        //ConsoleLog.Debug($"ActorPredictPlaySystem PredictionFramePlays {frame} {moveStopPlay.AfterPosition}");
                     }
                 }
             }
@@ -78,9 +81,9 @@ namespace ECSGame
                         }
                         if (inputType == InputType.StopMove && moveComp.ForecastLeftStopStep == 0)
                         {
-                            framePlay = MoveSystem.StopMoveFrame(actor);
-                            playList.Add(framePlay);
-                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
+                            //framePlay = MoveSystem.StopMoveForecastFrame(actor);
+                            //playList.Add(framePlay);
+                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection, moveComp.StopSpeed - 1);
                             playList.Add(framePlay);
                         }
                     }
@@ -88,7 +91,7 @@ namespace ECSGame
 
                 if (moveComp.ForecastLeftStopStep > 0)
                 {
-                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
+                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection, moveComp.ForecastLeftStopStep - 1);
                     playList.Add(framePlay);
                     //ConsoleLog.Debug($"PredictCreate {nowPredict} {moveComp.ForecastLeftStopStep}");
                 }

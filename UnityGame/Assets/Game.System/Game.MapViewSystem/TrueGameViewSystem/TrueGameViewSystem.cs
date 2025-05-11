@@ -26,17 +26,6 @@ IUpdate<TrueGame>
             if (game.GetComponent<PlayerInputComponent>() is { } inputComp)
             {
                 PlayerInputSystem.Update(game, inputComp);
-
-                //var myActor = game.MyActor;
-                //var determineFrame = game.DetermineFrame;
-                //var newInputFrame = determineFrame + TrueGame.ForecastFrame + 1;
-
-                //// 帧播放向前推进一帧，把收集到的输入填入最新的一帧中
-                //if (myActor.GetComponent<FramePlayComponent>().CurrentInputFrame != newInputFrame)
-                //{
-                //    myActor.GetComponent<FramePlayComponent>().CurrentInputFrame = newInputFrame;
-                //    PlayerInputSystem.FrameUpdate(game, inputComp, determineFrame, newInputFrame);
-                //}
             }
         }
 

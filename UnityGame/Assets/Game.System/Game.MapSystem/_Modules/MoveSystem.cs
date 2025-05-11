@@ -56,11 +56,12 @@ IAwake<EcsEntity, MoveComponent>
             var framePlay = new FramePlay_StopMove()
             {
                 EntityId = entity.Id,
+                LeftStopStep = entity.GetComponent<MoveComponent>().StopSpeed,
             };
             return framePlay;
         }
 
-        public static FramePlay_MoveStop MoveStopFrame(EcsEntity entity, TSVector target)
+        public static FramePlay_MoveStop MoveStopFrame(EcsEntity entity, TSVector target, int leftStopStep)
         {
             var moveComp = entity.GetComponent<MoveComponent>();
             var transComp = entity.GetComponent<TransformComponent>();
@@ -69,13 +70,24 @@ IAwake<EcsEntity, MoveComponent>
             var framePlay = new FramePlay_MoveStop()
             {
                 EntityId = entity.Id,
+                LeftStopStep = leftStopStep,
                 Position = beforePos,
                 AfterPosition = afterPos
             };
             return framePlay;
         }
 
-        public static FramePlay_MoveStop MoveForecastStopFrame(EcsEntity entity, TSVector target)
+        public static FramePlay_StopMove StopMoveForecastFrame(EcsEntity entity)
+        {
+            var framePlay = new FramePlay_StopMove()
+            {
+                EntityId = entity.Id,
+                LeftStopStep = entity.GetComponent<MoveComponent>().StopSpeed,
+            };
+            return framePlay;
+        }
+
+        public static FramePlay_MoveStop MoveForecastStopFrame(EcsEntity entity, TSVector target, int leftStopStep)
         {
             var moveComp = entity.GetComponent<MoveComponent>();
             var transComp = entity.GetComponent<TransformComponent>();
@@ -84,6 +96,7 @@ IAwake<EcsEntity, MoveComponent>
             var framePlay = new FramePlay_MoveStop()
             {
                 EntityId = entity.Id,
+                LeftStopStep = leftStopStep,
                 Position = beforePos,
                 AfterPosition = afterPos
             };
@@ -119,5 +132,5 @@ IAwake<EcsEntity, MoveComponent>
             var beforePos = transComp.ForecastPosition;
             TransformSystem.ChangeForecastPosition(actor, position);
         }
-    } 
+    }
 }

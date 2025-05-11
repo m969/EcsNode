@@ -53,6 +53,7 @@ namespace ECSGame
         public long EntityId { get; set; }
         public TSVector Position;
         public TSVector AfterPosition;
+        public int LeftStopStep { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -64,6 +65,9 @@ namespace ECSGame
     public struct FramePlay_StopMove : IFramePlay
     {
         public long EntityId { get; set; }
+        public TSVector Position;
+        public TSVector AfterPosition;
+        public int LeftStopStep { get; set; }
     }
 
     public struct FramePlay_Fire : IFramePlay

@@ -49,9 +49,9 @@ namespace ECSGame
                         }
                         if (inputType == InputType.StopMove)
                         {
-                            framePlay = MoveSystem.StopMoveFrame(actor);
-                            playList.Add(framePlay);
-                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
+                            //framePlay = MoveSystem.StopMoveForecastFrame(actor);
+                            //playList.Add(framePlay);
+                            framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection, moveComp.StopSpeed - 1);
                             playList.Add(framePlay);
                         }
                     }
@@ -59,7 +59,7 @@ namespace ECSGame
 
                 if (moveComp.ForecastLeftStopStep > 0)
                 {
-                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection);
+                    framePlay = MoveSystem.MoveForecastStopFrame(actor, moveComp.ForecastTrueDirection, moveComp.ForecastLeftStopStep - 1);
                     playList.Add(framePlay);
                 }
 

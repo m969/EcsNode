@@ -40,15 +40,14 @@ namespace ECSGame
             actor.AddComponent<FramePlayComponent>();
             actor.GetComponent<CollisionComponent>().Layer = 1;
             actor.Init();
-
-            var actor1 = ActorSystem.Create(game, ecsNode.NewInstanceId());
-            actor1.AddComponent<FramePlayComponent>();
-            actor1.GetComponent<CollisionComponent>().Layer = 2;
-            actor1.AddComponent<AIComponent>();
-            actor1.Init();
-
             game.MyActor = actor;
-            game.OtherActor = actor1;
+
+            //var actor1 = ActorSystem.Create(game, ecsNode.NewInstanceId());
+            //actor1.AddComponent<FramePlayComponent>();
+            //actor1.GetComponent<CollisionComponent>().Layer = 2;
+            //actor1.AddComponent<AIComponent>();
+            //actor1.Init();
+            //game.OtherActor = actor1;
 
             var groot = GRoot.inst;
             ReloadUI(ecsNode);

@@ -173,14 +173,17 @@ IInit<TrueGame, PlayerInputComponent>
                 inputComp.PlayerInputs.Add(input);
             }
 
-            var framePlayComp = game.MyActor.GetComponent<FramePlayComponent>();
-            if (framePlayComp.AdvanceFrameInputs.TryGetValue(determineFrame, out var playerInputs))
-            {
-                if (framePlayComp.DetermineFrameInputs.ContainsKey(determineFrame) == false)
+            {// 本地模拟服务端权威帧返回，改成真服务端流程这里需要注释掉
+                var framePlayComp = game.MyActor.GetComponent<FramePlayComponent>();
+                if (framePlayComp.AdvanceFrameInputs.TryGetValue(determineFrame, out var playerInputs))
                 {
-                    framePlayComp.DetermineFrameInputs.Add(determineFrame, new List<PlayerInput>(playerInputs));
+                    if (framePlayComp.DetermineFrameInputs.ContainsKey(determineFrame) == false)
+                    {
+                        framePlayComp.DetermineFrameInputs.Add(determineFrame, new List<PlayerInput>(playerInputs));
+                    }
                 }
             }
+
             foreach (var item in inputComp.PlayerInputs)
             {
                 //ConsoleLog.Debug($"ProcessLocalPlayerInput {newInputFrame}");
