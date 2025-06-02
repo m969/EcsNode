@@ -9,8 +9,8 @@ using UnityEngine;
 namespace ECSUnity
 {
     public class SoundSystem : AComponentSystem<EcsNode, SoundComponent>,
-IAwake<EcsNode, SoundComponent>,
-IInit<EcsNode, SoundComponent>
+        IAwake<EcsNode, SoundComponent>,
+        IInit<EcsNode, SoundComponent>
     {
         public void Awake(EcsNode entity, SoundComponent component)
         {

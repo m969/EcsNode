@@ -1,17 +1,41 @@
+using ECSGame;
+using ECSUnity;
 using FairyGUI;
 using FairyGUI.Utils;
-using ECSUnity;
-using ECSGame;
+using System.Reflection;
 
 namespace Login
 {
     public partial class UI_HomePageWindow : IUIWindow
     {
+        private partial class UI_HomePageWindow_EventBinder
+        {
+            public UI_HomePageWindow Window {  get; set; }  
+
+            public void SetBind(UI_HomePageWindow window)
+            {
+                Window = window;
+                window.m_nBtn.onClick.Set(nBtn_clicked);
+            }
+
+            public partial void nBtn_clicked();
+        }
+
+        private partial class UI_HomePageWindow_EventBinder
+        {
+            public partial void nBtn_clicked()
+            {
+                Window.OnClick();
+            }
+        }
+
+        private UI_HomePageWindow_EventBinder Binder { get; set; }
         public TrueGame TrueGame { get; set; }
 
         public void Awake()
         {
-            m_nBtn.onClick.Add(OnClick);
+            Binder = new UI_HomePageWindow_EventBinder();
+            Binder.SetBind(this);
         }
 
         public void OnClick()

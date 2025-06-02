@@ -1,11 +1,11 @@
 ﻿using ECS;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ECSGame
+namespace ECS
 {
-    public class Actor : EcsEntity
+    public interface IDrive
     {
-        public int Type { get; set; }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using ECS;
+using ECSUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ECSGame
 {
@@ -18,11 +21,21 @@ namespace ECSGame
             }
         }
 
-        public static void Create(EcsNode ecsNode)
+        public static EcsNode Create(ushort nodeIndex, Assembly systemAssembly)
         {
+            var ecsNode = new EcsNode(nodeIndex);
+            ecsNode.Id = ecsNode.NewEntityId();
+            ecsNode.InstanceId = ecsNode.NewInstanceId();
+            ecsNode.RegisterDrives(typeof(EcsNode).Assembly.GetTypes());
+
+            var allTypes = systemAssembly.GetTypes();
+            ecsNode.RegisterSystems(allTypes);
+
             ecsNode.AddComponent<EventComponent>();
             ecsNode.AddComponent<TimerComponent>();
             ecsNode.AddComponent<ReloadComponent>();
+
+            return ecsNode;
         }
-    } 
+    }
 }

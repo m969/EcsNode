@@ -25,12 +25,12 @@ IInit<TrueGame, TrueGameCollisionComponent>
 
             var allEntities = game.Id2Children.Values.ToArray();
 
-            foreach ( var entity in allEntities)
+            foreach (var entity in allEntities)
             {
                 if (entity.IsDisposed) continue;
                 var collision1 = entity.GetComponent<CollisionComponent>();
                 if (collision1 == null) continue;
-                foreach ( var entity2 in allEntities)
+                foreach (var entity2 in allEntities)
                 {
                     if (entity2.IsDisposed) continue;
                     if (entity == entity2) continue;
@@ -42,16 +42,16 @@ IInit<TrueGame, TrueGameCollisionComponent>
                     var dist = TSVector.Distance(TransformSystem.GetPosition(entity), TransformSystem.GetPosition(entity2));
                     if (dist < 2)
                     {
-                        EventSystem.Run(CollisionEvent.NewEvent(), entity, entity2).Coroutine();
+                        EventSystem.Run(new CollisionEvent(), entity, entity2).Coroutine();
                     }
                 }
 
                 if (entity is Item item)
                 {
-                    var pos = item.GetComponent<TransformComponent>().Position;
+                    var pos = TransformSystem.GetPosition(item);
                     if (FP.Abs(pos.x) > 10 || FP.Abs(pos.z) > 10)
                     {
-                        EventSystem.Run(CollisionEvent.NewEvent(), entity, entity).Coroutine();
+                        EventSystem.Run(new CollisionEvent(), entity, entity).Coroutine();
                     }
                 }
             }

@@ -12,7 +12,7 @@ namespace ECS
         {
             if (ecsObject is EcsEntity entity)
             {
-                entity.Id = 0;
+                entity.InstanceId = 0;
 
                 var components = entity.Components.Values.ToArray();
                 foreach (var item in components)

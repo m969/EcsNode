@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ECS
 {
-    public interface IUpdate
+    public interface IUpdate : IDrive
     {
     }
 
@@ -14,7 +14,7 @@ namespace ECS
         void Update(T entity);
     }
 
-    public interface IFixedUpdate
+    public interface IFixedUpdate : IDrive
     {
     }
 
@@ -23,7 +23,7 @@ namespace ECS
         void FixedUpdate(T entity);
     }
 
-    public interface ISecondUpdate
+    public interface ISecondUpdate : IDrive
     {
     }
 

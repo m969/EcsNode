@@ -110,7 +110,7 @@ IInit<TrueGame, PlayerInputComponent>
             {
                 component.NextFireTime = nowTime + interval;
                 var direction = Vector3.forward * fireJoystick.Vertical + Vector3.right * fireJoystick.Horizontal;
-                EventSystem.Run(InputEvent.NewEvent(), game, InputType.Fire, direction).Coroutine();
+                EventSystem.Run(new InputEvent(), game, InputType.Fire, direction).Coroutine();
             }
         }
 

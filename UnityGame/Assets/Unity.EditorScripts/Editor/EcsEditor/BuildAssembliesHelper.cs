@@ -160,23 +160,6 @@ namespace ET
         [MenuItem("EcsNode/DoCompile")]
         public static void DoCompile()
         {
-            //if (Directory.Exists("./Assets/Game.ViewSystem/.TempSystem"))
-            //{
-            //    Directory.Move("./Assets/Game.ViewSystem/.TempSystem", "./Assets/Game.ViewSystem/TempSystem");
-            //}
-
-            //var diretories = Directory.GetDirectories("./Assets/Game.System/");
-            //var d1 = Directory.CreateDirectory("./Assets/Game.System");
-            //var allCsScripts = d1.GetFiles("*.cs").ToList();
-            //foreach (var diretory in diretories)
-            //{
-            //    Debug.Log($"{diretory}");
-            //}
-
-            //void GetFiles(DirectoryInfo directoryInfo, List<FileInfo> files)
-            //{
-            //}
-
             // 强制刷新一下，防止关闭auto refresh，编译出老代码
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             bool isCompileOk = CompileDlls();

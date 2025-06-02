@@ -28,15 +28,10 @@ namespace ECSGame
                 if (framePlay is FramePlay_StopMove stopMovePlay)
                 {
                     moveComp.LeftStopStep = stopMovePlay.LeftStopStep;
-                    //if (moveComp.LeftStopStep == 0)
-                    //{
-                    //    moveComp.LeftStopStep = moveComp.StopSpeed;
-                    //}
                 }
                 if (framePlay is FramePlay_MoveStop moveStopPlay)
                 {
                     moveComp.LeftStopStep = moveStopPlay.LeftStopStep;
-                    //moveComp.LeftStopStep--;
                     MoveSystem.SetMovePosition(actor, moveStopPlay.AfterPosition);
                     //ConsoleLog.Debug($"ActorDeterminePlaySystem PlayFramePlays {determineFrame} {moveStopPlay.AfterPosition}");
                 }

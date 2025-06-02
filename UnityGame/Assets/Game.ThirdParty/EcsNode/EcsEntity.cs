@@ -10,17 +10,20 @@ namespace ECS
     public class EcsEntity : EcsObject
     {
         public long Id { get; set; }
-        //public long InstanceId { get; set; }
+        public long InstanceId { get; set; }
         //public long UniqueId { get; set; }
         public bool IsDisposed
         {
             get
             {
-                return Id == 0;
+                return InstanceId == 0;
             }
         }
         public Dictionary<long, EcsEntity> Id2Children = new();
         public Dictionary<Type, EcsComponent> Components { get; set; } = new();
+
+        public EntityState<EcsEntity> EntityState { get; private set; }
+
         public EcsEntity Parent { get; set; }
         private bool enable;
         public bool Enable
@@ -67,20 +70,20 @@ namespace ECS
             return (T)Parent;
         }
 
-        //private EcsNode GetEcsNode()
-        //{
-        //    return EcsNode;
-        //}
-
         public T AddChild<T>(Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
-            return AddChild(EcsNode.NewInstanceId(), beforeAwake);
+            return AddChild(EcsNode.NewEntityId(), beforeAwake);
         }
 
         public T AddChild<T>(long id, Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
             var entity = new T();
             entity.Id = id;
+            entity.InstanceId = EcsNode.NewInstanceId();
+
+            entity.EntityState = new EntityState<EcsEntity>();
+            entity.EntityState.SetEntity(entity);
+
             entity.Parent = this;
             Id2Children.Add(entity.Id, entity);
             beforeAwake?.Invoke(entity);

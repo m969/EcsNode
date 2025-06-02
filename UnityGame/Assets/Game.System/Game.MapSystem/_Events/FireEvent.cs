@@ -7,10 +7,17 @@ using TrueSync;
 
 namespace ECSGame
 {
-    public class FireEvent : AEventRun<FireEvent, Actor, TSVector>
+    public class FireEvent : AEventRun<Actor, TSVector>
     {
+        public override EcsNode EcsNode { get; set; }
+        public Actor Actor { get; private set; }
+        public TSVector Direction { get; private set; }
+
         protected override async ETTask Run(Actor actor, TSVector direction)
         {
+            Actor = actor;
+            Direction = direction;
+
             var game = actor.GetParent<TrueGame>();
             var item = game.AddChild<Item>();
             item.AddComponent<TransformComponent>();

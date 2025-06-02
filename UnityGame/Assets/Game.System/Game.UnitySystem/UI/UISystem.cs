@@ -22,11 +22,12 @@ IInit<EcsNode, UIComponent>
 
         public void Init(EcsNode entity, UIComponent component)
         {
-            
+
         }
 
         public static async ETTask WaitDelay(EcsNode entity, long time)
         {
+            //ConsoleLog.Debug("UISystem WaitDelay");
             await TimerSystem.WaitAsync(entity, time);
             //ConsoleLog.Debug("UISystem WaitDelay2");
         }

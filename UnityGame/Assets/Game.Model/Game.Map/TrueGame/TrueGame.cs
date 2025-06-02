@@ -83,8 +83,15 @@ namespace ECSGame
         Fire = 20,
     }
 
+    //public class TrueGameState<T> : EntityState<T> where T : TrueGame
+    //{
+
+    //}
+
     public class TrueGame : EcsEntity
     {
+        //public override IEntityState State { get; set; } = new TrueGameState<TrueGame>();
+
         // 游戏逻辑帧率（每秒帧数）
         public const int FPS = 20;
 

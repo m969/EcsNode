@@ -14,7 +14,7 @@ IAwake<Actor, FireComponent>
 
         public static void FireOnce(Actor actor, TSVector target)
         {
-            EventSystem.Run(FireEvent.NewEvent(), actor, target).Coroutine();
+            EventSystem.Run(new FireEvent(), actor, target).Coroutine();
         }
 
         public static void SetSpeed(Actor actor, int speed)

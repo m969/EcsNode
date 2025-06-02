@@ -19,10 +19,8 @@ public class AppLoad : MonoBehaviour
     public static bool NeedReload { get; set; } = false;
     public static bool NeedReloadShare { get; set; } = false;
     private EcsNode EcsNode { get; set; }
-    private EcsNode PrePlayEcsNode { get; set; }
-    private AppDomain HotReloadDomain { get; set; }
-    private float NextCheckReloadTime {  get; set; }
-    private Dictionary<string, string> ScriptFiles {  get; set; } = new Dictionary<string, string>();
+    private float NextCheckReloadTime { get; set; }
+    private Dictionary<string, string> ScriptFiles { get; set; } = new Dictionary<string, string>();
     public GameObject ReloadPanelObj;
 
     // Start is called before the first frame update
@@ -41,31 +39,17 @@ public class AppLoad : MonoBehaviour
 
         CheckScriptFiles();
 
-        EcsNode = new EcsNode(1);
-        EcsNode.Id = EcsNode.NewInstanceId();
-        StaticObject.EcsNode = EcsNode;
-        EcsNode.RegisterDrive<IAwake>();
-        EcsNode.RegisterDrive<IEnable>();
-        EcsNode.RegisterDrive<IDisable>();
-        EcsNode.RegisterDrive<IDestroy>();
-        EcsNode.RegisterDrive<IInit>();
-        EcsNode.RegisterDrive<IAfterInit>();
-        EcsNode.RegisterDrive<IOnChange>();
-        EcsNode.RegisterDrive<IUpdate>();
-        EcsNode.RegisterDrive<IFixedUpdate>();
-        EcsNode.AddComponent<ConfigComponent>(beforeAwake: x => x.NodeType = EcsNodeType.LocalPrePlay);
-
-        Process_GameSystem.Init(EcsNode, typeof(Process_GameSystem).Assembly);
+        EcsNode = Process_GameSystem.Init(typeof(Process_GameSystem).Assembly);
     }
 
-    private void LoadSystemAssembly(string method)
-    {
-        var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
-        var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
-        var assembly = Assembly.Load(assBytes, pdbBytes);
-        var methodInfo = assembly.GetType("ECSGame.Process_GameSystem").GetMethod(method);
-        methodInfo.Invoke(null, new object[2] { EcsNode, assembly });
-    }
+    //private void LoadSystemAssembly(string method)
+    //{
+    //    var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
+    //    var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
+    //    var assembly = Assembly.Load(assBytes, pdbBytes);
+    //    var methodInfo = assembly.GetType("ECSGame.Process_GameSystem").GetMethod(method);
+    //    methodInfo.Invoke(null, new object[2] { EcsNode, assembly });
+    //}
 
     public void Reload()
     {

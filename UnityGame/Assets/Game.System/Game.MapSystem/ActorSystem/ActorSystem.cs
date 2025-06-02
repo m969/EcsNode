@@ -5,13 +5,13 @@ using System.Collections.Generic;
 namespace ECSGame
 {
     public class ActorSystem : AEntitySystem<Actor>,
-IAwake<Actor>,
-IInit<Actor>,
-IUpdate<Actor>
+        IAwake<Actor>,
+        IInit<Actor>,
+        IUpdate<Actor>
     {
         public void Awake(Actor entity)
         {
-            
+
         }
 
         public void Init(Actor entity)
@@ -41,5 +41,5 @@ IUpdate<Actor>
             actor.AddComponent<FireComponent>();
             return actor;
         }
-    } 
+    }
 }

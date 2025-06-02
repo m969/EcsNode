@@ -1,34 +1,28 @@
 ﻿using ECS;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using ECSUnity;
-using System.Reflection;
 using FairyGUI;
 using Login;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace ECSGame
 {
     public class Process_GameSystem
     {
-        public static void Init(EcsNode ecsNode, Assembly assembly)
+        public static EcsNode Init(Assembly systemAssembly)
         {
             ConsoleLog.Debug($"Process_GameSystem Init");
 
-            var nodeType = ecsNode.GetComponent<ConfigComponent>().NodeType;
+            var ecsNode = EcsNodeSystem.Create(1, systemAssembly);
+            StaticObject.EcsNode = ecsNode;
 
-            var allTypes = assembly.GetTypes();
-            var typeList = new List<Type>();
-            typeList.AddRange(allTypes);
-
-            ecsNode.AddSystems(typeList.ToArray());
-
-            EcsNodeSystem.Create(ecsNode);
             ecsNode.AddComponent<SoundComponent>();
             ecsNode.AddComponent<UIComponent>();
             ecsNode.Init();
 
-            ecsNode.GetComponent<ReloadComponent>().SystemAssembly = assembly;
+            ecsNode.GetComponent<ReloadComponent>().SystemAssembly = systemAssembly;
 
             var game = TrueGameSystem.Create(ecsNode);
             game.AddComponent<PlayerInputComponent>();
@@ -36,25 +30,28 @@ namespace ECSGame
 
             StaticObject.TrueGame = game;
 
-            var actor = ActorSystem.Create(game, ecsNode.NewInstanceId());
+            var actor = ActorSystem.Create(game, ecsNode.NewEntityId());
             actor.AddComponent<FramePlayComponent>();
             actor.GetComponent<CollisionComponent>().Layer = 1;
             actor.Init();
             game.MyActor = actor;
 
-            //var actor1 = ActorSystem.Create(game, ecsNode.NewInstanceId());
-            //actor1.AddComponent<FramePlayComponent>();
-            //actor1.GetComponent<CollisionComponent>().Layer = 2;
-            //actor1.AddComponent<AIComponent>();
-            //actor1.Init();
-            //game.OtherActor = actor1;
+            var actor1 = ActorSystem.Create(game, ecsNode.NewEntityId());
+            actor1.AddComponent<FramePlayComponent>();
+            actor1.GetComponent<CollisionComponent>().Layer = 2;
+            actor1.AddComponent<AIComponent>();
+            actor1.Init();
+            game.OtherActor = actor1;
 
             var groot = GRoot.inst;
             ReloadUI(ecsNode);
+
+            return ecsNode;
         }
 
         public static void ReloadUI(EcsNode ecsNode)
         {
+            ConsoleLog.Debug("ReloadUI");
             foreach (var item in GRoot.inst.GetChildren())
             {
                 item.Dispose();
@@ -73,19 +70,16 @@ namespace ECSGame
             });
         }
 
-        public static void Reload(EcsNode ecsNode, Assembly assembly)
+        public static void Reload(EcsNode ecsNode, Assembly systemAssembly)
         {
             ConsoleLog.Debug($"Process_GameSystem Reload");
 
-            ecsNode.GetComponent<ReloadComponent>().SystemAssembly = assembly;
+            ecsNode.GetComponent<ReloadComponent>().SystemAssembly = systemAssembly;
 
-            var allTypes = assembly.GetTypes();
-            var typeList = new List<Type>();
-            typeList.AddRange(allTypes);
+            var allTypes = systemAssembly.GetTypes();
+            ecsNode.RegisterSystems(allTypes);
 
-            ecsNode.AddSystems(typeList.ToArray());
-
-            EventSystem.Reload(ecsNode);
+            //EventSystem.Reload(ecsNode);
 
             //ReloadUI(ecsNode);
 
