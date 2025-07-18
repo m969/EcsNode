@@ -4,7 +4,21 @@
 
 支持热重载（编辑器下热重载改用HotReload插件）
 
-附带帧同步框架
+# 游戏高效编程范式理念
+
+数据逻辑分离（Component-System）
+
+业务渲染分离（System-ViewSystem）
+
+组合优于继承（Entity-Component）
+
+领域驱动设计（EcsNode，规划对齐需求粒度，降低协作理解成本）
+
+高内聚低耦合（高内聚优先于低耦合，浅传参优先于深传参(即扁平化逻辑)）
+
+面向切面编程（避免侵入式编码）
+
+# 附带帧同步框架
 
 方案一：仅预测移动，冲突即重置回滚重新预测（已实现）
 
@@ -74,3 +88,5 @@ ui框架直接基于面向对象来实现
 - https://github.com/egametang/ET
 
 - https://github.com/Leopotam/ecslite
+
+- https://github.com/vovgou/loxodon-framework
