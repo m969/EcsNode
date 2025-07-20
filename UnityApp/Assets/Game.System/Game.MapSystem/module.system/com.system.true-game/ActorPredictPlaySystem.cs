@@ -101,14 +101,14 @@ namespace ECSGame
         }
 
         // 网络玩家输入
-        public static void AddNetworkPlayerInput(Actor actor, PlayerInput input, long determineFrame)
+        public static void AddNetworkPlayerInput(Actor actor, InputData input, long determineFrame)
         {
             var game = actor.GetParent<TrueGame>();
             var component = actor.GetComponent<FramePlayComponent>();
 
             if (component.DetermineFrameInputs.ContainsKey(determineFrame) == false)
             {
-                component.DetermineFrameInputs.Add(determineFrame, new List<PlayerInput>());
+                component.DetermineFrameInputs.Add(determineFrame, new List<InputData>());
             }
             component.DetermineFrameInputs[determineFrame].Add(input);
         }

@@ -8,7 +8,7 @@ namespace ECS
 {
     public class SystemInfo
     {
-        public object System { get; set; }
+        public IEcsSystem System { get; set; }
         public MethodInfo Action { get; set; }
     }
 
@@ -122,7 +122,7 @@ namespace ECS
                 if (interfaces.Contains(typeof(IDrive)))
                 {
                     driveTypes.Add(driveType);
-                    ConsoleLog.Debug($"RegisterDrives {driveType.Name}");
+                    //ConsoleLog.Debug($"RegisterDrives {driveType.Name}");
                 }
             }
 
@@ -367,18 +367,34 @@ namespace ECS
                 }
             }
 
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
             var systems = AllUpdateSystems;
             foreach (var item in systems)
             {
+                if (this.IsDisposed)
+                {
+                    continue;
+                }
                 var entityType = item.Key;
                 if (entityType.BaseType == typeof(EcsNode))
                 {
                     var systemList = item.Value;
                     foreach (var systemInfo in systemList)
                     {
+                        if (this.IsDisposed)
+                        {
+                            continue;
+                        }
                         var system = systemInfo.System;
                         var method = systemInfo.Action;
-                        if (this.IsDisposed) continue;
+                        if (entityType != typeof(EcsNode) && entityType != this.GetType())
+                        {
+                            continue;
+                        }
                         method.Invoke(system, new object[] { this });
                     }
                     continue;
@@ -406,15 +422,26 @@ namespace ECS
             var systems = AllFixedUpdateSystems;
             foreach (var item in systems)
             {
+                if (this.IsDisposed)
+                {
+                    continue;
+                }
                 var entityType = item.Key;
                 if (entityType.BaseType == typeof(EcsNode))
                 {
                     var systemList = item.Value;
                     foreach (var systemInfo in systemList)
                     {
+                        if (this.IsDisposed)
+                        {
+                            continue;
+                        }
                         var system = systemInfo.System;
                         var method = systemInfo.Action;
-                        if (this.IsDisposed) continue;
+                        if (entityType != typeof(EcsNode) && entityType != this.GetType())
+                        {
+                            continue;
+                        }
                         method.Invoke(system, new object[] { this });
                     }
                     continue;

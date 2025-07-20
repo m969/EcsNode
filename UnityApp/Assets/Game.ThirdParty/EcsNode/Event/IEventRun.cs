@@ -9,12 +9,10 @@ namespace ECS
 {
     public interface IEventRun
     {
-        EcsNode EcsNode { get; set; }
     }
 
     public abstract class AEventRun<A> : IEventRun where A : EcsEntity
     {
-        public abstract EcsNode EcsNode { get; set; }
         protected abstract ETTask Run(A a);
         public async ETTask Handle(A a)
         {
@@ -31,7 +29,6 @@ namespace ECS
 
     public abstract class AEventRun<A1, A2> : IEventRun where A1 : EcsEntity
     {
-        public abstract EcsNode EcsNode { get; set; }
         protected abstract ETTask Run(A1 a1, A2 a2);
         public async ETTask Handle(A1 a1, A2 a2)
         {
@@ -48,7 +45,6 @@ namespace ECS
 
     public abstract class AEventRun<A1, A2, A3> : IEventRun where A1 : EcsEntity
     {
-        public abstract EcsNode EcsNode { get; set; }
         protected abstract ETTask Run(A1 a1, A2 a2, A3 a3);
         public async ETTask Handle(A1 a1, A2 a2, A3 a3)
         {

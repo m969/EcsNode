@@ -7,9 +7,14 @@ using TrueSync;
 
 namespace ECSGame
 {
+    public interface ICollisionHandler : IDispatch
+    {
+        void OnCollision(EcsEntity self, EcsEntity other);
+    }
+
     public class TrueGameCollisionSystem : AComponentSystem<TrueGame, TrueGameCollisionComponent>,
-IAwake<TrueGame, TrueGameCollisionComponent>,
-IInit<TrueGame, TrueGameCollisionComponent>
+        IAwake<TrueGame, TrueGameCollisionComponent>,
+        IInit<TrueGame, TrueGameCollisionComponent>
     {
         public void Awake(TrueGame game, TrueGameCollisionComponent component)
         {
@@ -42,7 +47,8 @@ IInit<TrueGame, TrueGameCollisionComponent>
                     var dist = TSVector.Distance(TransformSystem.GetPosition(entity), TransformSystem.GetPosition(entity2));
                     if (dist < 2)
                     {
-                        EventSystem.Run(new CollisionEvent(), entity, entity2).Coroutine();
+                        entity.Dispatch<ICollisionHandler>(handler => handler.OnCollision(entity, entity2));
+                        entity2.Dispatch<ICollisionHandler>(handler => handler.OnCollision(entity2, entity));
                     }
                 }
 
@@ -51,7 +57,7 @@ IInit<TrueGame, TrueGameCollisionComponent>
                     var pos = TransformSystem.GetPosition(item);
                     if (FP.Abs(pos.x) > 10 || FP.Abs(pos.z) > 10)
                     {
-                        EventSystem.Run(new CollisionEvent(), entity, entity).Coroutine();
+                        entity.Dispatch<ICollisionHandler>(handler => handler.OnCollision(entity, entity));
                     }
                 }
             }

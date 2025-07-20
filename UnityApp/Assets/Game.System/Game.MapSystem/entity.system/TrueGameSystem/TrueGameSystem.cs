@@ -40,7 +40,6 @@ namespace ECSGame
         public void Update(TrueGame game)
         {
             var currentFrame = game.NextFrame;
-            //TrueGameViewSystem.FrameUpdate(game, currentFrame);
             // 计算下一帧理论执行时间
             long nextFrameTime = currentFrame * game.FrameInterval + game.StartFrameTime;
 
@@ -65,12 +64,6 @@ namespace ECSGame
                 // AI逻辑处理
                 TrueGameAISystem.FrameUpdate(game, determineFrame);
             }
-
-            //if (game.GetComponent<TrueGameExecuteComponent>() is { } component2)
-            //{
-            //    // 执行玩家输入
-            //    TrueGameExecuteSystem.FrameUpdate(game, component2, determineFrame);
-            //}
 
             game.OnFrameUpdate?.Invoke(game, determineFrame);
 

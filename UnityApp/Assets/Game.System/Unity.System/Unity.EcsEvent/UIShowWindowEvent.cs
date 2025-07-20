@@ -1,0 +1,46 @@
+﻿using ECS;
+using ECSUnity;
+using ET;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using FairyGUI;
+using Login;
+using System.Threading.Tasks;
+using System.Reflection;
+using ECSGame;
+
+namespace ECSUnity
+{
+    public class UIShowWindowEvent : AEventRun<UIStage, Type, Action<IUIWindow>>
+    {
+        private IUIWindow Show(Type type, Action<IUIWindow> beforeAwake = null)
+        {
+            EcsDomain.UIStage.Type2Windows.TryGetValue(type, out var window);
+            if (window == null)
+            {
+                var uiobject = (IUIWindow)UIPackage.CreateObjectFromURL(UIObjectFactory.packageType2Items[type]);
+                var uipanel = uiobject as UIPanel;
+                beforeAwake?.Invoke(uiobject);
+                uiobject.Awake();
+                GRoot.inst.AddChild(uipanel);
+                EcsDomain.UIStage.Type2Windows.Add(type, uipanel);
+                uipanel.Show();
+                return uiobject;
+            }
+            else
+            {
+                var uiobject = (IUIWindow)window;
+                var uipanel = uiobject as UIPanel;
+                uipanel.Show();
+                return uiobject;
+            }
+        }
+
+        protected override async ETTask Run(UIStage uiStage, Type windowType, Action<IUIWindow> beforeAwake = null)
+        {
+            Show(windowType, beforeAwake);
+        }
+    }
+}

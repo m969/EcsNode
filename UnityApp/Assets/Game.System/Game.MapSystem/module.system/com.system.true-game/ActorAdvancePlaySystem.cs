@@ -68,14 +68,14 @@ namespace ECSGame
         }
 
         // 本地玩家输入
-        public static void AddLocalPlayerInput(Actor actor, PlayerInput input, long advanceFrame)
+        public static void AddLocalPlayerInput(Actor actor, InputData input, long advanceFrame)
         {
             var game = actor.GetParent<TrueGame>();
             var component = actor.GetComponent<FramePlayComponent>();
 
             if (component.AdvanceFrameInputs.ContainsKey(advanceFrame) == false)
             {
-                component.AdvanceFrameInputs.Add(advanceFrame, new List<PlayerInput>());
+                component.AdvanceFrameInputs.Add(advanceFrame, new List<InputData>());
             }
             component.AdvanceFrameInputs[advanceFrame].Add(input);
         }

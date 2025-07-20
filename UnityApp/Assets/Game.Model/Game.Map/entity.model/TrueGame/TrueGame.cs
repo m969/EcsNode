@@ -9,7 +9,7 @@ using TrueSync;
 namespace ECSGame
 {
     // 输入指令结构
-    public struct PlayerInput
+    public struct InputData
     {
         public long Frame;
         public long PlayerId;

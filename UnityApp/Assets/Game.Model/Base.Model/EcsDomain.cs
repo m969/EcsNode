@@ -24,6 +24,11 @@ namespace ECS
         /// 声音
         /// </summary>
         public const ushort Sound = 3;
+
+        /// <summary>
+        /// 玩家输入
+        /// </summary>
+        public const ushort PlayerInput = 4;
     }
 
     public static class EcsDomain
@@ -33,6 +38,7 @@ namespace ECS
         public static TrueGame Game { get; set; }
         public static UIStage UIStage { get; set; }
         public static SoundMaster SoundMaster { get; set; }
+        public static PlayerInput PlayerInput { get; set; }
 
 
         public static void AddNode(EcsNode node)

@@ -28,7 +28,7 @@ namespace ECSGame
             var allTypes = systemAssembly.GetTypes();
             ecsNode.RegisterSystems(allTypes);
 
-            ecsNode.AddComponent<EventComponent>();
+            //ecsNode.AddComponent<EventComponent>();
             ecsNode.AddComponent<TimerComponent>();
             ecsNode.AddComponent<ReloadComponent>();
             ecsNode.GetComponent<ReloadComponent>().SystemAssembly = systemAssembly;
