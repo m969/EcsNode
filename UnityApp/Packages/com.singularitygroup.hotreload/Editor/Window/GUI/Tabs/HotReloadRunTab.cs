@@ -901,14 +901,7 @@ namespace SingularityGroup.HotReload.Editor {
         }
         
         internal static void RenderIndieLicenseInfo(GUIStyle style) {
-            string message;
-            if (EditorCodePatcher.licenseType == UnityLicenseType.UnityPersonalPlus) {
-                message = "Unity Plus users require an Indie license. Please upgrade your license on our website.";
-            } else if (EditorCodePatcher.licenseType == UnityLicenseType.UnityPro) {
-                message = "Unity Pro/Enterprise users from company with your number of employees require an Indie license. Please upgrade your license on our website.";
-            } else {
-                return;
-            }
+            string message = "Unity Plus users require an Indie license. Please upgrade your license on our website.";
             GUILayout.Space(8);
             using (new EditorGUILayout.HorizontalScope()) {
                 EditorGUILayout.HelpBox(message, MessageType.Info);

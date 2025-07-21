@@ -39,7 +39,7 @@ public class AppLoad : MonoBehaviour
 
         CheckScriptFiles();
 
-        Process_GameRun.Init(typeof(Process_GameRun).Assembly);
+        AppRunStatic.Init(typeof(AppRunStatic).Assembly);
     }
 
     //private void LoadSystemAssembly(string method)
@@ -53,12 +53,12 @@ public class AppLoad : MonoBehaviour
 
     public void Reload()
     {
-        Process_GameRun.Reload(typeof(Process_GameRun).Assembly);
+        AppRunStatic.Reload(typeof(AppRunStatic).Assembly);
     }
 
     public void ReloadUI()
     {
-        Process_GameRun.ReloadUI();
+        AppRunStatic.ReloadUI();
     }
 
     bool CheckScriptFiles()
@@ -99,7 +99,7 @@ public class AppLoad : MonoBehaviour
     void Update()
     {
         //EcsNode?.DriveEntityUpdate();
-        Process_GameRun.Update();
+        AppRunStatic.Update();
 
         //if (Time.realtimeSinceStartup > NextCheckReloadTime)
         //{
@@ -115,6 +115,6 @@ public class AppLoad : MonoBehaviour
     void FixedUpdate()
     {
         //EcsNode?.DriveEntityFixedUpdate();
-        Process_GameRun.FixedUpdate();
+        AppRunStatic.FixedUpdate();
     }
 }

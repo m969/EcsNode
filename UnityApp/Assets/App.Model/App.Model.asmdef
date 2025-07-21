@@ -1,0 +1,17 @@
+{
+    "name": "App.Model",
+    "rootNamespace": "",
+    "references": [
+        "GUID:645f7d097acee4f40b75a6b9ff1b0822",
+        "GUID:95c69073318a6844a8db3075c41533aa"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
