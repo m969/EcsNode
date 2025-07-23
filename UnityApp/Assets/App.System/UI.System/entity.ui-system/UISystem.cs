@@ -52,7 +52,11 @@ namespace ECSUnity
         {
             var type = typeof(T);
 
-            await EventSystem.RunAsync(new UIShowWindowEvent(), EcsDomain.UIStage, type, (Action<IUIWindow>)beforeAwake);
+            await DomainEvent.RunAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            {
+                WindowType = type,
+                BeforeAwake = (Action<IUIWindow>)beforeAwake
+            });
 
             EcsDomain.UIStage.Type2Windows.TryGetValue(type, out var window);
             if (window == null)
@@ -70,7 +74,11 @@ namespace ECSUnity
             {
                 beforeAwake?.Invoke((T)window);
             };
-            EventSystem.RunAsync(new UIShowWindowEvent(), EcsDomain.UIStage, type, action).Coroutine();
+            DomainEvent.RunAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            {
+                WindowType = type,
+                BeforeAwake = action
+            }).Coroutine();
         }
 
         public static void Hide<T>() where T : UIPanel, IUIWindow

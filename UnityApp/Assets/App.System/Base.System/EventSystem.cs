@@ -47,19 +47,19 @@ namespace ECS
 
         }
 
-        public static async ETTask RunAsync<T, A>(T eventRun, A a) where T : AEventRun<A>, new() where A : EcsEntity
-        {
-            await eventRun.Handle(a);
-        }
+        //public static async ETTask RunAsync<T, A>(T eventRun, A a) where T : AEventRun<A>, new() where A : EcsEntity
+        //{
+        //    await eventRun.Handle(a);
+        //}
 
-        public static async ETTask RunAsync<T, A1, A2>(T eventRun, A1 a1, A2 a2) where T : AEventRun<A1, A2>, new() where A1 : EcsEntity
-        {
-            await eventRun.Handle(a1, a2);
-        }
+        //public static async ETTask RunAsync<T, A1, A2>(T eventRun, A1 a1, A2 a2) where T : AEventRun<A1, A2>, new() where A1 : EcsEntity
+        //{
+        //    await eventRun.Handle(a1, a2);
+        //}
 
-        public static async ETTask RunAsync<T, A1, A2, A3>(T eventRun, A1 a1, A2 a2, A3 a3) where T : AEventRun<A1, A2, A3>, new() where A1 : EcsEntity
-        {
-            await eventRun.Handle(a1, a2, a3);
-        }
+        //public static async ETTask RunAsync<T, A1, A2, A3>(T eventRun, A1 a1, A2 a2, A3 a3) where T : AEventRun<A1, A2, A3>, new() where A1 : EcsEntity
+        //{
+        //    await eventRun.Handle(a1, a2, a3);
+        //}
     }
 }

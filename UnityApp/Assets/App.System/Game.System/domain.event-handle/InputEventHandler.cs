@@ -7,22 +7,22 @@ using TrueSync;
 
 namespace ECSGame
 {
-    public class InputExecuteEvent : AEventRun<PlayerInput, InputType, Vector3>
+    public class InputEventHandler : AEventRun<PlayerInput, InputEvent>
     {
-        protected override async ETTask Run(PlayerInput component, InputType inputType, Vector3 direction)
+        protected override async ETTask Run(PlayerInput component, InputEvent inputEvent)
         {
             var myActor = component.PlayerActor;
             var advanceFrame = component.Game.DetermineFrame + TrueGame.ForecastFrame;
 
-            if (inputType == InputType.Fire)
+            if (inputEvent.InputType == InputType.Fire)
             {
-                component.FireVector = direction;
+                component.FireVector = inputEvent.Direction;
                 var input = new InputData()
                 {
                     Frame = advanceFrame,
                     PlayerId = myActor.Id,
                     InputType = InputType.Fire,
-                    InputVector = direction.ToTSVector(),
+                    InputVector = inputEvent.Direction.ToTSVector(),
                 };
 
                 ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, input, advanceFrame);

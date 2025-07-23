@@ -10,9 +10,9 @@ namespace ECSGame
     /// <summary>
     /// 领域事件：玩家注册（聚合名+业务动作）（Player+Register）
     /// </summary>
-    public class PlayerRegisterEvent : AEventRun<EcsEntity>
+    public class PlayerRegisterEventHandler : AEventRun<TrueGame, PlayerRegisterEvent>
     {
-        protected override async ETTask Run(EcsEntity entity)
+        protected override async ETTask Run(TrueGame game, PlayerRegisterEvent registerEvent)
         {
 
         }

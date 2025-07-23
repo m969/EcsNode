@@ -15,6 +15,8 @@ namespace ECSUnity
         {
             ConsoleLog.Debug($"Process_GameRun Init");
 
+            DomainEvent.InitHandlers(systemAssembly);
+
             var uiStage = UISystem.Create(EcsType.UI, systemAssembly);
             EventSystem.Init(uiStage);
             EcsDomain.AddNode(uiStage);
