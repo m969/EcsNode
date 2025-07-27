@@ -136,7 +136,7 @@ namespace ECSGame
             {
                 component.NextFireTime = nowTime + interval;
                 var direction = Vector3.forward * fireJoystick.Vertical + Vector3.right * fireJoystick.Horizontal;
-                DomainEvent.RunAsync(component, new InputEvent()
+                DomainEvent.PublishAsync(component, new InputEvent()
                 {
                     InputType = InputType.Fire,
                     Direction = direction

@@ -15,7 +15,7 @@ namespace ET
         [DebuggerHidden]
         public static ETAsyncTaskMethodBuilder Create()
         {
-            ETAsyncTaskMethodBuilder builder = new() { tcs = ETTask.Create(true) };
+            ETAsyncTaskMethodBuilder builder = new ETAsyncTaskMethodBuilder() { tcs = ETTask.Create(true) };
             return builder;
         }
 

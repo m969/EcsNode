@@ -15,7 +15,7 @@ namespace ECSGame
             {
                 TimerSystem.Update(ecsNode, timerComponent);
             }
-            EventSystem.Update(ecsNode);
+            //EventSystem.Update(ecsNode);
         }
 
         public static T Create<T>(ushort nodeIndex, Assembly systemAssembly) where T : EcsNode

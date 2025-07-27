@@ -13,7 +13,7 @@ namespace ET
         [DebuggerHidden]
         public static AsyncETVoidMethodBuilder Create()
         {
-            AsyncETVoidMethodBuilder builder = new();
+            AsyncETVoidMethodBuilder builder = new AsyncETVoidMethodBuilder();
             return builder;
         }
 

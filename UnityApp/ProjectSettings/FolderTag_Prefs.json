@@ -1,0 +1,112 @@
+{
+    "LabelColor": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+    },
+    "FoldersData": {
+        "Keys": [
+            "7167d7b235314e241b50166d7b8d3de1",
+            "860cb2b659ef307428b9985d8a8e3211",
+            "acf9e9fc199ffca46a51eefc71dc44e9",
+            "47f532c82c14deb48880e73bf156f4e8",
+            "0f7aae32ecbb213418daf37bb5960c00",
+            "d4357f21b01967b46b3508fee702c810",
+            "c75a4a0143d59344ea1979fb246a9a12"
+        ],
+        "Values": [
+            {
+                "_guid": "7167d7b235314e241b50166d7b8d3de1",
+                "_isScene": false,
+                "_color": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.38823530077934267
+                },
+                "_recursive": false,
+                "_tag": "数据模型层",
+                "_desc": ""
+            },
+            {
+                "_guid": "860cb2b659ef307428b9985d8a8e3211",
+                "_isScene": false,
+                "_color": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.38823530077934267
+                },
+                "_recursive": false,
+                "_tag": "系统逻辑层",
+                "_desc": ""
+            },
+            {
+                "_guid": "acf9e9fc199ffca46a51eefc71dc44e9",
+                "_isScene": false,
+                "_color": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.38823530077934267
+                },
+                "_recursive": false,
+                "_tag": "第三方库",
+                "_desc": ""
+            },
+            {
+                "_guid": "47f532c82c14deb48880e73bf156f4e8",
+                "_isScene": false,
+                "_color": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.38823530077934267
+                },
+                "_recursive": false,
+                "_tag": "游戏数据",
+                "_desc": ""
+            },
+            {
+                "_guid": "0f7aae32ecbb213418daf37bb5960c00",
+                "_isScene": false,
+                "_color": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.38823530077934267
+                },
+                "_recursive": false,
+                "_tag": "游戏逻辑",
+                "_desc": ""
+            },
+            {
+                "_guid": "d4357f21b01967b46b3508fee702c810",
+                "_isScene": false,
+                "_color": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.38823530077934267
+                },
+                "_recursive": false,
+                "_tag": "视图数据",
+                "_desc": ""
+            },
+            {
+                "_guid": "c75a4a0143d59344ea1979fb246a9a12",
+                "_isScene": false,
+                "_color": {
+                    "r": 0.0,
+                    "g": 0.0,
+                    "b": 0.0,
+                    "a": 0.38823530077934267
+                },
+                "_recursive": false,
+                "_tag": "视图逻辑",
+                "_desc": ""
+            }
+        ]
+    }
+}

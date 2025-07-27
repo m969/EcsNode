@@ -20,7 +20,7 @@ namespace ET
             }
         }
 
-        private static readonly ConcurrentQueue<ETTask> queue = new();
+        private static readonly ConcurrentQueue<ETTask> queue = new ConcurrentQueue<ETTask>();
 
         /// <summary>
         /// 请不要随便使用ETTask的对象池，除非你完全搞懂了ETTask!!!
@@ -165,7 +165,7 @@ namespace ET
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder<>))]
     public class ETTask<T>: ICriticalNotifyCompletion
     {
-        private static readonly ConcurrentQueue<ETTask<T>> queue = new();
+        private static readonly ConcurrentQueue<ETTask<T>> queue = new ConcurrentQueue<ETTask<T>>();
         
         /// <summary>
         /// 请不要随便使用ETTask的对象池，除非你完全搞懂了ETTask!!!

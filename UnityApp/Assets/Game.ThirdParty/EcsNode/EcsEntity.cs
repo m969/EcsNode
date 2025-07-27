@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace ECS
 {
@@ -19,8 +18,8 @@ namespace ECS
                 return InstanceId == 0;
             }
         }
-        public Dictionary<long, EcsEntity> Id2Children = new();
-        public Dictionary<Type, EcsComponent> Components { get; set; } = new();
+        public Dictionary<long, EcsEntity> Id2Children = new Dictionary<long, EcsEntity>();
+        public Dictionary<Type, EcsComponent> Components { get; set; } = new Dictionary<Type, EcsComponent>();
 
         public EntityState<EcsEntity> EntityState { get; private set; }
 

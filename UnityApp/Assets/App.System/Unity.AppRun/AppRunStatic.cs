@@ -18,37 +18,37 @@ namespace ECSUnity
             DomainEvent.InitHandlers(systemAssembly);
 
             var uiStage = UISystem.Create(EcsType.UI, systemAssembly);
-            EventSystem.Init(uiStage);
+            EcsObject.Init(uiStage);
             EcsDomain.AddNode(uiStage);
             EcsDomain.UIStage = uiStage;
 
             var soundMaster = SoundSystem.Create(EcsType.Sound, systemAssembly);
-            EventSystem.Init(soundMaster);
+            EcsObject.Init(soundMaster);
             EcsDomain.AddNode(soundMaster);
             EcsDomain.SoundMaster = soundMaster;
 
             var game = TrueGameSystem.Create(EcsType.Game, systemAssembly);
-            EventSystem.Init(game);
+            EcsObject.Init(game);
             EcsDomain.AddNode(game);
             EcsDomain.Game = game;
 
             var actor = ActorSystem.Create(game, game.NewEntityId());
             actor.AddComponent<FramePlayComponent>();
             actor.GetComponent<CollisionComponent>().Layer = 1;
-            EventSystem.Init(actor);
+            EcsObject.Init(actor);
             StaticObject.MyActor = actor;
 
             var actor1 = ActorSystem.Create(game, game.NewEntityId());
             actor1.AddComponent<FramePlayComponent>();
             actor1.GetComponent<CollisionComponent>().Layer = 2;
             actor1.AddComponent<AIComponent>();
-            EventSystem.Init(actor1);
+            EcsObject.Init(actor1);
             StaticObject.OtherActor = actor1;
 
             var playerInput = PlayerInputSystem.Create(EcsType.PlayerInput, systemAssembly);
             playerInput.PlayerActor = actor;
             playerInput.Game = game;
-            EventSystem.Init(playerInput);
+            EcsObject.Init(playerInput);
             EcsDomain.AddNode(playerInput);
             EcsDomain.PlayerInput = playerInput;
 

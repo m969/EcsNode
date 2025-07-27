@@ -14,6 +14,12 @@
       "dependencies": {},
       "hash": "36d3260fdca03bf6feb105c67022d1fd7629dd2f"
     },
+    "com.liyingsong.foldertag": {
+      "version": "file:FolderTag",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.singularitygroup.hotreload": {
       "version": "file:com.singularitygroup.hotreload",
       "depth": 0,

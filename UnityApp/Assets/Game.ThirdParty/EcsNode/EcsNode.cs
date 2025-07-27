@@ -56,16 +56,16 @@ namespace ECS
             return (long)result;
         }
 
-        public Dictionary<long, EcsEntity> AllEntities { get; set; } = new();
-        public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; } = new();
+        public Dictionary<long, EcsEntity> AllEntities { get; set; } = new Dictionary<long, EcsEntity>();
+        public Dictionary<Type, List<EcsEntity>> Type2Entities { get; set; } = new Dictionary<Type, List<EcsEntity>>();
 
-        public Dictionary<Type, IEcsSystem> AllSystems { get; set; } = new();
-        public Dictionary<Type, List<IEcsSystem>> EntityType2Systems { get; set; } = new();
-        public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; } = new();
-        public Dictionary<(Type, Type), Dictionary<string, SystemInfo>> AllEntityComponentSystems { get; set; } = new();
-        public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; } = new();
-        public Dictionary<Type, List<SystemInfo>> AllFixedUpdateSystems { get; set; } = new();
-        public List<Type> DriveTypes { get; set; } = new();
+        public Dictionary<Type, IEcsSystem> AllSystems { get; set; } = new Dictionary<Type, IEcsSystem>();
+        public Dictionary<Type, List<IEcsSystem>> EntityType2Systems { get; set; } = new Dictionary<Type, List<IEcsSystem>>();
+        public Dictionary<Type, Dictionary<Type, List<SystemInfo>>> AllEntitySystems { get; set; } = new Dictionary<Type, Dictionary<Type, List<SystemInfo>>>();
+        public Dictionary<(Type, Type), Dictionary<string, SystemInfo>> AllEntityComponentSystems { get; set; } = new Dictionary<(Type, Type), Dictionary<string, SystemInfo>>();
+        public Dictionary<Type, List<SystemInfo>> AllUpdateSystems { get; set; } = new Dictionary<Type, List<SystemInfo>>();
+        public Dictionary<Type, List<SystemInfo>> AllFixedUpdateSystems { get; set; } = new Dictionary<Type, List<SystemInfo>>();
+        public List<Type> DriveTypes { get; set; } = new List<Type>();
         public Type[] AllTypes { get; set; }
 
         public void AddEntity(EcsEntity entity)
@@ -338,10 +338,10 @@ namespace ECS
             DriveComponentSystems(entity, component, entity.GetType(), driveType);
         }
 
-        public List<Type> UpdateEntityTypes { get; set; } = new();
-        public Dictionary<Type, List<EcsEntity>> UpdateEntities { get; set; } = new();
-        public Queue<EcsEntity> AddEntities { get; set; } = new();
-        public Queue<EcsEntity> RemoveEntities { get; set; } = new();
+        public List<Type> UpdateEntityTypes { get; set; } = new List<Type>();
+        public Dictionary<Type, List<EcsEntity>> UpdateEntities { get; set; } = new Dictionary<Type, List<EcsEntity>>();
+        public Queue<EcsEntity> AddEntities { get; set; } = new Queue<EcsEntity>();
+        public Queue<EcsEntity> RemoveEntities { get; set; } = new Queue<EcsEntity>();
 
         public void DriveEntityUpdate()
         {

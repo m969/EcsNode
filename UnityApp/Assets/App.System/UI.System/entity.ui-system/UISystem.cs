@@ -52,7 +52,7 @@ namespace ECSUnity
         {
             var type = typeof(T);
 
-            await DomainEvent.RunAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            await DomainEvent.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
             {
                 WindowType = type,
                 BeforeAwake = (Action<IUIWindow>)beforeAwake
@@ -74,7 +74,7 @@ namespace ECSUnity
             {
                 beforeAwake?.Invoke((T)window);
             };
-            DomainEvent.RunAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            DomainEvent.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
             {
                 WindowType = type,
                 BeforeAwake = action

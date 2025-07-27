@@ -1,0 +1,12 @@
+{
+  "displayName": "ResourceData",
+  "name": "com.module.resource-data",
+  "unity": "2019.4",
+  "description": "",
+  "category": "Engineering",
+  "keywords": [
+  ],
+  "version": "1.0.0",
+  "dependencies": {
+  }
+}

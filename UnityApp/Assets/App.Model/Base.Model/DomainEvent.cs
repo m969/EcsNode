@@ -30,7 +30,7 @@ namespace ECS
             }
         }
 
-        public static async ETTask RunAsync<T, A>(T domain, A eventData) where T : EcsNode where A : IDomainEvent
+        public static async ETTask PublishAsync<T, A>(T domain, A eventData) where T : EcsNode where A : IDomainEvent
         {
             var eventType = eventData.GetType();
             if (EventHandlers.TryGetValue(eventType, out var handlers))
@@ -38,6 +38,18 @@ namespace ECS
                 foreach (var item in handlers)
                 {
                     await item.Handle(domain, eventData);
+                }
+            }
+        }
+
+        public static void Publish<T, A>(T domain, A eventData) where T : EcsNode where A : IDomainEvent
+        {
+            var eventType = eventData.GetType();
+            if (EventHandlers.TryGetValue(eventType, out var handlers))
+            {
+                foreach (var item in handlers)
+                {
+                    item.Handle(domain, eventData).Coroutine();
                 }
             }
         }

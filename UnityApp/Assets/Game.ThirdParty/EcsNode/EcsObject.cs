@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MacFsWatcher;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,22 @@ namespace ECS
     /// </summary>
     public abstract class EcsObject
     {
+        public static void Init(EcsObject ecsObject)
+        {
+            if (ecsObject is EcsEntity entity)
+            {
+                foreach (var item in entity.Components.Values)
+                {
+                    entity.EcsNode.DriveComponentSystems(entity, item, typeof(IInit));
+                }
+                entity.EcsNode.DriveEntitySystems(entity, typeof(IInit));
+            }
+            if (ecsObject is EcsComponent component)
+            {
+                component.Entity.EcsNode.DriveComponentSystems(component.Entity, component, typeof(IInit));
+            }
+        }
+
         public static void Destroy(EcsObject ecsObject)
         {
             if (ecsObject is EcsEntity entity)
