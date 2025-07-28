@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -183,9 +184,20 @@ namespace ECSEditor
                 CopyDirectory(dir, destSubDir);
             }
         }
+
+        public bool HasDependencies
+        {
+            get { return Dependencies != null && Dependencies.Count > 0; }
+        }
+
+        //[FoldoutGroup("Folder", Expanded = false)]
+        [ReadOnly, LabelText("dependencies"), ShowIf("@HasDependencies")]
+        //[HideLabel]
+        //[ListDrawerSettings(ShowPaging = false, HideAddButton = true, HideRemoveButton = true, DefaultExpandedState = true)]
+        public List<string> Dependencies;
     }
 
-	[CreateAssetMenu(fileName = "ModuleGroup", menuName = "ModuleGroup")]
+    [CreateAssetMenu(fileName = "ModuleGroup", menuName = "ModuleGroup")]
 	public class ModuleGroup : SerializedScriptableObject
 	{
         [HideReferenceObjectPicker, ListDrawerSettings(ShowPaging = false, HideAddButton = true, HideRemoveButton = true)]
@@ -210,36 +222,30 @@ namespace ECSEditor
                 string moduleName = Path.GetFileName(dir);
                 //获取模块版本信息，模型信息都存于module.json
                 string moduleJsonPath = Path.Combine(dir, "module.json");
-                string moduleVersion = "未知";
                 if (File.Exists(moduleJsonPath))
                 {
                     try
                     {
                         string json = File.ReadAllText(moduleJsonPath);
-                        var jsonObj = JsonUtility.FromJson<ModuleJson>(json);
-                        if (jsonObj != null && !string.IsNullOrEmpty(jsonObj.version))
+                        //var jsonObj = JsonUtility.FromJson<ModuleJson>(json);
+                        var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject<ModuleJson>(json);
+                        var moduleData = new ModuleData
                         {
-                            moduleVersion = jsonObj.version;
+                            ModuleId = moduleName,
+                            ModuleVersion = jsonObj.version,
+                            Dependencies = new List<string>()
+                        };
+                        foreach (var dependency in jsonObj.dependencies)
+                        {
+                            moduleData.Dependencies.Add($"{dependency.Key}:{dependency.Value}");
                         }
+                        UnityModules.Add(moduleData);
                     }
                     catch (Exception ex)
                     {
                         Debug.LogError($"读取模块版本失败: {moduleJsonPath}, {ex.Message}");
                     }
                 }
-
-                ModuleData moduleData = new ModuleData
-                {
-                    ModuleId = moduleName,
-                    ModuleVersion = moduleVersion,
-                };
-                UnityModules.Add(moduleData);
-
-                //ModuleData moduleData = new ModuleData
-                //{
-                //    ModuleId = moduleName,
-                //};
-                //UnityModules.Add(moduleData);
             }
         }
     }
@@ -251,5 +257,6 @@ namespace ECSEditor
         public string displayName;
         public string name;
         public string version;
+        public Dictionary<string, string> dependencies;
     }
 }

@@ -18,6 +18,13 @@
 
 面向切面编程（避免侵入式编码）
 
+规范式模块化AI代码生成流程（基于copilot-instruction，示例 Modules.Unity/com.module.resource-data）
+
+<img src="Readme/folder-info.png" width="35%">
+<img src="Readme/folder-info2.png" width="40%">
+
+<img src="Readme/modules-info.png" width="40%">
+
 # 附带帧同步框架
 
 方案一：仅预测移动，冲突即重置回滚重新预测（已实现）

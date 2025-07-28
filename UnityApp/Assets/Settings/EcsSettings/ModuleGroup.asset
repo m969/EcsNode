@@ -22,11 +22,12 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   UnityModules:
-  - ModuleId: com.module.ai
-    ModuleVersion: 1.0.0
   - ModuleId: com.module.building
     ModuleVersion: 1.0.0
+    Dependencies: []
   - ModuleId: com.module.resource-data
     ModuleVersion: 1.0.0
+    Dependencies: []
   - ModuleId: com.module.resource-node
     ModuleVersion: 1.0.0
+    Dependencies: []
