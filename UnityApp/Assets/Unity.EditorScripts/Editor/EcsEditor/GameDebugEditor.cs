@@ -99,8 +99,36 @@ namespace ECSEditor
         //    }
         //}
 
+
+        [Button("FastCompile & Play", ButtonHeight = 25)]
+        public void FastCompileAndPlay()
+        {
+            BuildAssembliesHelper.DoCompile();
+            //BuildAssembliesHelper.CompileAssemblies();
+            if (!Application.isPlaying)
+            {
+                PlayerPrefs.SetInt("GameSystemLoad", 0);
+                PlayerPrefs.SetInt("MergeSystemLoad", 1);
+                EditorApplication.isPlaying = true;
+            }
+        }
+
+        [Button("FastCompile & Reload", ButtonHeight = 25)]
+        public void FastCompileAndReload()
+        {
+            BuildAssembliesHelper.DoCompile();
+            //BuildAssembliesHelper.CompileAssemblies();
+            if (Application.isPlaying)
+            {
+                PlayerPrefs.SetInt("GameSystemLoad", 0);
+                PlayerPrefs.SetInt("MergeSystemLoad", 1);
+                var appLoad = GameObject.FindFirstObjectByType<AppLoad>();
+                appLoad.Reload();
+            }
+        }
+
         [HorizontalGroup("Reload")]
-        [Button("CompileShare", ButtonHeight = 35)]// ◌▲◂◀◁▷◷◯≌≋≊◌↟↝↺↻⇑⇈⇡⇧⇪⇭⇮⇫⇯⇬ Play ▶
+        [Button("CompileShare", ButtonHeight = 25)]// ◌▲◂◀◁▷◷◯≌≋≊◌↟↝↺↻⇑⇈⇡⇧⇪⇭⇮⇫⇯⇬ Play ▶
         public void CompileShare()
         {
             //CopyShareScripts("Game.Model");
@@ -114,7 +142,7 @@ namespace ECSEditor
         }
 
         [HorizontalGroup("Reload")]
-        [Button("ReloadSystem", ButtonHeight = 35)]// ↻
+        [Button("ReloadSystem", ButtonHeight = 25)]// ↻
         public void ReloadSystem()
         {
             if (Application.isPlaying)
@@ -139,7 +167,7 @@ namespace ECSEditor
         //}
 
         [HorizontalGroup("Reload")]
-        [Button("ReloadUI", ButtonHeight = 35)]
+        [Button("ReloadUI", ButtonHeight = 25)]
         public void ReloadFGUI()
         {
             if (Application.isPlaying)
@@ -148,32 +176,5 @@ namespace ECSEditor
                 appInit.ReloadUI();
             }
         }
-
-        //[Button("FastCompile & Play", ButtonHeight = 25)]
-        //public void FastCompileAndPlay()
-        //{
-        //    BuildAssembliesHelper.DoCompile();
-        //    //BuildAssembliesHelper.CompileAssemblies();
-        //    if (!Application.isPlaying)
-        //    {
-        //        PlayerPrefs.SetInt("GameSystemLoad", 0);
-        //        PlayerPrefs.SetInt("MergeSystemLoad", 1);
-        //        EditorApplication.isPlaying = true;
-        //    }
-        //}
-
-        //[Button("FastCompile & Reload", ButtonHeight = 25)]
-        //public void FastCompileAndReload()
-        //{
-        //    BuildAssembliesHelper.DoCompile();
-        //    //BuildAssembliesHelper.CompileAssemblies();
-        //    if (Application.isPlaying)
-        //    {
-        //        PlayerPrefs.SetInt("GameSystemLoad", 0);
-        //        PlayerPrefs.SetInt("MergeSystemLoad", 1);
-        //        var appLoad = GameObject.FindFirstObjectByType<AppLoad>();
-        //        appLoad.Reload();
-        //    }
-        //}
     }
 }

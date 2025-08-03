@@ -10,6 +10,7 @@ using UnityEditor.Build.Player;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Emit;
+using Loxodon.Framework.Fody;
 
 namespace ET
 {
@@ -55,18 +56,18 @@ namespace ET
                 //{
                 //    sourceFiles.AddRange(assembly.sourceFiles);
                 //}
-                if (assembly.name.StartsWith("Game.System"))
+                if (assembly.name.StartsWith("App.System"))
                 {
                     sourceFiles.AddRange(assembly.sourceFiles);
                 }
-                if (assembly.name.StartsWith("Game.Model"))
+                if (assembly.name.StartsWith("App.Model"))
                 {
                     sourceFiles.AddRange(assembly.sourceFiles);
                 }
             }
 
             // 使用 Roslyn 编译
-            var syntaxTrees = sourceFiles.Where(file => !file.Contains("View") && !file.Contains("Unity")).Select(file =>
+            var syntaxTrees = sourceFiles.Where(file => file.Contains("Assets/App.Model/Game.Model") || file.Contains("Assets/App.Model/Game.System")).Select(file =>
             {
                 return CSharpSyntaxTree.ParseText(File.ReadAllText(file));
             });
@@ -74,7 +75,7 @@ namespace ET
             var reloadDll = "CompileShare";
             var references = allAss
                 .Where(a => !a.IsDynamic)
-                .Where(a => a.GetName().Name != "Game.System" && a.GetName().Name != "Game.Model")
+                .Where(a => a.GetName().Name != "App.System" && a.GetName().Name != "App.Model")
                 .Where(a => string.IsNullOrEmpty(a.Location) == false)
                 .Select(a =>
                 {
@@ -173,6 +174,8 @@ namespace ET
             }
 
             Debug.Log("DoCompile finished");
+
+            FodyWeaver.Default.Weave(FodyWeavingPostprocessor.ASSEMBLIES_DLL_PATH);
         }
 
         /// <summary>

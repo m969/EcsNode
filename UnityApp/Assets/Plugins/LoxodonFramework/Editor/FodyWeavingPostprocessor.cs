@@ -30,6 +30,7 @@ namespace Loxodon.Framework.Fody
 {
     public class FodyWeavingPostprocessor : IPostBuildPlayerScriptDLLs
     {
+        public const string ASSEMBLIES_DLL_PATH = "DllDatas/";
         private const string ASSEMBLIES_EDITOR_LIB_PATH = "Library/ScriptAssemblies/";
         private const string ASSEMBLIES_BUILD_TEMP_PATH = "Temp/StagingArea/Data/Managed/";
         public int callbackOrder => 0;
@@ -37,13 +38,12 @@ namespace Loxodon.Framework.Fody
         [DidReloadScripts]
         public static void OnScriptsReloaded()
         {
-            //new ModuleWeaver().Execute();
-            FodyWeaver.Default.Weave(ASSEMBLIES_EDITOR_LIB_PATH);
+            //FodyWeaver.Default.Weave(ASSEMBLIES_DLL_PATH);
         }
 
         public void OnPostBuildPlayerScriptDLLs(BuildReport report)
         {
-            FodyWeaver.Default.Weave(ASSEMBLIES_BUILD_TEMP_PATH);
+            //FodyWeaver.Default.Weave(ASSEMBLIES_BUILD_TEMP_PATH);
         }
     }
 }

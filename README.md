@@ -2,23 +2,46 @@
 
 基于Entity-Component-System的框架
 
-支持热重载（编辑器下热重载改用HotReload插件）
+支持热重载
 
 # 游戏高效编程范式理念
 
-数据逻辑分离（Component-System）
+- 数据逻辑分离（Component-System）
 
-业务渲染分离（System-ViewSystem）
+- 业务渲染分离（System-ViewSystem）
 
-组合优于继承（Entity-Component）
+- 组合优于继承（Entity-Component）
 
-领域驱动设计（EcsNode，领域可看做不同的业务场景，规划对齐需求粒度，降低协作理解成本）
+- 领域驱动设计（EcsNode，领域可看做不同的业务场景，规划对齐需求粒度，降低协作理解成本）
 
-高内聚低耦合（高内聚优先于低耦合，浅传参优先于深传参(即扁平化逻辑)）
+- 高内聚低耦合（高内聚优先于低耦合，浅传参优先于深传参(即扁平化逻辑)）
 
-面向切面编程（避免侵入式编码）
+- 面向切面编程（避免侵入式编码）
 
-规范式模块化AI代码生成流程（基于copilot-instruction，示例 Modules.Unity/com.module.resource-data）
+- 规范式模块化（Spec-Modular-Driven）AI代码生成流程（类似于Kiro的Spec-Driven，基于copilot-instruction.md）
+    - 常用prompt示例：
+        - 补充完善require需求文档
+        - 根据require文档，补充完善design文档
+        - 根据design文档，补充完善program文档
+        - 根据program文档，补充完善program-test文档
+        - 根据program文档，补充完善配置接口、实体、组件、类型补充代码文件
+        - 根据program文档，补充完善配置接口代码文件
+        - 根据program文档，补充完善实体代码文件
+        - 根据program文档，补充完善组件代码文件
+        - 根据program文档，补充完善系统代码文件
+        - 根据program-test文档和模块系统代码，补充完善单元测试代码文件
+
+示例:
+- Modules.Unity/com.module.resource-data（资源模块）
+- Modules.Unity/com.module.achieve（达成模块，用于成就和任务等）
+
+copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用于别的大模型指导文档，比如CLAUDE.md、cursor rule等
+
+通过实践检验：
+- gpt-4.1 比较听话，说清楚的东西都会给到实现，而且没有多余的废话，但是有时候没说清楚的东西会给到不完整的实现，属于方块型番薯，推一下动一下
+- claude 4 能动性更强，不仅提及的内容会给到实现，而且会主动很多相关的内容，属于球型番薯，推一下滚一段，但有时候会滚过头，生成很多不需要的内容
+
+最佳实践：设计文档生成用 gpt-4.1 或者 deepseek-r1（介于二者之间，适合补充细化文档），第一遍代码生成用gpt-4.1，后续代码迭代用 claude （3.5、3.7、4）逐步细化，有设计文档和第一版代码做约束，claude生成代码时就不会太过放飞自己
 
 <img src="Readme/folder-info.png" width="35%">
 <img src="Readme/folder-info2.png" width="40%">
@@ -97,3 +120,5 @@ ui框架直接基于面向对象来实现
 - https://github.com/Leopotam/ecslite
 
 - https://github.com/vovgou/loxodon-framework
+
+- https://github.com/liyingsong99/FolderTag

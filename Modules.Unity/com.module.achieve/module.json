@@ -1,0 +1,13 @@
+{
+  "displayName": "Achieve",
+  "name": "com.module.achieve",
+  "unity": "2019.4",
+  "description": "",
+  "category": "Engineering",
+  "keywords": [
+  ],
+  "version": "1.0.0",
+  "dependencies": {
+
+  }
+}

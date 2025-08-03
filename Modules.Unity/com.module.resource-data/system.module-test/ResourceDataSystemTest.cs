@@ -14,15 +14,15 @@ namespace ECSGame.Module.ResourceData.Tests
         private ResourceDataComponent resourceData;
         private ResourceChangeComponent resourceChange;
 
-        public class TestNode : EcsNode
+        public class TestEcsNode : EcsNode
         {
-            public TestNode(ushort id) : base(id) { }
+            public TestEcsNode(ushort id) : base(id) { }
         }
 
         [SetUp]
         public void SetUp()
         {
-            ecsNode = new TestNode(1);
+            ecsNode = new TestEcsNode(1);
             player = ecsNode.AddChild<EcsEntity>();
             resourceData = player.AddComponent<ResourceDataComponent>(c =>
             {

@@ -39,21 +39,23 @@ public class AppLoad : MonoBehaviour
 
         CheckScriptFiles();
 
-        AppRunStatic.Init(typeof(AppRunStatic).Assembly);
+        //AppRunStatic.Init(typeof(AppRunStatic).Assembly);
+        LoadSystemAssembly("Init");
     }
 
-    //private void LoadSystemAssembly(string method)
-    //{
-    //    var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.dll"));
-    //    var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Game.System.pdb"));
-    //    var assembly = Assembly.Load(assBytes, pdbBytes);
-    //    var methodInfo = assembly.GetType("ECSGame.Process_GameSystem").GetMethod(method);
-    //    methodInfo.Invoke(null, new object[2] { EcsNode, assembly });
-    //}
+    private void LoadSystemAssembly(string method)
+    {
+        var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "App.System.dll"));
+        var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "App.System.pdb"));
+        var assembly = Assembly.Load(assBytes, pdbBytes);
+        var methodInfo = assembly.GetType("ECSUnity.AppRunStatic").GetMethod(method);
+        methodInfo.Invoke(null, new object[1] { assembly });
+    }
 
     public void Reload()
     {
-        AppRunStatic.Reload(typeof(AppRunStatic).Assembly);
+        //AppRunStatic.Reload(typeof(AppRunStatic).Assembly);
+        LoadSystemAssembly("Reload");
     }
 
     public void ReloadUI()
@@ -65,7 +67,7 @@ public class AppLoad : MonoBehaviour
     {
         var changed = false;
 #if UNITY_EDITOR
-        var allAssets = UnityEditor.AssetDatabase.FindAssets("t:Script", new string[] { "Assets/Game.System" });
+        var allAssets = UnityEditor.AssetDatabase.FindAssets("t:Script", new string[] { "Assets/App.System" });
         var newAssets = new List<string>();
         foreach (var item in allAssets)
         {
@@ -101,15 +103,15 @@ public class AppLoad : MonoBehaviour
         //EcsNode?.DriveEntityUpdate();
         AppRunStatic.Update();
 
-        //if (Time.realtimeSinceStartup > NextCheckReloadTime)
-        //{
-        //    NextCheckReloadTime = Time.realtimeSinceStartup + 1;
-        //    var changed = CheckScriptFiles();
-        //    if (ReloadPanelObj && changed)
-        //    {
-        //        ReloadPanelObj.gameObject.SetActive(true);
-        //    }
-        //}
+        if (Time.realtimeSinceStartup > NextCheckReloadTime)
+        {
+            NextCheckReloadTime = Time.realtimeSinceStartup + 1;
+            var changed = CheckScriptFiles();
+            if (ReloadPanelObj && changed)
+            {
+                ReloadPanelObj.gameObject.SetActive(true);
+            }
+        }
     }
 
     void FixedUpdate()

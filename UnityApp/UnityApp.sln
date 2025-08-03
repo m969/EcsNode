@@ -19,11 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.EditorScripts", "Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SingularityGroup.HotReload.Runtime.Public", "SingularityGroup.HotReload.Runtime.Public.csproj", "{5975A5BF-8F6F-6EC4-E827-11C104AA3CC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "After.Fody", "After.Fody.csproj", "{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loxodon.Framework.Fody", "Loxodon.Framework.Fody.csproj", "{3DC4F648-DE2D-4861-A874-65F5274D185D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.AppLoad", "Unity.AppLoad.csproj", "{5BC49642-A549-FF6B-7369-89812974801F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "After.Fody", "After.Fody.csproj", "{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirenix.OdinInspector.Modules.UnityMathematics", "Sirenix.OdinInspector.Modules.UnityMathematics.csproj", "{B3B74E17-A756-2B94-C2E3-AE557045A8BC}"
 EndProject
@@ -69,6 +69,10 @@ Global
 		{5975A5BF-8F6F-6EC4-E827-11C104AA3CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5975A5BF-8F6F-6EC4-E827-11C104AA3CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5975A5BF-8F6F-6EC4-E827-11C104AA3CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3DC4F648-DE2D-4861-A874-65F5274D185D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DC4F648-DE2D-4861-A874-65F5274D185D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DC4F648-DE2D-4861-A874-65F5274D185D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,10 +81,6 @@ Global
 		{5BC49642-A549-FF6B-7369-89812974801F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BC49642-A549-FF6B-7369-89812974801F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BC49642-A549-FF6B-7369-89812974801F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAEA32D4-51A0-FFFC-2549-53F6BA4C23E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B3B74E17-A756-2B94-C2E3-AE557045A8BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3B74E17-A756-2B94-C2E3-AE557045A8BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3B74E17-A756-2B94-C2E3-AE557045A8BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
