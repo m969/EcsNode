@@ -91,6 +91,7 @@ namespace ECSGame
     public class TrueGame : EcsNode
     {
         //public override IEntityState State { get; set; } = new TrueGameState<TrueGame>();
+        public Actor PlayerActor { get; set; }
 
         // 游戏逻辑帧率（每秒帧数）
         public const int FPS = 20;

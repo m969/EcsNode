@@ -9,13 +9,25 @@ using System.Reflection;
 
 namespace ECSUnity
 {
+    public enum GameType
+    {
+        ECSGame,
+        TrueGameDemo,
+        SimulationGameDemo,
+    }
+
     public static class AppRunStatic
     {
-        public static void Init(Assembly systemAssembly)
+        public static void Init(Assembly systemAssembly, int gameType)
         {
-            ConsoleLog.Debug($"Process_GameRun Init");
+            ConsoleLog.Debug($"AppRunStatic Init");
 
             DomainEvent.InitHandlers(systemAssembly);
+
+            if ((GameType)gameType == GameType.TrueGameDemo)
+            {
+                GameRunStatic_TrueGameDemo.Init(systemAssembly);
+            }
 
             var uiStage = UISystem.Create(EcsType.UI, systemAssembly);
             EcsObject.Init(uiStage);
@@ -27,30 +39,15 @@ namespace ECSUnity
             EcsDomain.AddNode(soundMaster);
             EcsDomain.SoundMaster = soundMaster;
 
-            var game = TrueGameSystem.Create(EcsType.Game, systemAssembly);
-            EcsObject.Init(game);
-            EcsDomain.AddNode(game);
-            EcsDomain.Game = game;
-
-            var actor = ActorSystem.Create(game, game.NewEntityId());
-            actor.AddComponent<FramePlayComponent>();
-            actor.GetComponent<CollisionComponent>().Layer = 1;
-            EcsObject.Init(actor);
-            StaticObject.MyActor = actor;
-
-            var actor1 = ActorSystem.Create(game, game.NewEntityId());
-            actor1.AddComponent<FramePlayComponent>();
-            actor1.GetComponent<CollisionComponent>().Layer = 2;
-            actor1.AddComponent<AIComponent>();
-            EcsObject.Init(actor1);
-            StaticObject.OtherActor = actor1;
-
-            var playerInput = PlayerInputSystem.Create(EcsType.PlayerInput, systemAssembly);
-            playerInput.PlayerActor = actor;
-            playerInput.Game = game;
-            EcsObject.Init(playerInput);
-            EcsDomain.AddNode(playerInput);
-            EcsDomain.PlayerInput = playerInput;
+            if ((GameType)gameType == GameType.TrueGameDemo)
+            {
+                var playerInput = PlayerInputSystem.Create(EcsType.PlayerInput, systemAssembly);
+                playerInput.PlayerActor = StaticObject.MyActor;
+                playerInput.Game = EcsDomain.Game;
+                EcsObject.Init(playerInput);
+                EcsDomain.AddNode(playerInput);
+                EcsDomain.PlayerInput = playerInput;
+            }
 
             var groot = GRoot.inst;
             ReloadUI();
@@ -74,9 +71,9 @@ namespace ECSUnity
             UISystem.Show<UI_HomePageWindow>();
         }
 
-        public static void Reload(Assembly systemAssembly)
+        public static void Reload(Assembly systemAssembly, int gameType)
         {
-            ConsoleLog.Debug($"Process_GameSystem Reload");
+            ConsoleLog.Debug($"AppRunStatic Reload");
 
             foreach (var ecsNode in EcsDomain.EcsNodes.Values)
             {

@@ -1037,6 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9352e2357701a3941bc915444dcd5bcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameType: 2
   ReloadPanelObj: {fileID: 1375333862}
 --- !u!1 &2104481546
 GameObject:

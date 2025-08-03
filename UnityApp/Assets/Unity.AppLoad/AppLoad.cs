@@ -16,6 +16,7 @@ public class Define
 
 public class AppLoad : MonoBehaviour
 {
+    public GameType GameType;
     public static bool NeedReload { get; set; } = false;
     public static bool NeedReloadShare { get; set; } = false;
     private EcsNode EcsNode { get; set; }
@@ -49,7 +50,7 @@ public class AppLoad : MonoBehaviour
         var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "App.System.pdb"));
         var assembly = Assembly.Load(assBytes, pdbBytes);
         var methodInfo = assembly.GetType("ECSUnity.AppRunStatic").GetMethod(method);
-        methodInfo.Invoke(null, new object[1] { assembly });
+        methodInfo.Invoke(null, new object[2] { assembly, ((int)GameType) });
     }
 
     public void Reload()

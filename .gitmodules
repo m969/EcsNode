@@ -1,0 +1,3 @@
+[submodule "Modules.Unity/com.module.true-game-demo"]
+	path = Modules.Unity/com.module.true-game-demo
+	url = https://github.com/EcsNode-Modules/com.module.true-game-demo.git
