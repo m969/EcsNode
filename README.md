@@ -21,15 +21,15 @@
 - 规范式模块化（Spec-Modular-Driven）AI代码生成流程（类似于Kiro的Spec-Driven，基于copilot-instruction.md）
     - 常用prompt示例：
         - 补充完善require需求文档
-        - 根据require文档，补充完善design文档
-        - 根据design文档，补充完善program文档
-        - 根据program文档，补充完善program-test文档
-        - 根据program文档，补充完善配置接口、实体、组件、类型补充代码文件
-        - 根据program文档，补充完善配置接口代码文件
-        - 根据program文档，补充完善实体代码文件
-        - 根据program文档，补充完善组件代码文件
-        - 根据program文档，补充完善系统代码文件
-        - 根据program-test文档和模块系统代码，补充完善单元测试代码文件
+        - 根据require文档，更新完善design文档
+        - 根据design文档，更新完善program文档
+        - 根据program文档，更新完善program-test文档
+        - 根据program文档，更新完善配置接口、实体、组件、类型补充代码文件
+        - 根据program文档，更新完善配置接口代码文件
+        - 根据program文档，更新完善实体代码文件
+        - 根据program文档，更新完善组件代码文件
+        - 根据program文档，更新完善系统代码文件
+        - 根据program-test文档和模块System代码，更新完善单元测试代码文件
 
 示例:
 - Modules.Unity/com.module.resource-data（资源模块）
@@ -37,18 +37,19 @@
 
 copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用于别的大模型指导文档，比如CLAUDE.md、cursor rule等
 
-通过实践检验：
-- gpt-4.1 比较听话，说清楚的东西都会给到实现，而且没有多余的废话，但是有时候没说清楚的东西会给到不完整的实现，属于方块型番薯，推一下动一下
-- claude 4 能动性更强，不仅提及的内容会给到实现，而且会主动很多相关的内容，属于球型番薯，推一下滚一段，但有时候会滚过头，生成很多不需要的内容
-
-最佳实践：设计文档生成用 gpt-4.1 或者 deepseek-r1（介于二者之间，适合补充细化文档），第一遍代码生成用gpt-4.1，后续代码迭代用 claude （3.5、3.7、4）逐步细化，有设计文档和第一版代码做约束，claude生成代码时就不会太过放飞自己
-
 <img src="Readme/folder-info.png" width="35%">
 <img src="Readme/folder-info2.png" width="40%">
 
 <img src="Readme/modules-info.png" width="40%">
 
-# 附带帧同步框架
+# SLG游戏demo（开发中）
+
+- Modules.Unity/com.module.resource-data（资源模块）
+- Modules.Unity/com.module.grid-based（网格系统）
+- Modules.Unity/com.module.building（建筑建造模块）
+- Modules.Unity/com.module.achieve（达成模块，用于成就和任务等）
+
+# 帧同步demo（开发中）
 
 方案一：仅预测移动，冲突即重置回滚重新预测（已实现）
 

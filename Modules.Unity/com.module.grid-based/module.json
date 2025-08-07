@@ -1,0 +1,12 @@
+{
+  "displayName": "GridBased",
+  "name": "com.module.grid-based",
+  "unity": "2019.4",
+  "description": "",
+  "category": "Engineering",
+  "keywords": [
+  ],
+  "version": "1.0.0",
+  "dependencies": {
+  }
+}
