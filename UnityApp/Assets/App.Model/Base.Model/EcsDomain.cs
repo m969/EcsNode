@@ -29,13 +29,26 @@ namespace ECS
         /// 玩家输入
         /// </summary>
         public const ushort PlayerInput = 4;
+
+        /// <summary>
+        /// 帧同步地图世界
+        /// </summary>
+        public const ushort TrueWorld = 5;
+
+        /// <summary>
+        /// 游戏地图世界
+        /// </summary>
+        public const ushort GameWorld = 6;
     }
 
     public static class EcsDomain
     {
-        public readonly static Dictionary<ushort, EcsNode> EcsNodes = new();
+        public static Dictionary<ushort, EcsNode> EcsNodes { get; set; } = new();
+        public static Dictionary<Type, List<IEventRun>> EventHandlers { get; set; } = new();
 
-        public static TrueGame Game { get; set; }
+        public static Game Game { get; set; }
+        public static GameWorld GameWorld { get; set; }
+        public static TrueWorld TrueWorld { get; set; }
         public static UIStage UIStage { get; set; }
         public static SoundMaster SoundMaster { get; set; }
         public static PlayerInput PlayerInput { get; set; }

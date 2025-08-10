@@ -131,6 +131,13 @@ namespace ECS
             return component as T;
         }
 
+        public bool TryGetComponent<T>(out T component) where T : EcsComponent, new()
+        {
+            Components.TryGetValue(typeof(T), out var component2);
+            component = component2 as T;
+            return component2 != null;
+        }
+
         private void DriveAwake(EcsEntity entity)
         {
             EcsNode.DriveEntitySystems(entity, typeof(IAwake));
@@ -169,6 +176,5 @@ namespace ECS
                 }
             }
         }
-
     }
 }

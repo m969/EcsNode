@@ -21,9 +21,9 @@ namespace ECSUnity
 
         }
 
-        public static UIStage Create(ushort nodeIndex, Assembly systemAssembly)
+        public static UIStage Create(Assembly systemAssembly)
         {
-            var ecsNode = EcsNodeSystem.Create<UIStage>(nodeIndex, systemAssembly);
+            var ecsNode = EcsNodeSystem.Create<UIStage>(EcsType.UI, systemAssembly);
             return ecsNode;
         }
 
@@ -52,7 +52,7 @@ namespace ECSUnity
         {
             var type = typeof(T);
 
-            await DomainEvent.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            await DomainSystem.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
             {
                 WindowType = type,
                 BeforeAwake = (Action<IUIWindow>)beforeAwake
@@ -74,7 +74,7 @@ namespace ECSUnity
             {
                 beforeAwake?.Invoke((T)window);
             };
-            DomainEvent.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            DomainSystem.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
             {
                 WindowType = type,
                 BeforeAwake = action

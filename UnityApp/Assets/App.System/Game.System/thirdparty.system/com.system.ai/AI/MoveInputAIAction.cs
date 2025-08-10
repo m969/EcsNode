@@ -14,7 +14,7 @@ namespace ECSGame
         {
             //ConsoleLog.Debug("MoveAIAction Start");
             var actor = (Actor)aiNode.Entity;
-            var game = aiNode.Entity.GetParent<TrueGame>();
+            var game = aiNode.Entity.GetParent<TrueWorld>();
             var r = game.TSRandom.Next(1, 5);
             var vector = TSVector.left;
             if (r == 1) vector = TSVector.left;
@@ -28,12 +28,12 @@ namespace ECSGame
 
         public void Run(AINode aiNode)
         {
-            var game = aiNode.Entity.GetParent<TrueGame>();
+            var game = aiNode.Entity.GetParent<TrueWorld>();
             var actor = (Actor)aiNode.Entity;
             var component = actor.GetComponent<AIComponent>();
             var input = new InputData() { InputType = InputType.Move, InputVector = component.MoveDirection, PlayerId = aiNode.Entity.Id };
             ActorPredictPlaySystem.AddNetworkPlayerInput(actor, input, component.DetermineFrame);
-            var timerProgress = TimerSystem.FrameTimer(aiNode.Entity, TimerType.RunAIAction_FrameTimer, 40);
+            var timerProgress = FrameTimerSystem.FrameTimer(aiNode.Entity, TimerType.RunAIAction_FrameTimer, 40);
             if (timerProgress == TimerProgress.Ended)
             {
                 AISystem.FinishAndNext(aiNode);

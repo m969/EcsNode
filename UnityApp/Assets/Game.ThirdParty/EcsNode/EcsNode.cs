@@ -315,9 +315,11 @@ namespace ECS
 
         public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type entityType, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
         {
+            //ConsoleLog.Debug($"DriveComponentSystems {entityType.Name} {component.GetType().Name} {driveType.Name}");
             AllEntityComponentSystems.TryGetValue((entityType, component.GetType()), out var systems);
             if (systems == null)
             {
+                //ConsoleLog.Error($"DriveComponentSystems systems == null");
                 return;
             }
             foreach (var item in systems)
@@ -335,6 +337,7 @@ namespace ECS
         public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : EcsComponent
         {
             DriveComponentSystems(entity, component, typeof(EcsEntity), driveType);
+            if (entity is EcsNode) DriveComponentSystems(entity, component, typeof(EcsNode), driveType);
             DriveComponentSystems(entity, component, entity.GetType(), driveType);
         }
 

@@ -18,9 +18,9 @@ namespace ECSUnity
             entity.MixerConfigs.Add(Resources.Load<MixerConfigObject>("Audios/MixerConfig"));
         }
 
-        public static SoundMaster Create(ushort nodeIndex, Assembly systemAssembly)
+        public static SoundMaster Create(Assembly systemAssembly)
         {
-            var ecsNode = EcsNodeSystem.Create<SoundMaster>(nodeIndex, systemAssembly);
+            var ecsNode = EcsNodeSystem.Create<SoundMaster>(EcsType.Sound, systemAssembly);
             return ecsNode;
         }
 
@@ -34,7 +34,7 @@ namespace ECSUnity
             //}
 
             soundMaster.Id2Source.TryGetValue(clipType, out var audioSource);
-            if (StaticObject.SoundEditorTest)
+            if (UnityStatic.SoundEditorTest)
             {
                 if (audioSource != null)
                 {

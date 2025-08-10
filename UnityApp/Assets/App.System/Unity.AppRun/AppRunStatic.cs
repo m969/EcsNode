@@ -1,52 +1,55 @@
-﻿using ECS;
+﻿using cfg.data;
+using ECS;
 using ECSGame;
 using FairyGUI;
 using Login;
+using SimpleJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using UnityEngine;
 
 namespace ECSUnity
 {
-    public enum GameType
-    {
-        ECSGame,
-        TrueGameDemo,
-        SimulationGameDemo,
-    }
-
     public static class AppRunStatic
     {
         public static void Init(Assembly systemAssembly, int gameType)
         {
-            ConsoleLog.Debug($"AppRunStatic Init");
+            ConsoleLog.Debug($"AppRunStatic Init {Application.platform} {(GameType)gameType}");
 
-            DomainEvent.InitHandlers(systemAssembly);
+            AppStatic.GameType = (GameType)gameType;
+
+            DomainSystem.InitEventHandlers(systemAssembly);
+
+            string gameConfDir = Path.Combine(Application.dataPath, "GameResources\\LubanConfigs\\GenerateDatas\\json"); // 替换为gen.bat中outputDataDir指向的目录
+            var tables = new cfg.Tables(file => JSON.Parse(File.ReadAllText($"{gameConfDir}/{file}.json")));
+            ItemConfig.Tables = tables;
+            ConsoleLog.Debug($"Tables loaded: {ItemConfig.DataList.Count}");
+
+            DomainSystem.AddGame(systemAssembly);
 
             if ((GameType)gameType == GameType.TrueGameDemo)
             {
                 GameRunStatic_TrueGameDemo.Init(systemAssembly);
             }
 
-            var uiStage = UISystem.Create(EcsType.UI, systemAssembly);
-            EcsObject.Init(uiStage);
-            EcsDomain.AddNode(uiStage);
-            EcsDomain.UIStage = uiStage;
+            DomainSystem.AddUI(systemAssembly);
 
-            var soundMaster = SoundSystem.Create(EcsType.Sound, systemAssembly);
-            EcsObject.Init(soundMaster);
-            EcsDomain.AddNode(soundMaster);
-            EcsDomain.SoundMaster = soundMaster;
+            DomainSystem.AddSound(systemAssembly);
 
             if ((GameType)gameType == GameType.TrueGameDemo)
             {
-                var playerInput = PlayerInputSystem.Create(EcsType.PlayerInput, systemAssembly);
-                playerInput.PlayerActor = StaticObject.MyActor;
-                playerInput.Game = EcsDomain.Game;
+                var playerInput = DomainSystem.AddPlayerInput(systemAssembly);
+                playerInput.AddComponent<TrueGameInputComponent>();
                 EcsObject.Init(playerInput);
-                EcsDomain.AddNode(playerInput);
-                EcsDomain.PlayerInput = playerInput;
+            }
+            if ((GameType)gameType == GameType.SimulationGameDemo)
+            {
+                var playerInput = DomainSystem.AddPlayerInput(systemAssembly);
+                playerInput.AddComponent<SimulationGameInputComponent>();
+                EcsObject.Init(playerInput);
             }
 
             var groot = GRoot.inst;
@@ -78,9 +81,7 @@ namespace ECSUnity
             foreach (var ecsNode in EcsDomain.EcsNodes.Values)
             {
                 ecsNode.GetComponent<ReloadComponent>().SystemAssembly = systemAssembly;
-
-                var allTypes = systemAssembly.GetTypes();
-                ecsNode.RegisterSystems(allTypes);
+                EcsNodeSystem.RegisterSystems(ecsNode, systemAssembly);
             }
 
             //EventSystem.Reload(ecsNode);
@@ -99,12 +100,16 @@ namespace ECSUnity
         public static void Update()
         {
             EcsDomain.Game?.DriveEntityUpdate();
+            EcsDomain.GameWorld?.DriveEntityUpdate();
+            EcsDomain.TrueWorld?.DriveEntityUpdate();
             EcsDomain.PlayerInput?.DriveEntityUpdate();
         }
 
         public static void FixedUpdate()
         {
             EcsDomain.Game?.DriveEntityFixedUpdate();
+            EcsDomain.GameWorld?.DriveEntityFixedUpdate();
+            EcsDomain.TrueWorld?.DriveEntityFixedUpdate();
         }
     }
 }

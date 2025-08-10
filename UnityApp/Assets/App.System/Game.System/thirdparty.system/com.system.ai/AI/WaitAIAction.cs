@@ -16,7 +16,7 @@ namespace ECSGame
 
         public void Run(AINode aiNode)
         {
-            var timerProgress = TimerSystem.FrameTimer(aiNode.Entity, TimerType.WaitAIAction_FrameTimer, 20);
+            var timerProgress = FrameTimerSystem.FrameTimer(aiNode.Entity, TimerType.WaitAIAction_FrameTimer, 20);
             if (timerProgress == TimerProgress.Ended)
             {
                 AISystem.FinishAndNext(aiNode);

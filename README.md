@@ -42,6 +42,8 @@ copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用
 
 <img src="Readme/modules-info.png" width="40%">
 
+<img src="Readme/debug-editor.png" width="40%">
+
 # SLG游戏demo（开发中）
 
 - Modules.Unity/com.module.resource-data（资源模块）

@@ -15,23 +15,23 @@ namespace ECSUnity
         {
             ConsoleLog.Debug($"GameRunStatic_TrueGameDemo Init");
 
-            var game = TrueGameSystem.Create(EcsType.Game, systemAssembly);
-            EcsObject.Init(game);
-            EcsDomain.AddNode(game);
-            EcsDomain.Game = game;
+            var trueWorld = TrueWorldSystem.Create(EcsType.TrueWorld, systemAssembly);
+            EcsObject.Init(trueWorld);
+            EcsDomain.AddNode(trueWorld);
+            EcsDomain.TrueWorld = trueWorld;
 
-            var actor = ActorSystem.Create(game, game.NewEntityId());
+            var actor = ActorSystem.Create(trueWorld, trueWorld.NewEntityId());
             actor.AddComponent<FramePlayComponent>();
-            actor.GetComponent<CollisionComponent>().Layer = 1;
+            CollisionSystem.SetLayer(actor, 1);
             EcsObject.Init(actor);
-            StaticObject.MyActor = actor;
+            UnityStatic.MyActor = actor;
 
-            var actor1 = ActorSystem.Create(game, game.NewEntityId());
+            var actor1 = ActorSystem.Create(trueWorld, trueWorld.NewEntityId());
             actor1.AddComponent<FramePlayComponent>();
-            actor1.GetComponent<CollisionComponent>().Layer = 2;
+            CollisionSystem.SetLayer(actor1, 2);
             actor1.AddComponent<AIComponent>();
             EcsObject.Init(actor1);
-            StaticObject.OtherActor = actor1;
+            UnityStatic.OtherActor = actor1;
         }
     }
 }

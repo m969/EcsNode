@@ -10,9 +10,9 @@ namespace ECSGame
     /// <summary>
     /// 领域事件：玩家登录（聚合名+业务动作）（Player+Login）
     /// </summary>
-    public class PlayerLoginEventHandler : AEventRun<TrueGame, PlayerLoginEvent>
+    public class PlayerLoginEventHandler : AEventRun<TrueWorld, PlayerLoginEvent>
     {
-        protected override async ETTask Run(TrueGame game, PlayerLoginEvent loginEvent)
+        protected override async ETTask Run(TrueWorld game, PlayerLoginEvent loginEvent)
         {
             // 这里可以添加玩家登录的逻辑处理
             // 例如：验证玩家身份、加载玩家数据等

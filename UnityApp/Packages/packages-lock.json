@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.code-philosophy.luban": {
+      "version": "file:luban_unity",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.cysharp.memorypack": {
       "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack#1.10.0",
       "depth": 0,

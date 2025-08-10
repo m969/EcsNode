@@ -11,7 +11,7 @@ namespace ECSGame
     {
         public void Start(AINode aiNode)
         {
-            var game = aiNode.Entity.GetParent<TrueGame>();
+            var game = aiNode.Entity.GetParent<TrueWorld>();
             var actor = (Actor)aiNode.Entity;
             var component = actor.GetComponent<AIComponent>();
             var input = new InputData() { InputType = InputType.StopMove, PlayerId = aiNode.Entity.Id };

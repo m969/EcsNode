@@ -9,7 +9,7 @@ namespace ECSGame
     {
         public void OnFireOnce(Actor actor, TSVector target)
         {
-            var game = actor.GetParent<TrueGame>();
+            var game = actor.GetParent<TrueWorld>();
             var item = game.AddChild<Item>();
             item.AddComponent<TransformComponent>();
             item.AddComponent<CollisionComponent>();

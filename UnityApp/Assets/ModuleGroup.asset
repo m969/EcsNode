@@ -25,7 +25,13 @@ MonoBehaviour:
   - ModuleId: com.module.achieve
     ModuleVersion: 1.0.0
     Dependencies: []
+  - ModuleId: com.module.actor
+    ModuleVersion: 1.0.0
+    Dependencies: []
   - ModuleId: com.module.building
+    ModuleVersion: 1.0.0
+    Dependencies: []
+  - ModuleId: com.module.grid-based
     ModuleVersion: 1.0.0
     Dependencies: []
   - ModuleId: com.module.resource-data

@@ -40,7 +40,7 @@ namespace Login
         {
         }
 
-        public void GameUIRefill(TrueGame game)
+        public void GameUIRefill(TrueWorld game)
         {
             m_nDetermineFrame.text = $"È·¶¨Ö¡:{game.DetermineFrame}";
         }
