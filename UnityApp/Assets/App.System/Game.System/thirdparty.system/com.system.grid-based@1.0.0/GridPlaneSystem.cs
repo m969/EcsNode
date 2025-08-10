@@ -16,7 +16,7 @@ namespace ECSGame.Module.GridBased
     /// <summary>
     /// 网格区域实体系统，负责网格区域的创建和生命周期管理。
     /// </summary>
-    public class GridPlaneSystem : AEntitySystem<GridPlane>, IAwake<GridPlane>, IInit<GridPlane>, IAfterInit<GridPlane>, IEnable<GridPlane>, IDisable<GridPlane>, IUpdate<GridPlane>, IDestroy<GridPlane>
+    public class GridPlaneSystem : AEntitySystem<GridPlane>, IAwake<GridPlane>, IInit<GridPlane>, IAfterInit<GridPlane>, IEnable<GridPlane>, IDisable<GridPlane>, IDestroy<GridPlane>
     {
         /// <summary>
         /// 创建网格区域实体
@@ -53,7 +53,6 @@ namespace ECSGame.Module.GridBased
         public void AfterInit(GridPlane entity) { }
         public void Enable(GridPlane entity) { }
         public void Disable(GridPlane entity) { }
-        public void Update(GridPlane entity) { }
         public void Destroy(GridPlane entity) { }
     }
 }

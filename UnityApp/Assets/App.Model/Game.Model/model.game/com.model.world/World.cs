@@ -6,11 +6,9 @@ using System.Threading;
 
 namespace ECSGame
 {
-    public class GameWorld : EcsNode
+    public class World : EcsNode
     {
-        public Actor PlayerActor { get; set; }
-
-        public GameWorld(ushort ecsTypeId) : base(ecsTypeId)
+        public World(ushort ecsTypeId) : base(ecsTypeId)
         {
         }
     }

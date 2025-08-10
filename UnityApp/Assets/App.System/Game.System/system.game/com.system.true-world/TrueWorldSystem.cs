@@ -16,9 +16,9 @@ namespace ECSGame
     IInit<TrueWorld>,
     IUpdate<TrueWorld>
     {
-        public static TrueWorld Create(ushort nodeIndex, Assembly systemAssembly)
+        public static TrueWorld Create(Assembly systemAssembly)
         {
-            var trueWorld = EcsNodeSystem.Create<TrueWorld>(nodeIndex, systemAssembly);
+            var trueWorld = EcsNodeSystem.Create<TrueWorld>(EcsType.TrueWorld, systemAssembly);
             trueWorld.AddComponent<TrueWorldPlayComponent>();
             trueWorld.AddComponent<TrueWorldCollisionComponent>();
             trueWorld.AddComponent<TrueWorldPlayForecastComponent>();

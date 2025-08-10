@@ -38,6 +38,10 @@ namespace ECSEditor
         {
             get
             {
+                if (ModuleGroup == null)
+                {
+                    return false;
+                }
                 return ModuleGroup.IsModuleInstalled(ModuleName);
             }
         }
@@ -241,7 +245,7 @@ namespace ECSEditor
                 else
                 {
                     string moduleName = d.Name.Replace("com.model.", "");
-                    InstalledModuleName2Versions.Add($"{moduleName}", "0");
+                    InstalledModuleName2Versions.Add($"{moduleName}", "");
                 }
             });
         }
@@ -255,6 +259,10 @@ namespace ECSEditor
         {
             if (InstalledModuleName2Versions.ContainsKey(moduleName))
             {
+                if(string.IsNullOrEmpty(InstalledModuleName2Versions[moduleName]))
+                {
+                    return false; // 如果没有版本信息，则不需要更新
+                }
                 return InstalledModuleName2Versions[moduleName] != version;
             }
             return false;

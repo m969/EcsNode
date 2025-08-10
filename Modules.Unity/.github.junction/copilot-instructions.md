@@ -83,7 +83,7 @@ applyTo: "com.system.**/**/*.cs"
 - 只实现方法逻辑，不实现属性数据
 - 系统为实例类，但系统业务方法仍为静态方法，方便调用
 - 实体系统继承 `AEntitySystem<T>`
-    - 实体系统应实现必要的生命周期接口：`IAwake<T>`, `IInit<T>`, `IAfterInit<T>`, `IEnable<T>`, `IDisable<T>`, `IUpdate<T>`, `IDestroy<T>`
+    - 实体系统应实现必要的生命周期接口：`IAwake<T>`, `IInit<T>`, `IAfterInit<T>`, `IEnable<T>`, `IDisable<T>`, `IDestroy<T>`
     - 实体系统应有一个或多个Create静态业务方法用于创建实体
 
 - 组件系统继承 `AComponentSystem<T, C>`

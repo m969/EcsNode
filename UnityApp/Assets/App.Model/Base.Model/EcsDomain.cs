@@ -38,7 +38,12 @@ namespace ECS
         /// <summary>
         /// 游戏地图世界
         /// </summary>
-        public const ushort GameWorld = 6;
+        public const ushort World = 6;
+
+        /// <summary>
+        /// 玩家实体
+        /// </summary>
+        public const ushort Player = 7;
     }
 
     public static class EcsDomain
@@ -47,11 +52,12 @@ namespace ECS
         public static Dictionary<Type, List<IEventRun>> EventHandlers { get; set; } = new();
 
         public static Game Game { get; set; }
-        public static GameWorld GameWorld { get; set; }
+        public static World World { get; set; }
         public static TrueWorld TrueWorld { get; set; }
         public static UIStage UIStage { get; set; }
         public static SoundMaster SoundMaster { get; set; }
         public static PlayerInput PlayerInput { get; set; }
+        public static Player Player { get; set; }
 
 
         public static void AddNode(EcsNode node)

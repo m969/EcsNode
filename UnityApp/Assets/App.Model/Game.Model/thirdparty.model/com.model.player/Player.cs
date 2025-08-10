@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 namespace ECSGame
 {
-    public class Player : EcsEntity
+    public class Player : EcsNode
     {
+        public Player(ushort ecsTypeId) : base(ecsTypeId)
+        {
+        }
+
         public int Type { get; set; }
     }
 }

@@ -8,7 +8,6 @@ namespace ECSGame
     public class ActorSystem : AEntitySystem<Actor>,
         IAwake<Actor>,
         IInit<Actor>,
-        IUpdate<Actor>,
         IHealthChangeHandler
     {
         public void Awake(Actor entity)
@@ -26,11 +25,6 @@ namespace ECSGame
             {
                 component.Enable = true;
             }
-        }
-
-        public void Update(Actor entity)
-        {
-
         }
 
         public void OnHealthChange(Actor entity, HealthComponent component)

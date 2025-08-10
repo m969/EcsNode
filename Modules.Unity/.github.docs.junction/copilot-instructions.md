@@ -43,14 +43,14 @@ applyTo: "program-documentation.md"
     - 补充类型设计，属性应有必要summary，枚举值应有必要summary
 3. 系统业务设计
     - 系统设计（系统为非静态类，但系统业务方法为静态方法，应标明方法名称和方法参数，方法应有必要summary）
-        - 实体系统设计（应实现必要的生命周期接口：`IAwake<T>`, `IInit<T>`, `IAfterInit<T>`, `IEnable<T>`, `IDisable<T>`, `IUpdate<T>`, `IDestroy<T>`）
+        - 实体系统设计（应实现必要的生命周期接口：`IAwake<T>`, `IInit<T>`, `IAfterInit<T>`, `IEnable<T>`, `IDisable<T>`, `IDestroy<T>`）
         - 组件系统设计（应实现必要的生命周期接口：`IAwake<T, C>`, `IInit<T, C>`, `IAfterInit<T, C>`, `IEnable<T, C>`, `IDisable<T, C>`, `IDestroy<T, C>`）
     - 系统事件接口设计，应标明方法名称和方法参数，方法应有必要summary
 
 ## 系统类：
 - 只实现方法逻辑，不实现属性数据，
 - 实体系统继承 `AEntitySystem<T>`
-    - 实体系统应实现必要的生命周期接口：`IAwake<T>`, `IInit<T>`, `IAfterInit<T>`, `IEnable<T>`, `IDisable<T>`, `IUpdate<T>`, `IDestroy<T>`
+    - 实体系统应实现必要的生命周期接口：`IAwake<T>`, `IInit<T>`, `IAfterInit<T>`, `IEnable<T>`, `IDisable<T>`, `IDestroy<T>`
     - 实体系统应有一个或多个Create静态业务接口用于创建实体
 
 - 组件系统继承 `AComponentSystem<T, C>`

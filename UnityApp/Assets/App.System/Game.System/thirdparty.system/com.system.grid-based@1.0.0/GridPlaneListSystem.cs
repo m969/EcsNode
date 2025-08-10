@@ -18,8 +18,9 @@ namespace ECSGame.Module.GridBased
         /// <summary>
         /// 注册网格区域
         /// </summary>
-        public static void RegisterGridPlane(GridPlane entity, GridPlaneListComponent component)
+        public static void RegisterGridPlane(GridPlane entity)
         {
+            var component = entity.Parent.GetComponent<GridPlaneListComponent>();
             if (component.GridPlanes == null)
                 component.GridPlanes = new Dictionary<long, GridPlane>();
             component.GridPlanes[entity.Id] = entity;

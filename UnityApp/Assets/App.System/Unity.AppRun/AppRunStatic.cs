@@ -28,29 +28,22 @@ namespace ECSUnity
             ItemConfig.Tables = tables;
             ConsoleLog.Debug($"Tables loaded: {ItemConfig.DataList.Count}");
 
-            DomainSystem.AddGame(systemAssembly);
-
-            if ((GameType)gameType == GameType.TrueGameDemo)
+            var game = DomainSystem.AddGame(gameType, systemAssembly);
+            if (gameType == (int)GameType.TrueGameDemo)
             {
-                GameRunStatic_TrueGameDemo.Init(systemAssembly);
+                game.AddComponent<GameTrueWorldComponent>();
             }
-
-            DomainSystem.AddUI(systemAssembly);
-
-            DomainSystem.AddSound(systemAssembly);
-
-            if ((GameType)gameType == GameType.TrueGameDemo)
+            else
             {
-                var playerInput = DomainSystem.AddPlayerInput(systemAssembly);
-                playerInput.AddComponent<TrueGameInputComponent>();
-                EcsObject.Init(playerInput);
+                game.AddComponent<GameWorldComponent>();
             }
-            if ((GameType)gameType == GameType.SimulationGameDemo)
-            {
-                var playerInput = DomainSystem.AddPlayerInput(systemAssembly);
-                playerInput.AddComponent<SimulationGameInputComponent>();
-                EcsObject.Init(playerInput);
-            }
+            game.AddComponent<GamePlayerComponent>();
+            game.AddComponent<GamePlayerInputComponent>();
+            EcsObject.Init(game);
+
+            DomainViewSystem.AddUI(systemAssembly);
+
+            DomainViewSystem.AddSound(systemAssembly);
 
             var groot = GRoot.inst;
             ReloadUI();
@@ -100,16 +93,11 @@ namespace ECSUnity
         public static void Update()
         {
             EcsDomain.Game?.DriveEntityUpdate();
-            EcsDomain.GameWorld?.DriveEntityUpdate();
-            EcsDomain.TrueWorld?.DriveEntityUpdate();
-            EcsDomain.PlayerInput?.DriveEntityUpdate();
         }
 
         public static void FixedUpdate()
         {
             EcsDomain.Game?.DriveEntityFixedUpdate();
-            EcsDomain.GameWorld?.DriveEntityFixedUpdate();
-            EcsDomain.TrueWorld?.DriveEntityFixedUpdate();
         }
     }
 }

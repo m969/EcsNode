@@ -54,39 +54,40 @@ namespace ECSGame
             }
         }
 
-        public static Game AddGame(Assembly systemAssembly)
+        public static Game AddGame(int gameType, Assembly systemAssembly)
         {
             var game = GameSystem.Create(systemAssembly);
-            EcsObject.Init(game);
+            game.Type = gameType;
             EcsDomain.AddNode(game);
             EcsDomain.Game = game;
             return game;
         }
 
-        public static UIStage AddUI(Assembly systemAssembly)
+        public static World AddWorld(Assembly systemAssembly)
         {
-            var uiStage = UISystem.Create(systemAssembly);
-            EcsObject.Init(uiStage);
-            EcsDomain.AddNode(uiStage);
-            EcsDomain.UIStage = uiStage;
-            return uiStage;
+            var gameWorld = WorldSystem.Create(systemAssembly);
+            EcsObject.Init(gameWorld);
+            EcsDomain.AddNode(gameWorld);
+            EcsDomain.World = gameWorld;
+            return gameWorld;
         }
 
-        public static SoundMaster AddSound(Assembly systemAssembly)
+        public static TrueWorld AddTrueWorld(Assembly systemAssembly)
         {
-            var soundMaster = SoundSystem.Create(systemAssembly);
-            EcsObject.Init(soundMaster);
-            EcsDomain.AddNode(soundMaster);
-            EcsDomain.SoundMaster = soundMaster;
-            return soundMaster;
+            var trueWorld = TrueWorldSystem.Create(systemAssembly);
+            EcsObject.Init(trueWorld);
+            EcsDomain.AddNode(trueWorld);
+            EcsDomain.TrueWorld = trueWorld;
+            return trueWorld;
         }
 
-        public static PlayerInput AddPlayerInput(Assembly systemAssembly)
+        public static Player AddPlayer(Assembly systemAssembly)
         {
-            var playerInput = PlayerInputSystem.Create(systemAssembly);
-            EcsDomain.AddNode(playerInput);
-            EcsDomain.PlayerInput = playerInput;
-            return playerInput;
+            var player = PlayerSystem.Create(systemAssembly);
+            EcsObject.Init(player);
+            EcsDomain.AddNode(player);
+            EcsDomain.Player = player;
+            return player;
         }
     }
 }

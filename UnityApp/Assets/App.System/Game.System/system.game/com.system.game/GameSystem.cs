@@ -8,8 +8,9 @@ using System.Reflection;
 namespace ECSGame
 {
     public class GameSystem : AEntitySystem<Game>,
-    IInit<Game>,
-    IUpdate<Game>
+        IInit<Game>,
+        IUpdate<Game>,
+        IFixedUpdate<Game>
     {
         public static Game Create(Assembly systemAssembly)
         {
@@ -22,9 +23,28 @@ namespace ECSGame
 
         }
 
-        public void Update(Game game)
+        public void Update(Game entity)
         {
+            if (entity.Type == ((int)GameType.TrueGameDemo))
+            {
+                GameTrueWorldSystem.Update(entity);
+            }
+            else
+            {
+                GameWorldSystem.Update(entity);
+            }
+        }
 
+        public void FixedUpdate(Game entity)
+        {
+            if (entity.Type == ((int)GameType.TrueGameDemo))
+            {
+                GameTrueWorldSystem.FixedUpdate(entity);
+            }
+            else
+            {
+                GameWorldSystem.FixedUpdate(entity);
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ECSGame.Module.GridBased
     /// <summary>
     /// 格子实体系统，负责格子的创建和生命周期管理。
     /// </summary>
-    public class GridCellSystem : AEntitySystem<GridCell>, IAwake<GridCell>, IInit<GridCell>, IAfterInit<GridCell>, IEnable<GridCell>, IDisable<GridCell>, IUpdate<GridCell>, IDestroy<GridCell>
+    public class GridCellSystem : AEntitySystem<GridCell>, IAwake<GridCell>, IInit<GridCell>, IAfterInit<GridCell>, IEnable<GridCell>, IDisable<GridCell>, IDestroy<GridCell>
     {
         /// <summary>
         /// 创建格子实体
@@ -56,7 +56,6 @@ namespace ECSGame.Module.GridBased
         public void AfterInit(GridCell entity) { }
         public void Enable(GridCell entity) { }
         public void Disable(GridCell entity) { }
-        public void Update(GridCell entity) { }
         public void Destroy(GridCell entity) { }
     }
 }

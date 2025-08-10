@@ -189,7 +189,7 @@ namespace ECSUnity
         {
             var newInputFrame = determineFrame + TrueWorld.ForecastFrame;
             var playerInput = EcsDomain.PlayerInput;
-            if (playerInput.TryGetComponent<TrueGameInputComponent>(out var component) == false)
+            if (playerInput == null || playerInput.TryGetComponent<TrueGameInputComponent>(out var component) == false)
             {
                 return;
             }
