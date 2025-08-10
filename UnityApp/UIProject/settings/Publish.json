@@ -1,5 +1,5 @@
 {
-  "path": "D:\\Documents\\MyGithub\\EcsNode\\Assets\\GameResources\\Resources\\FGUI",
+  "path": "D:\\Documents\\MyGithub\\EcsNode\\UnityApp\\Assets\\GameResources\\Resources\\FGUI",
   "branchPath": "",
   "fileExtension": "bytes",
   "packageCount": 2,
@@ -9,7 +9,7 @@
   "compressPNG": false,
   "codeGeneration": {
     "allowGenCode": true,
-    "codePath": "D:\\Documents\\MyGithub\\EcsNode\\Assets\\App.System\\UI.System\\ui-system.ui-object\\UIObject.Generate",
+    "codePath": "D:\\Documents\\MyGithub\\EcsNode\\UnityApp\\Assets\\App.System\\UI.System\\ui-system.ui-object\\UIObject.Generate",
     "classNamePrefix": "UI_",
     "memberNamePrefix": "m_",
     "packageName": null,
