@@ -15,19 +15,19 @@ namespace cfg
 public partial class Tables
 {
     public data.TbItem TbItem {get; }
-    public demo.Tbitem Tbitem {get; }
+    public data.TbGridPlane TbGridPlane {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
         TbItem = new data.TbItem(loader("data_tbitem"));
-        Tbitem = new demo.Tbitem(loader("demo_tbitem"));
+        TbGridPlane = new data.TbGridPlane(loader("data_tbgridplane"));
         ResolveRef();
     }
     
     private void ResolveRef()
     {
         TbItem.ResolveRef(this);
-        Tbitem.ResolveRef(this);
+        TbGridPlane.ResolveRef(this);
     }
 }
 

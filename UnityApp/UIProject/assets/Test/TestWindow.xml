@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1280,720">
+  <displayList>
+    <component id="n0_psy3" name="nTestBtn" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="153,297">
+      <relation target="" sidePair="left-left"/>
+      <Button title="标题"/>
+    </component>
+    <text id="n1_psy3" name="nTestText" xy="154,146" size="148,65" fontSize="12" autoSize="none" text="测试文本">
+      <relation target="" sidePair="center-center,middle-middle"/>
+    </text>
+    <graph id="n2_psy3" name="nRect" xy="1010,127" size="100,100" type="rect">
+      <relation target="" sidePair="right-right"/>
+    </graph>
+    <list id="n3_psy3" name="nVerticalList" xy="156,369" size="223,171" overflow="scroll" lineGap="15" defaultItem="ui://aqsec6vqpsy30" autoClearItems="true">
+      <relation target="" sidePair="left-left"/>
+      <item title="item标题1"/>
+      <item title="item标题2"/>
+      <item title="item标题3"/>
+    </list>
+    <list id="n4_psy3" name="nHorizontalList" xy="359,628" size="544,40" layout="row" overflow="scroll" lineGap="15" colGap="15" defaultItem="ui://aqsec6vqpsy30" align="center" vAlign="middle" autoClearItems="true">
+      <relation target="" sidePair="center-center,bottom-bottom"/>
+      <item title="item标题1"/>
+      <item title="item标题2"/>
+      <item title="item标题3"/>
+    </list>
+  </displayList>
+</component>

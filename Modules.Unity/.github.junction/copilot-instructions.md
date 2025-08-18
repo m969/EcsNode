@@ -1,5 +1,25 @@
 # 永远用中文回答
 
+# 理念
+
+## 核心信念
+- 增量式进展优于“大爆炸”式开发 - 编译并通过测试的小变更
+- 从现有代码中学习 - 在实现前进行研究和规划
+- 实用主义优于教条主义 - 适应项目现实
+- 清晰的意图优于巧妙的代码 - 保持代码的“无聊”和“显而易见”
+
+## 简单性意味着
+- 每个函数/类单一职责
+- 避免过早抽象
+- 不要使用巧妙的技巧 - 选择“无聊”的解决方案
+- 如果需要解释，说明它太复杂了
+
+## 架构原则
+- 组合优于继承 - 使用依赖注入
+- 接口优于单例 - 便于测试与保持灵活性
+- 显式优于隐式 - 明确数据流与依赖关系
+- 尽可能测试驱动 - 永远不要禁用测试，修复它们
+
 # 工程概览
 
 这个工程包是EcsNode的模块工程，用于实现可插入EcsNode框架的模块代码，使用C#语言编写，遵循EcsNode的开发规范和最佳实践。
@@ -26,11 +46,6 @@ EcsNode是基于ECS（Entity-Component-System）架构的Unity游戏开发框架
 - 组件基类 EcsComponent：
     - 包含Entity（EcsEntity）属性，用于关联所属实体。
 
-### 核心实体（ECSGame命名空间）
-- Player：玩家实体
-- Actor：角色实体
-- Item：物品实体
-
 ## 通用开发规范
 
 ### 命名空间
@@ -45,11 +60,12 @@ using System.Collections.Generic;
 ```
 
 ### 设计原则
-1. 实体包含简单基础属性
-2. 组件承载可插拔的复杂功能
-3. 同类型组件在实体中唯一
-4. 实体创建只能通过AddChild<T>()方法添加到父实体（parent）下
-5. 模块系统设计原则应遵循以下原则：
+- 实体、组件和系统都无需实现构造函数
+- 实体包含简单基础属性
+- 组件承载可插拔的复杂功能
+- 同类型组件在实体中唯一
+- 实体创建只能通过AddChild<T>()方法添加到父实体（parent）下
+- 模块系统设计原则应遵循以下原则：
     - 单一职责原则
         单一职责原则指出，一个类应该只有一个改变的理由。这意味着一个类应该只负责一项任务或功能。如果一个类承担了过多的职责，它将变得复杂，难以维护和扩展。遵循这个原则有助于保持类的聚焦和高内聚，使得代码更加清晰和易于管理
     - 开闭原则
@@ -67,7 +83,37 @@ using System.Collections.Generic;
 - `/docs/*-documentation.md`: 各类设计文档
 
 ---
+applyTo: "docs/require-documentation.md"
+---
+
+模块需求文档
+
+---
+applyTo: "docs/design-documentation.md"
+---
+
+模块功能设计文档
+---
+applyTo: "docs/program-documentation.md"
+---
+
+模块程序设计文档
+
+---
+applyTo: "docs/program-test-documentation.md"
+---
+
+单元测试设计文档
+
+---
+applyTo: "docs/version-iteration-documentation.md"
+---
+
+模块版本迭代文档
+
+---
 applyTo: "com.model.**/**/*.cs"
+applyTo: "com.view-model.**/**/*.cs"
 ---
 
 ## 实体和组件：
@@ -77,9 +123,14 @@ applyTo: "com.model.**/**/*.cs"
 
 ---
 applyTo: "com.system.**/**/*.cs"
+applyTo: "com.view-system.**/**/*.cs"
 ---
 
+- 禁止生成静态类
+- 禁止给系统类加static标记
+
 ## 系统类：
+- 系统类不得用静态类
 - 只实现方法逻辑，不实现属性数据
 - 系统为实例类，但系统业务方法仍为静态方法，方便调用
 - 实体系统继承 `AEntitySystem<T>`
@@ -104,6 +155,7 @@ public interface IOnHandleScore : IDispatch
 - 系统业务逻辑方法均为静态方法
 - 只传实体和必要参数，组件在方法内获取
 - 需要详细summary注释
+- 免除判空判断，默认组件和参数不为null
 
 示例：
 ```csharp

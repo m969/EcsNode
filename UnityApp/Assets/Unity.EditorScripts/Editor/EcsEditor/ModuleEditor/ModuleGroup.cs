@@ -1,9 +1,10 @@
-using Sirenix.OdinInspector;
+ï»¿using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEditor;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace ECSEditor
 
     [Serializable]
     public class ModuleData
-	{
+    {
         public ModuleGroup ModuleGroup { get; set; }
 
         [HorizontalGroup("Horizontal", width: 180)]
@@ -33,7 +34,7 @@ namespace ECSEditor
 
         public string ModuleName { get { return ModuleId.Replace("com.module.", ""); } }
 
-        //ÅĞ¶ÏÄ£¿éÊÇ·ñÒÑ°²×°
+        //åˆ¤æ–­æ¨¡å—æ˜¯å¦å·²å®‰è£…
         private bool IsInstalled
         {
             get
@@ -46,7 +47,7 @@ namespace ECSEditor
             }
         }
 
-        //ÅĞ¶ÏÄ£¿éÊÇ·ñĞèÒª¸üĞÂ
+        //åˆ¤æ–­æ¨¡å—æ˜¯å¦éœ€è¦æ›´æ–°
         private bool NeedUpdate
         {
             get
@@ -60,39 +61,39 @@ namespace ECSEditor
         }
 
         /// <summary>
-        /// Ğ¶ÔØÄ£¿é
-        /// É¾³ıAssets/Game.Model/thirdparty.model/com.model.**Ä¿Â¼
-        /// É¾³ıAssets/Game.System/thirdparty.system/com.system.**Ä¿Â¼
+        /// å¸è½½æ¨¡å—
+        /// åˆ é™¤Assets/Game.Model/thirdparty.model/com.model.**ç›®å½•
+        /// åˆ é™¤Assets/Game.System/thirdparty.system/com.system.**ç›®å½•
         /// </summary>
         [HorizontalGroup("Horizontal/Btns")]
-        [Button("Ğ¶ÔØ", ButtonStyle.Box, Expanded = false)]
+        [Button("å¸è½½", ButtonStyle.Box, Expanded = false)]
         [ShowIf("@IsInstalled")]
         private void Uninstall()
         {
             DeleteModule();
-            Debug.Log($"Ä£¿é {ModuleId} Ğ¶ÔØÍê³É");
+            Debug.Log($"æ¨¡å— {ModuleId} å¸è½½å®Œæˆ");
             AssetDatabase.Refresh();
         }
 
         private void DeleteModule()
         {
-            // »ñÈ¡Ä£¿éÃû³Æ
+            // è·å–æ¨¡å—åç§°
             string moduleName = ModuleName;
             string targetModelRoot = Path.Combine(Application.dataPath, "App.Model/Game.Model/thirdparty.model");
             string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/thirdparty.system");
-            // 1. É¾³ı Assets/Game.Model/thirdparty.model/com.model.** Ä¿Â¼
+            // 1. åˆ é™¤ Assets/Game.Model/thirdparty.model/com.model.** ç›®å½•
             string modelDir = Path.Combine(targetModelRoot, $"com.model.{moduleName}");
             if (Directory.Exists(modelDir))
             {
-                Debug.Log($"É¾³ı {modelDir}");
+                Debug.Log($"åˆ é™¤ {modelDir}");
                 Directory.Delete(modelDir, true);
                 File.Delete(modelDir + ".meta");
             }
-            // 2. É¾³ı Assets/Game.System/thirdparty.system/com.system.** Ä¿Â¼
+            // 2. åˆ é™¤ Assets/Game.System/thirdparty.system/com.system.** ç›®å½•
             string systemDir = Path.Combine(targetSystemRoot, $"com.system.{moduleName}");
             if (Directory.Exists(systemDir))
             {
-                Debug.Log($"É¾³ı {systemDir}");
+                Debug.Log($"åˆ é™¤ {systemDir}");
                 Directory.Delete(systemDir, true);
                 File.Delete(systemDir + ".meta");
             }
@@ -102,14 +103,14 @@ namespace ECSEditor
                 modelDir = Path.Combine(targetModelRoot, $"com.model.{moduleName}@{version}");
                 if (Directory.Exists(modelDir))
                 {
-                    Debug.Log($"É¾³ı {modelDir}");
+                    Debug.Log($"åˆ é™¤ {modelDir}");
                     Directory.Delete(modelDir, true);
                     File.Delete(modelDir + ".meta");
                 }
                 systemDir = Path.Combine(targetSystemRoot, $"com.system.{moduleName}@{version}");
                 if (Directory.Exists(systemDir))
                 {
-                    Debug.Log($"É¾³ı {systemDir}");
+                    Debug.Log($"åˆ é™¤ {systemDir}");
                     Directory.Delete(systemDir, true);
                     File.Delete(systemDir + ".meta");
                 }
@@ -117,7 +118,7 @@ namespace ECSEditor
         }
 
         [HorizontalGroup("Horizontal/Btns")]
-        [Button("¸üĞÂ", ButtonStyle.Box, Expanded = false)]
+        [Button("æ›´æ–°", ButtonStyle.Box, Expanded = false)]
         [ShowIf("@NeedUpdate")]
         private void Update()
         {
@@ -125,67 +126,70 @@ namespace ECSEditor
         }
 
         /// <summary>
-        /// °²×°Ä£¿éµ½unity¹¤³ÌÖĞ
-        /// com.model.**Ä¿Â¼·Åµ½Assets/Game.Model/thirdparty.model/Ä¿Â¼ÏÂ
-        /// com.system.**Ä¿Â¼·Åµ½Assets/Game.System/thirdparty.system/Ä¿Â¼ÏÂ
+        /// å®‰è£…æ¨¡å—åˆ°unityå·¥ç¨‹ä¸­
+        /// com.model.**ç›®å½•æ”¾åˆ°Assets/Game.Model/thirdparty.model/ç›®å½•ä¸‹
+        /// com.system.**ç›®å½•æ”¾åˆ°Assets/Game.System/thirdparty.system/ç›®å½•ä¸‹
         /// </summary>
         [HorizontalGroup("Horizontal/Btns")]
-        [Button("µ¼Èë", ButtonStyle.Box, Expanded = false)]
+        [Button("å¯¼å…¥", ButtonStyle.Box, Expanded = false)]
         [HideIf("@IsInstalled")]
         private void Install()
         {
-            // 1. »ñÈ¡Ä£¿é¸ùÄ¿Â¼
+            // 1. è·å–æ¨¡å—æ ¹ç›®å½•
             string modulesRoot = Path.Combine(Application.dataPath, "../../Modules.Unity");
             string moduleDir = Path.Combine(modulesRoot, ModuleId);
 
             if (!Directory.Exists(moduleDir))
             {
-                Debug.LogError($"Ä£¿éÄ¿Â¼²»´æÔÚ: {moduleDir}");
+                Debug.LogError($"æ¨¡å—ç›®å½•ä¸å­˜åœ¨: {moduleDir}");
                 return;
             }
 
             DeleteModule();
 
-            // 2. ²éÕÒ com.model.* ºÍ com.system.* ×ÓÄ¿Â¼
             string[] modelDirs = Directory.GetDirectories(moduleDir, "com.model.*", SearchOption.TopDirectoryOnly);
             string[] systemDirs = Directory.GetDirectories(moduleDir, "com.system.*", SearchOption.TopDirectoryOnly);
+            CopyDirectorys(Path.Combine(Application.dataPath, "App.Model/Game.Model/game.thirdparty.model"), modelDirs);
+            CopyDirectorys(Path.Combine(Application.dataPath, "App.System/Game.System/game.thirdparty.system"), systemDirs);
 
-            // 3. ¿½±´ com.model.* µ½ Assets/Game.Model/thirdparty.model/
-            string targetModelRoot = Path.Combine(Application.dataPath, "App.Model/Game.Model/thirdparty.model");
-            foreach (string srcDir in modelDirs)
+            modelDirs = Directory.GetDirectories(moduleDir, "com.view-model.*", SearchOption.TopDirectoryOnly);
+            systemDirs = Directory.GetDirectories(moduleDir, "com.view-system.*", SearchOption.TopDirectoryOnly);
+            CopyDirectorys(Path.Combine(Application.dataPath, "App.Model/Game.ViewModel/game.thirdparty.view-model"), modelDirs);
+            CopyDirectorys(Path.Combine(Application.dataPath, "App.System/Game.ViewSystem/game.thirdparty.view-system"), systemDirs);
+
+            Debug.Log($"æ¨¡å— {ModuleId} å®‰è£…å®Œæˆ");
+            AssetDatabase.Refresh();
+        }
+
+        private void CopyDirectorys(string targetSystemRoot, string[] systemDirs)
+        {
+            if (systemDirs == null || systemDirs.Length == 0)
             {
-                string dirName = Path.GetFileName(srcDir);
-                string dstDir = Path.Combine(targetModelRoot, $"{dirName}@{ModuleVersion}");
-                Debug.Log($"¿½±´ {srcDir} µ½ {dstDir}");
-                // Çå³ı¾ÉÄ¿Â¼
-                if (Directory.Exists(dstDir))
-                {
-                    Directory.Delete(dstDir, true);
-                }
-                CopyDirectory(srcDir, dstDir);
+                return;
             }
-
-            // 4. ¿½±´ com.system.* µ½ Assets/Game.System/thirdparty.system/
-            string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/thirdparty.system");
+            if (Directory.Exists(targetSystemRoot) == false)
+            {
+                Directory.CreateDirectory(targetSystemRoot);
+            }
+            //string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/game.thirdparty.system");
             foreach (string srcDir in systemDirs)
             {
                 string dirName = Path.GetFileName(srcDir);
                 string dstDir = Path.Combine(targetSystemRoot, $"{dirName}@{ModuleVersion}");
-                Debug.Log($"¿½±´ {srcDir} µ½ {dstDir}");
-                // Çå³ı¾ÉÄ¿Â¼
-                if (Directory.Exists(dstDir))
+                var installedVersion = ModuleGroup.GetInstalledModuleVersion(ModuleName);
+                string existDstDir = Path.Combine(targetSystemRoot, $"{dirName}@{installedVersion}");
+                // æ¸…é™¤æ—§ç›®å½•
+                if (Directory.Exists(existDstDir))
                 {
-                    Directory.Delete(dstDir, true);
+                    Directory.Delete(existDstDir, true);
                 }
+                Debug.Log($"æ‹·è´ {srcDir} åˆ° {dstDir}");
                 CopyDirectory(srcDir, dstDir);
             }
-
-            Debug.Log($"Ä£¿é {ModuleId} °²×°Íê³É");
-            AssetDatabase.Refresh();
         }
 
         /// <summary>
-        /// µİ¹é¿½±´ÎÄ¼ş¼Ğ
+        /// é€’å½’æ‹·è´æ–‡ä»¶å¤¹
         /// </summary>
         private static void CopyDirectory(string sourceDir, string destinationDir)
         {
@@ -220,8 +224,8 @@ namespace ECSEditor
     }
 
     [CreateAssetMenu(fileName = "ModuleGroup", menuName = "ModuleGroup")]
-	public class ModuleGroup : SerializedScriptableObject
-	{
+    public class ModuleGroup : SerializedScriptableObject
+    {
         [HideReferenceObjectPicker, ListDrawerSettings(ShowPaging = false, HideAddButton = true, HideRemoveButton = true)]
         public List<ModuleData> UnityModules;
 
@@ -229,11 +233,49 @@ namespace ECSEditor
 
         private void OnEnable()
         {
+            FindModules();
+        }
+
+        public bool IsModuleInstalled(string moduleName)
+        {
+            return InstalledModuleName2Versions.ContainsKey(moduleName);
+        }
+
+        public bool IsModuleNeedUpdate(string moduleName, string version)
+        {
+            if (InstalledModuleName2Versions.ContainsKey(moduleName))
+            {
+                if (string.IsNullOrEmpty(InstalledModuleName2Versions[moduleName]))
+                {
+                    return false; // å¦‚æœæ²¡æœ‰ç‰ˆæœ¬ä¿¡æ¯ï¼Œåˆ™ä¸éœ€è¦æ›´æ–°
+                }
+                return InstalledModuleName2Versions[moduleName] != version;
+            }
+            return false;
+        }
+
+        public string GetInstalledModuleVersion(string moduleName)
+        {
+            if (InstalledModuleName2Versions.ContainsKey(moduleName))
+            {
+                if (string.IsNullOrEmpty(InstalledModuleName2Versions[moduleName]))
+                {
+                    return string.Empty; // å¦‚æœæ²¡æœ‰ç‰ˆæœ¬ä¿¡æ¯ï¼Œåˆ™ä¸éœ€è¦æ›´æ–°
+                }
+                return InstalledModuleName2Versions[moduleName];
+            }
+            return string.Empty;
+        }
+
+        // æŸ¥æ‰¾Modules.Unityç›®å½•ä¸‹çš„æ¨¡å—ï¼ˆæ¨¡å—æ–‡ä»¶å¤¹åç§°è§„åˆ™å¦‚com.module.**ï¼‰
+        [Button("åˆ·æ–°æ¨¡å—ä¿¡æ¯")]
+        public void FindModules()
+        {
             //Debug.Log("ModuleGroup OnEnable");
             InstalledModuleName2Versions.Clear();
-            string modelDir = Path.Combine(Application.dataPath, $"App.Model/Game.Model/thirdparty.model/");
-            var dir = Directory.CreateDirectory(modelDir);
-            dir.GetDirectories("com.model.*", SearchOption.TopDirectoryOnly).ToList().ForEach(d =>
+            string modelDir = Path.Combine(Application.dataPath, $"App.Model/Game.Model/game.thirdparty.model/");
+            var director = Directory.CreateDirectory(modelDir);
+            director.GetDirectories("com.model.*", SearchOption.TopDirectoryOnly).ToList().ForEach(d =>
             {
                 if (d.Name.Contains("@"))
                 {
@@ -248,30 +290,7 @@ namespace ECSEditor
                     InstalledModuleName2Versions.Add($"{moduleName}", "");
                 }
             });
-        }
 
-        public bool IsModuleInstalled(string moduleName)
-        {
-            return InstalledModuleName2Versions.ContainsKey(moduleName);
-        }
-
-        public bool IsModuleNeedUpdate(string moduleName, string version)
-        {
-            if (InstalledModuleName2Versions.ContainsKey(moduleName))
-            {
-                if(string.IsNullOrEmpty(InstalledModuleName2Versions[moduleName]))
-                {
-                    return false; // Èç¹ûÃ»ÓĞ°æ±¾ĞÅÏ¢£¬Ôò²»ĞèÒª¸üĞÂ
-                }
-                return InstalledModuleName2Versions[moduleName] != version;
-            }
-            return false;
-        }
-
-        // ²éÕÒModules.UnityÄ¿Â¼ÏÂµÄÄ£¿é£¨Ä£¿éÎÄ¼ş¼ĞÃû³Æ¹æÔòÈçcom.module.**£©
-        [Button("Ë¢ĞÂÄ£¿éĞÅÏ¢")]
-        public void FindModules()
-        {
             UnityModules.Clear();
             string modulesRoot = Path.Combine(Application.dataPath, "../../Modules.Unity");
             if (!Directory.Exists(modulesRoot))
@@ -285,7 +304,7 @@ namespace ECSEditor
             {
                 //Debug.Log($"Found module directory: {dir}");
                 string moduleName = Path.GetFileName(dir);
-                //»ñÈ¡Ä£¿é°æ±¾ĞÅÏ¢£¬Ä£ĞÍĞÅÏ¢¶¼´æÓÚmodule.json
+                //è·å–æ¨¡å—ç‰ˆæœ¬ä¿¡æ¯ï¼Œæ¨¡å‹ä¿¡æ¯éƒ½å­˜äºmodule.json
                 string moduleJsonPath = Path.Combine(dir, "module.json");
                 if (File.Exists(moduleJsonPath))
                 {
@@ -309,14 +328,14 @@ namespace ECSEditor
                     }
                     catch (Exception ex)
                     {
-                        Debug.LogError($"¶ÁÈ¡Ä£¿é°æ±¾Ê§°Ü: {moduleJsonPath}, {ex.Message}");
+                        Debug.LogError($"è¯»å–æ¨¡å—ç‰ˆæœ¬å¤±è´¥: {moduleJsonPath}, {ex.Message}");
                     }
                 }
             }
         }
     }
 
-    // ¸¨ÖúÀà¶¨Òå£¨¿É·ÅÔÚÎÄ¼şÄ©Î²£©
+    // è¾…åŠ©ç±»å®šä¹‰ï¼ˆå¯æ”¾åœ¨æ–‡ä»¶æœ«å°¾ï¼‰
     [Serializable]
     public class ModuleJson
     {

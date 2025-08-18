@@ -21,15 +21,17 @@
 - 规范式模块化（Spec-Modular-Driven）AI代码生成流程（类似于Kiro的Spec-Driven，基于copilot-instruction.md）
     - 常用prompt示例：
         - 补充完善require需求文档
-        - 根据require文档，更新完善design文档
-        - 根据design文档，更新完善program文档
-        - 根据program文档，更新完善program-test文档
-        - 根据program文档，更新完善配置接口、实体、组件、类型补充代码文件
-        - 根据program文档，更新完善配置接口代码文件
-        - 根据program文档，更新完善实体代码文件
-        - 根据program文档，更新完善组件代码文件
-        - 根据program文档，更新完善系统代码文件
-        - 根据program-test文档和模块System代码，更新完善单元测试代码文件
+        - 根据require文档，调整修改design文档
+        - 根据新修改的design文档，调整修改program文档
+        - 根据新修改的program文档，调整修改program-test文档
+        - 根据新修改的program文档，调整修改配置接口、实体、组件、类型补充代码文件
+        - 根据新修改的program文档，调整修改配置接口代码文件
+        - 根据新修改的program文档，调整修改实体代码文件
+        - 根据新修改的program文档，调整修改组件代码文件
+        - 根据新修改的program文档，调整修改系统代码文件
+        - 根据新修改的program文档，调整修改model和system代码
+        - 根据program-test文档和模块System代码，调整修改单元测试代码文件
+	- 据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档
 
 示例:
 - Modules.Unity/com.module.resource-data（资源模块）

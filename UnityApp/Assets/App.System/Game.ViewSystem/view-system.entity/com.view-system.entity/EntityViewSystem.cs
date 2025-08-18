@@ -1,16 +1,20 @@
 ﻿using ECS;
+using ECSGame;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ECSGame
+namespace ECSUnity
 {
     public class EntityViewSystem : AEntitySystem<EcsEntity>,
-IAwake<EcsEntity>,
-IInit<EcsEntity>
+        IAwake<EcsEntity>,
+        IInit<EcsEntity>,
+        IAfterInit<EcsEntity>
     {
         public void Awake(EcsEntity entity)
         {
+            entity.AddComponent<EntityObjComponent>();
+            entity.AddComponent<ModelViewComponent>();
         }
 
         public void Init(EcsEntity entity)
@@ -18,16 +22,15 @@ IInit<EcsEntity>
 
         }
 
+        public void AfterInit(EcsEntity entity)
+        {
+
+        }
+
         public static void Update(EcsEntity entity)
         {
-            if (entity.GetComponent<ModelViewComponent>() is { } modelComp)
-            {
-                ModelViewSystem.Update(entity, modelComp);
-            }
-            if (entity.GetComponent<TransformComponent>() is { } transComp)
-            {
-                TransformViewSystem.Update(entity, transComp);
-            }
+            ModelViewSystem.Update(entity);
+            TransformViewSystem.Update(entity);
         }
     }
 }

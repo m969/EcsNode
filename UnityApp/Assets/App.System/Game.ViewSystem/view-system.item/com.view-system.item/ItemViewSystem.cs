@@ -18,9 +18,8 @@ namespace ECSGame
 
         public void Init(Item entity)
         {
-            entity.AddComponent<ModelViewComponent>();
-            var viewObj = GameObject.Instantiate(Resources.Load<GameObject>("Bullet"));
-            ModelViewSystem.SetModelTrans(entity, viewObj.transform);
+            var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("Bullet"));
+            ModelViewSystem.SetModel(entity, modelObj);
         }
 
         public void Update(Item entity)

@@ -15,7 +15,7 @@ namespace ECSUnity
     {
         public void Init(Game game, GamePlayerInputComponent component)
         {
-            
+
         }
 
         public void AfterInit(Game game, GamePlayerInputComponent component)
@@ -30,7 +30,7 @@ namespace ECSUnity
             {
                 playerInput.AddComponent<SimulationGameInputComponent>();
             }
-            EcsObject.Init(playerInput);
+            playerInput.Init();
         }
 
         public static void Update(Game entity)

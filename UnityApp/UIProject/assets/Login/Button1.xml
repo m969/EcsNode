@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component size="100,20" extention="Button">
-  <Button/>
-  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver"/>
+  <controller name="button" pages="0,up,1,down,2,over,3,selectedOver" selected="0"/>
   <displayList>
-    <graph id="n0_9li5" name="n0" xy="0,0" size="100,20" type="rect" lineSize="0" fillColor="#F0F0F0" touchable="false">
+    <graph id="n0_9li5" name="n0" xy="0,0" size="100,20" touchable="false" type="rect" lineSize="0" fillColor="#fff0f0f0">
       <gearDisplay controller="button" pages="0"/>
-      <relation target="" sidePair="width,height"/>
+      <relation target="" sidePair="width-width,height-height"/>
     </graph>
-    <graph id="n1_9li5" name="n1" xy="0,0" size="100,20" type="rect" lineSize="0" fillColor="#FAFAFA" touchable="false">
+    <graph id="n1_9li5" name="n1" xy="0,0" size="100,20" touchable="false" type="rect" lineSize="0" fillColor="#fffafafa">
       <gearDisplay controller="button" pages="2"/>
-      <relation target="" sidePair="width,height"/>
+      <relation target="" sidePair="width-width,height-height"/>
     </graph>
-    <graph id="n2_9li5" name="n2" xy="0,0" size="100,20" type="rect" lineSize="0" fillColor="#CCCCCC" touchable="false">
+    <graph id="n2_9li5" name="n2" xy="0,0" size="100,20" touchable="false" type="rect" lineSize="0" fillColor="#ffcccccc">
       <gearDisplay controller="button" pages="1,3"/>
-      <relation target="" sidePair="width,height"/>
+      <relation target="" sidePair="width-width,height-height"/>
     </graph>
+    <text id="n3_8aid" name="title" xy="1,0" size="98,19" fontSize="12" align="center" vAlign="middle" autoSize="none" text="title">
+      <relation target="" sidePair="width-width,height-height"/>
+    </text>
   </displayList>
+  <Button/>
 </component>

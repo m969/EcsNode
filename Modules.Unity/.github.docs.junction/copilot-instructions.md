@@ -51,7 +51,7 @@ applyTo: "program-documentation.md"
 - 只实现方法逻辑，不实现属性数据，
 - 实体系统继承 `AEntitySystem<T>`
     - 实体系统应实现必要的生命周期接口：`IAwake<T>`, `IInit<T>`, `IAfterInit<T>`, `IEnable<T>`, `IDisable<T>`, `IDestroy<T>`
-    - 实体系统应有一个或多个Create静态业务接口用于创建实体
+    - 实体系统应有一个或多个Create静态业务接口用于创建实体，并将父实体和配置接口作为参数传入
 
 - 组件系统继承 `AComponentSystem<T, C>`
     - 组件系统应实现必要的生命周期接口：`IAwake<T, C>`, `IInit<T, C>`, `IAfterInit<T, C>`, `IEnable<T, C>`, `IDisable<T, C>`, `IDestroy<T, C>`
@@ -97,11 +97,6 @@ public interface IOnHandleScore : IDispatch
 - 组件基类 EcsComponent：
     - 包含Entity（EcsEntity）属性，用于关联所属实体。
 
-### 核心实体（ECSGame命名空间）
-- Player：玩家实体
-- Actor：角色实体
-- Item：物品实体
-
 ### 命名空间
 所有模块代码命名空间为 `ECSGame.Module.**`（**为模块名，忽略横杆下划线，大写开头）
 
@@ -136,3 +131,8 @@ applyTo: "program-test-documentation.md"
 3. 测试执行计划
 4. 测试结果记录
 
+---
+applyTo: "version-iteration-documentation.md"
+---
+
+模块版本迭代文档

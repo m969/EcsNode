@@ -9,7 +9,7 @@
   "compressPNG": false,
   "codeGeneration": {
     "allowGenCode": true,
-    "codePath": "D:\\Documents\\MyGithub\\EcsNode\\UnityApp\\Assets\\App.System\\UI.System\\ui-system.ui-object\\UIObject.Generate",
+    "codePath": "D:\\Documents\\MyGithub\\EcsNode\\UnityApp\\Assets\\App.System\\Unity.System\\unity-system.ui-window\\uiobject.generate",
     "classNamePrefix": "UI_",
     "memberNamePrefix": "m_",
     "packageName": null,

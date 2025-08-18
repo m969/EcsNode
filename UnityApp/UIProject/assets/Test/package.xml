@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packageDescription id="aseijf3n">
+  <resources>
+    <component id="psy30" name="TestWindow.xml" path="/" exported="true"/>
+    <component id="game01" name="GameWindow.xml" path="/" exported="true"/>
+    <image id="psy32" name="GameWindow.svg" path="/" width="1280" height="720"/>
+  </resources>
+  <publish name=""/>
+</packageDescription>

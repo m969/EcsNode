@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component size="1280,720">
+  <displayList>
+    <image id="n0_game" name="nBg" src="psy32" fileName="GameWindow.svg" xy="0,0" size="1280,720"/>
+    <graph id="n1_game" name="nTopBarRect" xy="0,0" size="1280,80" type="rect"/>
+    <component id="n2_game" name="nTopAvatar" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="20,20">
+      <Button title="头像/VIP"/>
+    </component>
+    <component id="n3_game" name="nTopResources" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="200,20" size="291,40">
+      <Button title="资源: 粮 木 石 铁 金 钻"/>
+    </component>
+    <component id="n4_game" name="nTopMail" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="813,20">
+      <Button title="邮件"/>
+    </component>
+    <component id="n10_game" name="nTopActivity" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="928,20">
+      <Button title="活动"/>
+    </component>
+    <component id="n5_game" name="nTopShop" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="1043,20">
+      <Button title="商城"/>
+    </component>
+    <component id="n11_game" name="nTopSettings" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="1156,20">
+      <Button title="设置"/>
+    </component>
+    <graph id="n6_game" name="nCenterRect" xy="0,80" size="1280,480" type="rect"/>
+    <text id="n7_game" name="nCenterHint" xy="513,118" size="220,40" fontSize="16" autoSize="none" text="世界地图/城市视图"/>
+    <graph id="n8_game" name="nLeftPanelRect" xy="0,100" size="100,380" type="rect"/>
+    <list id="n9_game" name="nLeftMenu" xy="10,130" size="80,324" overflow="scroll" lineGap="15" defaultItem="ui://aqsec6vqpsy30" autoClearItems="true">
+      <item title="任务"/>
+      <item title="科技"/>
+      <item title="军队"/>
+      <item title="联盟"/>
+      <item title="建筑"/>
+      <item title="更多+"/>
+    </list>
+    <graph id="n15_game" name="nRightPanelRect" xy="1180,100" size="100,320" type="rect"/>
+    <list id="n16_game" name="nRightMenu" xy="1190,130" size="80,240" overflow="scroll" lineGap="15" defaultItem="ui://aqsec6vqpsy30" autoClearItems="true">
+      <item title="部队"/>
+      <item title="技能"/>
+      <item title="道具"/>
+      <item title="雷达"/>
+    </list>
+    <graph id="n20_game" name="nBottomBarRect" xy="0,560" size="1280,160" type="rect"/>
+    <list id="n21_game" name="nBottomMenu" xy="360,600" size="560,40" layout="row" overflow="scroll" lineGap="15" colGap="15" defaultItem="ui://aqsec6vqpsy30" align="center" vAlign="middle" autoClearItems="true">
+      <relation target="" sidePair="center-center,bottom-bottom"/>
+      <item title="英雄"/>
+      <item title="副本"/>
+      <item title="地图/城市切换"/>
+      <item title="背包"/>
+      <item title="商店"/>
+    </list>
+  </displayList>
+</component>

@@ -18,11 +18,13 @@ public class AppLoad : MonoBehaviour
 {
     public GameType GameType;
     public static bool NeedReload { get; set; } = false;
+    public static bool NeedCompilePlay { get; set; } = false;
     public static bool NeedReloadShare { get; set; } = false;
     private EcsNode EcsNode { get; set; }
     private float NextCheckReloadTime { get; set; }
     private Dictionary<string, string> ScriptFiles { get; set; } = new Dictionary<string, string>();
     public GameObject ReloadPanelObj;
+    public Assembly SystemAssembly { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -40,8 +42,7 @@ public class AppLoad : MonoBehaviour
 
         CheckScriptFiles();
 
-        //AppRunStatic.Init(typeof(AppRunStatic).Assembly);
-        LoadSystemAssembly("Init");
+        //LoadSystemAssembly("Init");
     }
 
     private void LoadSystemAssembly(string method)
@@ -51,11 +52,11 @@ public class AppLoad : MonoBehaviour
         var assembly = Assembly.Load(assBytes, pdbBytes);
         var methodInfo = assembly.GetType("ECSUnity.AppRunStatic").GetMethod(method);
         methodInfo.Invoke(null, new object[2] { assembly, ((int)GameType) });
+        SystemAssembly = assembly;
     }
 
     public void Reload()
     {
-        //AppRunStatic.Reload(typeof(AppRunStatic).Assembly);
         LoadSystemAssembly("Reload");
     }
 
@@ -101,7 +102,27 @@ public class AppLoad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //EcsNode?.DriveEntityUpdate();
+        if (SystemAssembly == null)
+        {
+#if UNITY_EDITOR
+            var needCompileDll = UnityEditor.EditorPrefs.GetBool("NeedCompileDll", true);
+            if (needCompileDll)
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+                NeedCompilePlay = true;
+                //Debug.LogError("请打开GameDebugEditor窗口");
+                //LoadSystemAssembly("Init");
+                //UnityEditor.EditorPrefs.SetBool("NeedCompileDll", false);
+            }
+            else
+            {
+                LoadSystemAssembly("Init");
+                UnityEditor.EditorPrefs.SetBool("NeedCompileDll", true);
+            }
+#endif
+            return;
+        }
+
         AppRunStatic.Update();
 
         if (Time.realtimeSinceStartup > NextCheckReloadTime)
@@ -117,7 +138,10 @@ public class AppLoad : MonoBehaviour
 
     void FixedUpdate()
     {
-        //EcsNode?.DriveEntityFixedUpdate();
+        if (SystemAssembly == null)
+        {
+            return;
+        }
         AppRunStatic.FixedUpdate();
     }
 }

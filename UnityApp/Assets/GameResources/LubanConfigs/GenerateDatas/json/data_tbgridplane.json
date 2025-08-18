@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1001,
+    "key": "",
+    "width": 10,
+    "height": 10,
+    "cell_size": 1
+  },
+  {
+    "id": 1002,
+    "key": "",
+    "width": 100,
+    "height": 100,
+    "cell_size": 1
+  }
+]

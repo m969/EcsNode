@@ -1,7 +1,9 @@
 {
     "name": "Unity.Scripts",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:645f7d097acee4f40b75a6b9ff1b0822"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

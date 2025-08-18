@@ -1,4 +1,4 @@
-# （网格系统）模块程序设计文档
+# （网格系统）模块程序设计文档 - version：1.0.4
 ## 1. 程序功能概述
 网格系统模块用于实现游戏中的格子化建造玩法，负责网格区域的初始化、格子状态管理，并提供格子坐标与世界坐标的转换接口。
 
@@ -19,8 +19,6 @@ public interface IGridPlaneConfig
     int Height { get; }
     /// <summary>单个格子的大小（世界单位）</summary>
     float CellSize { get; }
-    /// <summary>格子初始状态</summary>
-    GridCellState InitialState { get; }
 }
 
 ### 实体设计
@@ -71,7 +69,7 @@ public enum GridCellState
 
 ### 组件设计
 /// <summary>
-/// 网格区域管理组件，继承自EcsComponent，管理网格区域实体字典。
+/// 网格区域管理组件，继承自EcsComponent，管理网格区域实体字典。挂载在World实体上。
 /// </summary>
 public class GridPlaneListComponent : EcsComponent
 {
@@ -105,19 +103,11 @@ public class GridConverterComponent : EcsComponent
 ### 实体系统设计
 public class GridPlaneSystem : AEntitySystem<GridPlane>, IAwake<GridPlane>, IInit<GridPlane>, IAfterInit<GridPlane>, IEnable<GridPlane>, IDisable<GridPlane>, IUpdate<GridPlane>, IDestroy<GridPlane>
 {
-    /// <summary>创建网格区域实体</summary>
+    /// <summary>创建并初始化网格区域实体</summary>
     /// <param name="parent">父实体</param>
-    /// <param name="configId">网格配置ID</param>
+    /// <param name="config">网格区域配置接口</param>
     /// <param name="position">网格区域位置</param>
-    public static GridPlane CreateGridPlane(EcsEntity parent, int configId, (float x, float y) position)
-    {
-        // 方法实现略
-        throw new NotImplementedException();
-    }
-    
-    /// <summary>初始化网格区域</summary>
-    /// <param name="entity">网格区域实体</param>
-    public static void InitializeGrid(GridPlane entity)
+    public static GridPlane CreateGridPlane(EcsEntity parent, IGridPlaneConfig config, (float x, float y) position)
     {
         // 方法实现略
         throw new NotImplementedException();
@@ -150,24 +140,36 @@ public class GridCellSystem : AEntitySystem<GridCell>, IAwake<GridCell>, IInit<G
 }
 
 ### 组件系统设计
-public class GridPlaneListSystem : AComponentSystem<GridPlane, GridPlaneListComponent>, IAwake<GridPlane, GridPlaneListComponent>, IInit<GridPlane, GridPlaneListComponent>, IAfterInit<GridPlane, GridPlaneListComponent>, IEnable<GridPlane, GridPlaneListComponent>, IDisable<GridPlane, GridPlaneListComponent>, IDestroy<GridPlane, GridPlaneListComponent>
+public class GridPlaneListSystem : AComponentSystem<EcsEntity, GridPlaneListComponent>, 
+    IAwake<EcsEntity, GridPlaneListComponent>, 
+    IInit<EcsEntity, GridPlaneListComponent>, 
+    IAfterInit<EcsEntity, GridPlaneListComponent>, 
+    IEnable<EcsEntity, GridPlaneListComponent>, 
+    IDisable<EcsEntity, GridPlaneListComponent>, 
+    IDestroy<EcsEntity, GridPlaneListComponent>
 {
-    /// <summary>注册网格区域</summary>
-    public static void RegisterGridPlane(GridPlane entity, GridPlaneListComponent component)
+    /// <summary>添加网格区域（在实体上登记一个GridPlane）</summary>
+    /// <param name="entity">EcsEntity 实体</param>
+    /// <param name="gridPlane">要添加的网格区域实体</param>
+    public static void AddGridPlane(EcsEntity entity, GridPlane gridPlane)
     {
         // 方法实现略
         throw new NotImplementedException();
     }
     
-    /// <summary>注销网格区域</summary>
-    public static void UnregisterGridPlane(GridPlane entity, GridPlaneListComponent component)
+    /// <summary>移除网格区域（从实体移除指定 Id 的 GridPlane）</summary>
+    /// <param name="entity">EcsEntity 实体</param>
+    /// <param name="gridPlaneId">网格区域实体 Id</param>
+    public static void RemoveGridPlane(EcsEntity entity, long gridPlaneId)
     {
         // 方法实现略
         throw new NotImplementedException();
     }
     
-    /// <summary>获取网格区域</summary>
-    public static GridPlane GetGridPlane(long id, GridPlaneListComponent component)
+    /// <summary>根据 Id 获取网格区域</summary>
+    /// <param name="entity">EcsEntity 实体</param>
+    /// <param name="id">网格区域实体 Id</param>
+    public static GridPlane GetGridPlane(EcsEntity entity, long id)
     {
         // 方法实现略
         throw new NotImplementedException();

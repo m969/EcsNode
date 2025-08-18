@@ -8,29 +8,6 @@ namespace ECS
     /// </summary>
     public abstract class EcsObject
     {
-        public static void Init(EcsObject ecsObject)
-        {
-            if (ecsObject is EcsEntity entity)
-            {
-                foreach (var item in entity.Components.Values)
-                {
-                    entity.EcsNode.DriveComponentSystems(entity, item, typeof(IInit));
-                }
-                entity.EcsNode.DriveEntitySystems(entity, typeof(IInit));
-
-                foreach (var item in entity.Components.Values)
-                {
-                    entity.EcsNode.DriveComponentSystems(entity, item, typeof(IAfterInit));
-                }
-                entity.EcsNode.DriveEntitySystems(entity, typeof(IAfterInit));
-            }
-            if (ecsObject is EcsComponent component)
-            {
-                component.Entity.EcsNode.DriveComponentSystems(component.Entity, component, typeof(IInit));
-                component.Entity.EcsNode.DriveComponentSystems(component.Entity, component, typeof(IAfterInit));
-            }
-        }
-
         public static void Destroy(EcsObject ecsObject)
         {
             if (ecsObject is EcsEntity entity)
@@ -40,7 +17,8 @@ namespace ECS
                 var components = entity.Components.Values.ToArray();
                 foreach (var item in components)
                 {
-                    entity.DriveDestroy(item);
+                    //entity.DriveDestroy(item);
+                    entity.EcsNode.DriveComponentSystems(entity, item, typeof(IDestroy));
                 }
                 foreach (var item in components)
                 {
@@ -58,7 +36,8 @@ namespace ECS
 
             if (ecsObject is EcsComponent component)
             {
-                component.Entity.DriveDestroy(component);
+                //component.Entity.DriveDestroy(component);
+                component.Entity.EcsNode.DriveComponentSystems(component.Entity, component, typeof(IDestroy));
                 component.Entity.Components.Remove(component.GetType());
             }
         }

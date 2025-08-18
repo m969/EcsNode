@@ -20,20 +20,26 @@ namespace ECSEditor
 
         private void Update()
         {
-            //if (Application.isPlaying)
-            //{
-            //    if (AppLoad.NeedReload)
-            //    {
-            //        AppLoad.NeedReload = false;
-            //        ReloadFGUI();
-            //    }
+            if (AppLoad.NeedCompilePlay)
+            {
+                AppLoad.NeedCompilePlay = false;
+                FastCompileAndPlay();
+            }
 
-            //    if (AppLoad.NeedReloadShare)
-            //    {
-            //        AppLoad.NeedReloadShare = false;
-            //        CompileShare();
-            //    }
-            //}
+            if (Application.isPlaying)
+            {
+                if (AppLoad.NeedReload)
+                {
+                    AppLoad.NeedReload = false;
+                    ReloadFGUI();
+                }
+
+                //if (AppLoad.NeedReloadShare)
+                //{
+                //    AppLoad.NeedReloadShare = false;
+                //    CompileShare();
+                //}
+            }
         }
 
         public void CopyShareScripts(string shareFolder)
@@ -99,7 +105,6 @@ namespace ECSEditor
         //    }
         //}
 
-
         [Button("FastCompile & Play", ButtonHeight = 25)]
         public void FastCompileAndPlay()
         {
@@ -107,8 +112,9 @@ namespace ECSEditor
             //BuildAssembliesHelper.CompileAssemblies();
             if (!Application.isPlaying)
             {
-                PlayerPrefs.SetInt("GameSystemLoad", 0);
-                PlayerPrefs.SetInt("MergeSystemLoad", 1);
+                //PlayerPrefs.SetInt("GameSystemLoad", 0);
+                //PlayerPrefs.SetInt("MergeSystemLoad", 1);
+                EditorPrefs.SetBool("NeedCompileDll", false);
                 EditorApplication.isPlaying = true;
             }
         }

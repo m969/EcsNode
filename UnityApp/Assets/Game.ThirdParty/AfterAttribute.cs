@@ -5,7 +5,7 @@ namespace ECS.Fody
     /// <summary>
     /// 用于标记一个静态方法，使其在指定的目标方法调用完成后执行
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class AfterAttribute : Attribute
     {
         /// <summary>

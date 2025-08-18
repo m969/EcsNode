@@ -20,7 +20,7 @@ namespace ECSGame
             TransformSystem.ChangeForward(item, actorTrans.Forward);
             MoveSystem.ChangeSpeed(item, 150);
             MoveSystem.ChangeDirection(item, actorTrans.Forward.normalized);
-            EcsObject.Init(item);
+            item.Init();
         }
     }
 }

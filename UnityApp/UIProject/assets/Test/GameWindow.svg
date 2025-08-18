@@ -1,0 +1,60 @@
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" style="background:white; font-family:Arial, sans-serif; font-size:16;">
+  <!-- 顶部栏（横屏） -->
+  <rect x="0" y="0" width="1280" height="80" fill="white" stroke="black"/>
+  <rect x="12" y="12" width="100" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="20" y="30">头像/VIP</text>
+  <rect x="192" y="12" width="300" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="200" y="30">资源: 粮 木 石 铁 金 钻</text>
+  <rect x="1092" y="12" width="120" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1100" y="30">邮件</text>
+  <rect x="1222" y="12" width="120" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1230" y="30">活动</text>
+  <rect x="1092" y="37" width="120" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1100" y="55">商城</text>
+  <rect x="1222" y="37" width="120" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1230" y="55">设置</text>
+
+  <!-- 中心战场区（横屏主视图） -->
+  <rect x="0" y="80" width="1280" height="480" fill="white" stroke="black"/>
+  <rect x="592" y="302" width="200" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="600" y="320">世界地图/城市视图</text>
+
+  <!-- 左侧功能按钮 -->
+  <rect x="0" y="100" width="100" height="320" fill="none" stroke="black"/>
+  <rect x="2" y="112" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="10" y="130">任务</text>
+  <rect x="2" y="152" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="10" y="170">科技</text>
+  <rect x="2" y="192" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="10" y="210">军队</text>
+  <rect x="2" y="232" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="10" y="250">联盟</text>
+  <rect x="2" y="272" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="10" y="290">建筑</text>
+  <rect x="2" y="312" width="80" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="10" y="330">更多+</text>
+
+  <!-- 右侧快捷操作 -->
+  <rect x="1180" y="100" width="100" height="320" fill="none" stroke="black"/>
+  <rect x="1182" y="112" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1190" y="130">部队</text>
+  <rect x="1182" y="152" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1190" y="170">技能</text>
+  <rect x="1182" y="192" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1190" y="210">道具</text>
+  <rect x="1182" y="232" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1190" y="250">雷达</text>
+
+  <!-- 底部导航栏 -->
+  <rect x="0" y="560" width="1280" height="160" fill="white" stroke="black"/>
+  <rect x="72" y="582" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="80" y="600">英雄</text>
+  <rect x="232" y="582" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="240" y="600">副本</text>
+  <rect x="572" y="582" width="200" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="580" y="600">地图/城市切换</text>
+  <rect x="992" y="582" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1000" y="600">背包</text>
+  <rect x="1152" y="582" width="60" height="24" rx="6" ry="6" fill="white" stroke="black"/>
+  <text x="1160" y="600">商店</text>
+</svg>

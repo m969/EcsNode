@@ -26,6 +26,7 @@ namespace ECSUnity
             string gameConfDir = Path.Combine(Application.dataPath, "GameResources\\LubanConfigs\\GenerateDatas\\json"); // 替换为gen.bat中outputDataDir指向的目录
             var tables = new cfg.Tables(file => JSON.Parse(File.ReadAllText($"{gameConfDir}/{file}.json")));
             ItemConfig.Tables = tables;
+            GridPlaneConfig.Tables = tables;
             ConsoleLog.Debug($"Tables loaded: {ItemConfig.DataList.Count}");
 
             var game = DomainSystem.AddGame(gameType, systemAssembly);
@@ -39,13 +40,16 @@ namespace ECSUnity
             }
             game.AddComponent<GamePlayerComponent>();
             game.AddComponent<GamePlayerInputComponent>();
-            EcsObject.Init(game);
+            game.Init();
 
             DomainViewSystem.AddUI(systemAssembly);
 
             DomainViewSystem.AddSound(systemAssembly);
 
             var groot = GRoot.inst;
+            groot.SetContentScaleFactor(1280, 720);
+            //groot.height = Screen.height; // 设置高度
+            //groot.width = Screen.width; // 设置宽度
             ReloadUI();
         }
 
