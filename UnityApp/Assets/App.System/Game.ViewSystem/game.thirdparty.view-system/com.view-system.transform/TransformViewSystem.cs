@@ -14,7 +14,7 @@ namespace ECSGame
     {
         public void Awake(EcsEntity entity, TransformComponent component)
         {
-
+            entity.AddComponent<ModelViewComponent>();
         }
 
         [After(typeof(TransformSystem), nameof(TransformSystem.ChangePosition))]
@@ -36,7 +36,7 @@ namespace ECSGame
 
         public static void Update(EcsEntity entity)
         {
-            if (entity.TryGetComponent<TransformComponent>(out var component) == false)
+            if (entity.TryGetComponent<TransformComponent>(out var transComp) == false)
             {
                 return;
             }
@@ -46,15 +46,15 @@ namespace ECSGame
 
                 if (entity is Actor)
                 {
-                    var newPos = component.ForecastPosition.ToVector();
+                    var newPos = transComp.ForecastPosition.ToVector();
                     modelObj.transform.position = Vector3.Lerp(modelObj.transform.position, newPos, 0.5f);
 
-                    var newPos2 = component.Position.ToVector();
+                    var newPos2 = transComp.Position.ToVector();
                     modelObj.transform.GetChild(1).position = Vector3.Lerp(modelObj.transform.GetChild(1).position, newPos2, 0.5f);
                 }
                 else
                 {
-                    var newPos = component.Position.ToVector();
+                    var newPos = transComp.Position.ToVector();
                     modelObj.transform.position = Vector3.Lerp(modelObj.transform.position, newPos, 0.5f);
                 }
             }

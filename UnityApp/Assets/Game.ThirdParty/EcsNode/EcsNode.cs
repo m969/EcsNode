@@ -26,6 +26,7 @@ namespace ECS
         public EcsNode(ushort ecsTypeId)
         {
             this.EcsTypeId = ecsTypeId;
+            this.InstanceId = NewInstanceId();
             this.IdBaseTime = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000;
         }
 
@@ -143,15 +144,16 @@ namespace ECS
 
             foreach (var systemType in types)
             {
-                if (systemType.BaseType == null)
+                // Only consider non-abstract types that implement IEcsSystem
+                if (systemType == null)
                 {
                     continue;
                 }
-                if (systemType.BaseType.BaseType == null)
+                if (systemType.IsAbstract || systemType.IsInterface)
                 {
                     continue;
                 }
-                if (!systemType.BaseType.BaseType.IsAssignableFrom(typeof(IEcsSystem)))
+                if (!typeof(IEcsSystem).IsAssignableFrom(systemType))
                 {
                     continue;
                 }
@@ -160,7 +162,22 @@ namespace ECS
                     continue;
                 }
 
-                var system = Activator.CreateInstance(systemType) as IEcsSystem;
+                // Create instance safely
+                IEcsSystem system;
+                try
+                {
+                    system = Activator.CreateInstance(systemType) as IEcsSystem;
+                }
+                catch
+                {
+                    // Skip types without parameterless constructors or failing activation
+                    continue;
+                }
+                if (system == null)
+                {
+                    continue;
+                }
+
                 allSystems.Add(systemType, system);
 
                 if (system is IEcsEntitySystem ecsEntitySystem)

@@ -33,7 +33,8 @@ namespace ECSGame
             gridPlane.Init();
 
             // 创建建筑
-            var building = BuildingSystem.Create(world, 1, new Vector2Int() { x = 5, y = 5 }, 1);
+            var building = BuildingSystem.Create(world, 1, new Vector2Int() { x = 1, y = 1 }, 1);
+            building.AddComponent<TransformComponent>();
         }
     }
 }

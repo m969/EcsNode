@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neter", "Neter.csproj", "{09165797-21CE-65CA-598B-B07BD2ADB866}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09165797-21CE-65CA-598B-B07BD2ADB866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09165797-21CE-65CA-598B-B07BD2ADB866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09165797-21CE-65CA-598B-B07BD2ADB866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09165797-21CE-65CA-598B-B07BD2ADB866}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F1FF56A-6FA3-4002-9BBE-AF4AD39B7584}
+	EndGlobalSection
+EndGlobal

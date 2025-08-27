@@ -14,28 +14,31 @@
 
 - 领域驱动设计（EcsNode，领域可看做不同的业务场景，规划对齐需求粒度，降低协作理解成本）
 
-- 高内聚低耦合（高内聚优先于低耦合，浅传参优先于深传参(即扁平化逻辑)）
+- 高内聚低耦合（高内聚优先于低耦合（模块化），浅传参优先于深传参(扁平化)）
 
 - 面向切面编程（避免侵入式编码）
 
-- 规范式模块化（Spec-Modular-Driven）AI代码生成流程（类似于Kiro的Spec-Driven，基于copilot-instruction.md）
-    - 常用prompt示例：
-        - 补充完善require需求文档
-        - 根据require文档，调整修改design文档
-        - 根据新修改的design文档，调整修改program文档
-        - 根据新修改的program文档，调整修改program-test文档
-        - 根据新修改的program文档，调整修改配置接口、实体、组件、类型补充代码文件
-        - 根据新修改的program文档，调整修改配置接口代码文件
-        - 根据新修改的program文档，调整修改实体代码文件
-        - 根据新修改的program文档，调整修改组件代码文件
-        - 根据新修改的program文档，调整修改系统代码文件
-        - 根据新修改的program文档，调整修改model和system代码
-        - 根据program-test文档和模块System代码，调整修改单元测试代码文件
-	- 据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档
+- 规范化模块流（AI+）（Spec-Modular-Driven，类似于Kiro的Spec-Driven，基于copilot-instruction.md）
 
-示例:
+# AI+ 模块开发流程示例:
 - Modules.Unity/com.module.resource-data（资源模块）
 - Modules.Unity/com.module.achieve（达成模块，用于成就和任务等）
+- Modules.Unity/com.module.grid-based（网格系统）
+- Modules.Unity/com.module.building（建筑建造模块）
+
+- 常用prompt示例：
+    - 补充完善require需求文档
+    - 根据require文档，调整修改design文档
+    - 根据新修改的design文档，调整修改program文档
+    - 根据新修改的program文档，调整修改program-test文档
+    - 根据新修改的program文档，调整修改配置接口、实体、组件、类型补充代码文件
+    - 根据新修改的program文档，调整修改配置接口代码文件
+    - 根据新修改的program文档，调整修改实体代码文件
+    - 根据新修改的program文档，调整修改组件代码文件
+    - 根据新修改的program文档，调整修改系统代码文件
+    - 根据新修改的program文档，调整修改model和system代码
+    - 根据program-test文档和模块System代码，调整修改单元测试代码文件
+    - 据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档
 
 copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用于别的大模型指导文档，比如CLAUDE.md、cursor rule等
 
