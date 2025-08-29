@@ -1,0 +1,6 @@
+LoginRequest:
+    Account: string
+    Password: string
+LoginResult:
+    Success: bool
+    Message: string

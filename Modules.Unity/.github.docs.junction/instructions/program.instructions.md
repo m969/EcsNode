@@ -3,14 +3,13 @@ applyTo: "program-documentation.md"
 ---
 
 模块程序设计文档（基于功能设计文档design-documentation.md）：
-- 一个类一个文件
 
 1. 程序功能概述
 2. 数据结构设计
     实体和组件：
     - 只实现属性数据，不实现方法逻辑
     - 配置接口设计（配置接口以整型Id为唯一标识，字符串Key作为辅助名称标识）
-    - 实体设计，继承自EcsEntity，属性应有必要summary（实体继承自EcsEntity，EcsEntity包含Id、Parent属性，不需要额外再定义）
+    - 实体设计，继承自EcsEntity，添加partial标记，方便外部非侵入式扩展，属性应有必要summary（实体继承自EcsEntity，EcsEntity包含Id、Parent属性，不需要额外再定义）
     - 组件设计，继承自EcsComponent，属性应有必要summary
     - 补充类型设计，属性应有必要summary，枚举值应有必要summary
 3. 系统业务设计
