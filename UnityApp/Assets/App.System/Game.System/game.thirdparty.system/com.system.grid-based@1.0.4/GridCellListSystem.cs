@@ -17,11 +17,25 @@ namespace ECSGame.Module.GridBased
         public void Disable(GridPlane entity, GridCellListComponent component) { }
         public void Destroy(GridPlane entity, GridCellListComponent component) { }
 
+        public static void AddCell(GridPlane entity, GridCell cell)
+        {
+            var comp = entity.GetComponent<GridCellListComponent>();
+            comp.Cells[(cell.X, cell.Y)] = cell;
+            comp.Id2Cells[cell.Id] = cell;
+        }
+
         /// <summary>获取指定坐标的格子</summary>
         public static GridCell GetCell(GridPlane entity, int x, int y)
         {
             var comp = entity.GetComponent<GridCellListComponent>();
             return comp.Cells[(x, y)];
+        }
+
+        /// <summary>获取指定id的格子</summary>
+        public static GridCell GetCellById(GridPlane entity, long cellId)
+        {
+            var comp = entity.GetComponent<GridCellListComponent>();
+            return comp.Id2Cells[cellId];
         }
 
         /// <summary>获取所有空置格子</summary>

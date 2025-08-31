@@ -1,7 +1,6 @@
 ﻿using ECS;
 using ECS.Fody;
 using ECSUnity;
-using Login;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +24,7 @@ namespace ECSGame
         [After(typeof(ActorPlaySystem), nameof(ActorPlaySystem.FrameUpdate))]
         public static void OnFrameUpdate(Actor actor, FramePlayComponent component, long determineFrame)
         {
-            var homePageWindow = UISystem.GetWindow<UI_HomePageWindow>();
+            var homePageWindow = UISystem.GetWindow<LoginUI.UI_HomePageWindow>();
             if (homePageWindow == null)
             {
                 return;

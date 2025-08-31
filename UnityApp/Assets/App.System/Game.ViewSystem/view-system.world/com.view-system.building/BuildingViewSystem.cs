@@ -25,12 +25,12 @@ namespace ECSUnity
 
         public void AfterInit(BuildingEntity buildingEntity)
         {
-            Create(buildingEntity);
+            CreateView(buildingEntity);
         }
 
-        public static void Create(BuildingEntity buildingEntity)
+        public static void CreateView(BuildingEntity buildingEntity)
         {
-            var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("building"));
+            var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("Building"));
             ModelViewSystem.SetModel(buildingEntity, modelObj);
         }
     }

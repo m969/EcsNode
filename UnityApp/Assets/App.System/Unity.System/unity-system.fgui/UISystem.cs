@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FairyGUI;
-using Login;
 using System.Threading.Tasks;
 using System.Reflection;
 using ECSGame;
@@ -52,7 +51,7 @@ namespace ECSUnity
         {
             var type = typeof(T);
 
-            await DomainSystem.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            await EcsDomain.UIStage.PublishAsync(new UIShowWindowEvent()
             {
                 WindowType = type,
                 BeforeAwake = (Action<IUIWindow>)beforeAwake
@@ -74,7 +73,7 @@ namespace ECSUnity
             {
                 beforeAwake?.Invoke((T)window);
             };
-            DomainSystem.PublishAsync(EcsDomain.UIStage, new UIShowWindowEvent()
+            EcsDomain.UIStage.PublishAsync(new UIShowWindowEvent()
             {
                 WindowType = type,
                 BeforeAwake = action

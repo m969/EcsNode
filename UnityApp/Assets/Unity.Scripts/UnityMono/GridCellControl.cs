@@ -19,11 +19,16 @@ public interface IOnGridCellExit : IDispatch
     void OnGridCellExit(EcsEntity entity);
 }
 
+public interface IOnGridCellUp : IDispatch
+{
+    void OnGridCellUp(EcsEntity entity);
+}
+
 /// <summary>
 /// 该组件用于控制网格单元格的行为
 /// 监听用户鼠标移入事件、移出事件、点击事件并响应
 /// </summary>
-public class GridCellControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class GridCellControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IPointerUpHandler
 {
     public EcsEntity GridCellEntity { get; set; }
 
@@ -52,5 +57,10 @@ public class GridCellControl : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void OnPointerExit(PointerEventData eventData)
     {
         GridCellEntity.Dispatch<IOnGridCellExit>(system => system.OnGridCellExit(GridCellEntity));
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        GridCellEntity.Dispatch<IOnGridCellUp>(system => system.OnGridCellUp(GridCellEntity));
     }
 }

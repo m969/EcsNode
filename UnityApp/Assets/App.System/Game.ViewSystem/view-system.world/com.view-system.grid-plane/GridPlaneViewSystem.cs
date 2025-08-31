@@ -1,4 +1,5 @@
 ﻿using ECS;
+using ECS.Fody;
 using ECSGame;
 using ECSGame.Module.GridBased;
 using System.Collections;
@@ -25,10 +26,10 @@ namespace ECSUnity
 
         public void AfterInit(GridPlane gridPlane)
         {
-            Create(gridPlane);
+            CreateView(gridPlane);
         }
 
-        public static void Create(GridPlane gridPlane)
+        public static void CreateView(GridPlane gridPlane)
         {
             var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("GridPlaneCanvas"));
             ModelViewSystem.SetModel(gridPlane, modelObj);
@@ -60,6 +61,18 @@ namespace ECSUnity
         public static void Update(GridPlane gridPlane)
         {
             EntityViewSystem.Update(gridPlane);
+        }
+
+        [After(typeof(GridPlaneSelectionSystem), nameof(GridPlaneSelectionSystem.SetSelectCell))]
+        public static void OnSelectCellChanged(GridPlane gridPlane, long cellId)
+        {
+            var allCells = GridCellListSystem.GetEmptyCells(gridPlane);
+            foreach (var item in allCells)
+            {
+                GridCellViewSystem.SetSelected(item, false);
+            }
+            var gridCell = GridCellListSystem.GetCellById(gridPlane, cellId);
+            GridCellViewSystem.SetSelected(gridCell, true);
         }
     }
 }

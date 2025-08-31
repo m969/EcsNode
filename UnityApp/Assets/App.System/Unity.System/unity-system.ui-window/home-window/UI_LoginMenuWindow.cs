@@ -1,8 +1,8 @@
-using FairyGUI;
+﻿using FairyGUI;
 using FairyGUI.Utils;
 using ECSUnity;
 
-namespace Login
+namespace LoginUI
 {
     public partial class UI_LoginMenuWindow : IUIWindow
     {

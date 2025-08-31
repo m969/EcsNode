@@ -69,6 +69,11 @@ namespace ECS
             return (T)Parent;
         }
 
+        public T As<T>() where T : EcsEntity
+        {
+            return (T)this;
+        }
+
         public T AddChild<T>(Action<T> beforeAwake = null) where T : EcsEntity, new()
         {
             return AddChild(EcsNode.NewEntityId(), beforeAwake);
@@ -151,6 +156,12 @@ namespace ECS
         public void Init()
         {
             var ecsObject = this;
+            if (ecsObject is EcsNode ecsNode)
+            {
+                //因为EcsNode是根节点，不走AddChild的Awake，所以这里手动Awake一下
+                DriveAwake(ecsNode);
+            }
+
             if (ecsObject is EcsEntity entity)
             {
                 foreach (var item in entity.Components.Values)

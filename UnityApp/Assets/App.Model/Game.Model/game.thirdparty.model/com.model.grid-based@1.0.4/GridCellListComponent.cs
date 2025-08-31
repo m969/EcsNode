@@ -10,5 +10,6 @@ namespace ECSGame.Module.GridBased
     {
         /// <summary>格子实体字典，key为格子坐标元组</summary>
         public Dictionary<(int x, int y), GridCell> Cells { get; set; } = new Dictionary<(int x, int y), GridCell>();
+        public Dictionary<long, GridCell> Id2Cells { get; set; } = new Dictionary<long, GridCell>();
     }
 }

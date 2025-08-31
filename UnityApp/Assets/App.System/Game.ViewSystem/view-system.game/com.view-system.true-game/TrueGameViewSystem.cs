@@ -1,7 +1,6 @@
 ﻿using ECS;
 using ECSGame;
 using FairyGUI;
-using Login;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,12 +15,17 @@ namespace ECSUnity
     {
         public void Init(Game game)
         {
-            
+
         }
 
         public void AfterInit(Game game)
         {
 
+        }
+
+        public static void ReloadUI()
+        {
+            UISystem.Show<LoginUI.UI_HomePageWindow>();
         }
     }
 }

@@ -1,36 +1,27 @@
-﻿using ECS.Fody;
+﻿using ECS;
+using ECS.Fody;
 using ECSGame;
+using ECSGame.Module.Building;
+using ECSGame.Module.GridBased;
 using ECSUnity;
 using FairyGUI;
 using FairyGUI.Utils;
 using System.Reflection;
 
-namespace Login
+namespace LoginUI
 {
     public partial class UI_HomePageWindow : IUIWindow
     {
         public void Awake()
         {
             UIWindowBindSystem.BindClickEvent(this);
-            m_nBuildingBtn.onDragStart.Add((e) =>
-            {
-                ConsoleLog.Debug("BuildingBtn onDragStart");
-            });
-            m_nBuildingBtn.onDragEnd.Add((e) =>
-            {
-                ConsoleLog.Debug("BuildingBtn onDragEnd");
-            });
-            m_nBuildingBtn.onDragMove.Add((e) =>
-            {
-                ConsoleLog.Debug("BuildingBtn onDragMove");
-            });
         }
 
-        [AfterClick(nameof(m_nBuildingBtn))]
-        public void BuildingBtnClicked(EventContext eventContext)
-        {
-            ConsoleLog.Debug("BuildingBtnClicked");
-        }
+        //[AfterClick(nameof(m_nBuildingBtn))]
+        //public void BuildingBtnClicked(EventContext eventContext)
+        //{
+
+        //}
 
         public void OnHide()
         {

@@ -11,20 +11,30 @@ namespace ECSGame.Module.Message
         // 业务消息类型注册表
         public static readonly Dictionary<int, Type> BusinessMessageTypes = new Dictionary<int, Type>
         {
-           { 1, typeof(LoginRequest) },
-           { 2, typeof(LoginResult) },
+           { LoginRequest.MessageTypeId, typeof(LoginRequest) },
+           { LoginResult.MessageTypeId, typeof(LoginResult) },
         };
     }
 
+    [MessagePack.MessagePackObject]
     public class LoginRequest
     {
+        public const int MessageTypeId = 1;
+
+        [MessagePack.Key(0)]
         public string Account { get; set; }
+        [MessagePack.Key(1)]
         public string Password { get; set; }
     }
 
+    [MessagePack.MessagePackObject]
     public class LoginResult
     {
+        public const int MessageTypeId = 2;
+
+        [MessagePack.Key(0)]
         public bool Success { get; set; }
+        [MessagePack.Key(1)]
         public string Message { get; set; }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using ECS;
-using ECSGame.Module.GridBased;
 using ECSGame;
+using ECSGame.Module.Building;
+using ECSGame.Module.GridBased;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace ECSUnity
 {
@@ -13,13 +15,48 @@ namespace ECSUnity
         IInit<GridCell>,
         IOnGridCellClick,
         IOnGridCellEnter,
-        IOnGridCellExit
+        IOnGridCellExit,
+        IOnGridCellUp
     {
         public void Awake(GridCell gridCell)
         {
         }
 
         public void Init(GridCell gridCell)
+        {
+
+        }
+
+        public void OnGridCellClick(EcsEntity entity)
+        {
+            //entity.As<GridCell>().State = GridCellState.Selected;
+            var gridPlane = entity.GetParent<GridPlane>();
+            GridPlaneSelectionSystem.SetSelectCell(gridPlane, entity.Id);
+        }
+
+        public void OnGridCellEnter(EcsEntity entity)
+        {
+            if (IsSelected(entity.As<GridCell>()))
+            {
+                return;
+            }
+            var modelObj = ModelViewSystem.GetModel(entity);
+            var color = modelObj.GetComponent<Image>().color;
+            modelObj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 0.5f);
+        }
+
+        public void OnGridCellExit(EcsEntity entity)
+        {
+            if (IsSelected(entity.As<GridCell>()))
+            {
+                return;
+            }
+            var modelObj = ModelViewSystem.GetModel(entity);
+            var color = modelObj.GetComponent<Image>().color;
+            modelObj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 0);
+        }
+
+        public void OnGridCellUp(EcsEntity entity)
         {
 
         }
@@ -38,23 +75,24 @@ namespace ECSUnity
             EntityViewSystem.Update(gridCell);
         }
 
-        public void OnGridCellClick(EcsEntity entity)
+        public static bool IsSelected(GridCell gridCell)
         {
-            ConsoleLog.Debug(entity.Id + " OnGridCellClick.");
+            return GridPlaneSelectionSystem.GetSelectCell(gridCell.GetParent<GridPlane>()) == gridCell.Id;
         }
 
-        public void OnGridCellEnter(EcsEntity entity)
+        public static void SetSelected(GridCell gridCell, bool selected)
         {
-            var modelObj = ModelViewSystem.GetModel(entity);
+            var modelObj = ModelViewSystem.GetModel(gridCell);
             var color = modelObj.GetComponent<Image>().color;
-            modelObj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 0.5f);
+            if (selected)
+            {
+                modelObj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 1f);
+            }
+            else
+            {
+                modelObj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 0);
+            }
         }
 
-        public void OnGridCellExit(EcsEntity entity)
-        {
-            var modelObj = ModelViewSystem.GetModel(entity);
-            var color = modelObj.GetComponent<Image>().color;
-            modelObj.GetComponent<Image>().color = new Color(color.r, color.g, color.b, 0);
-        }
     }
 }

@@ -18,7 +18,7 @@
 
 - 面向切面编程（避免侵入式编码）
 
-- 规范化模块流（AI+）（Spec-Modular-Driven，类似于Kiro的Spec-Driven，基于copilot-instruction.md）
+- 规范化模块开发流（AI+）（Spec-Modular-Driven，类似于Kiro的Spec-Driven，基于copilot-instruction.md）
 
 # AI+ 模块开发流程示例:
 - Modules.Unity/com.module.resource-data（资源模块）

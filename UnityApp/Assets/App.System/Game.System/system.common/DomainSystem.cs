@@ -10,7 +10,7 @@ using TrueSync;
 
 namespace ECSGame
 {
-    public class DomainSystem
+    public static class DomainSystem
     {
         public static void InitEventHandlers(Assembly assembly)
         {
@@ -30,26 +30,26 @@ namespace ECSGame
             }
         }
 
-        public static async ETTask PublishAsync<T, A>(T domain, A eventData) where T : EcsNode where A : IDomainEvent
+        public static async ETTask PublishAsync<A>(this EcsEntity entity, A eventData) where A : IDomainEvent
         {
             var eventType = eventData.GetType();
             if (EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
             {
                 foreach (var item in handlers)
                 {
-                    await item.Handle(domain, eventData);
+                    await item.Handle(entity.EcsNode, eventData);
                 }
             }
         }
 
-        public static void Publish<T, A>(T domain, A eventData) where T : EcsNode where A : IDomainEvent
+        public static void Publish<A>(this EcsEntity entity, A eventData) where A : IDomainEvent
         {
             var eventType = eventData.GetType();
             if (EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
             {
                 foreach (var item in handlers)
                 {
-                    item.Handle(domain, eventData).Coroutine();
+                    item.Handle(entity.EcsNode, eventData).Coroutine();
                 }
             }
         }

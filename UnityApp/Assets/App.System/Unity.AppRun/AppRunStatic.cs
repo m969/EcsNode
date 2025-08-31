@@ -2,7 +2,6 @@
 using ECS;
 using ECSGame;
 using FairyGUI;
-using Login;
 using SimpleJSON;
 using System;
 using System.Collections;
@@ -65,10 +64,21 @@ namespace ECSUnity
             UIObjectFactory.Clear();
             UIPackage.RemoveAllPackages();
 
-            LoginBinder.BindAll();
-            UIPackage.AddPackage("FGUI/Login");
+            CommonButtonUI.CommonButtonUIBinder.BindAll();
+            LoginUI.LoginUIBinder.BindAll();
+            GameUI.GameUIBinder.BindAll();
+            UIPackage.AddPackage("FGUI/CommonButtonUI");
+            UIPackage.AddPackage("FGUI/LoginUI");
+            UIPackage.AddPackage("FGUI/GameUI");
 
-            UISystem.Show<UI_HomePageWindow>();
+            if (AppStatic.GameType == GameType.TrueGameDemo)
+            {
+                TrueGameViewSystem.ReloadUI();
+            }
+            if (AppStatic.GameType == GameType.SimulationGameDemo)
+            {
+                SimulationGameViewSystem.ReloadUI();
+            }
         }
 
         public static void Reload(Assembly systemAssembly, int gameType)
@@ -81,9 +91,7 @@ namespace ECSUnity
                 EcsNodeSystem.RegisterSystems(ecsNode, systemAssembly);
             }
 
-            //EventSystem.Reload(ecsNode);
-
-            //ReloadUI(ecsNode);
+            ReloadUI();
 
             //foreach (var item in ecsNode.Id2Children.Values)
             //{

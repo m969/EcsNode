@@ -49,7 +49,7 @@ namespace ECSGame.Module.GridBased
                 for (int y = 0; y < config.Height; y++)
                 {
                     var cell = GridCellSystem.CreateGridCell(gridPlane, x, y);
-                    gridPlane.GetComponent<GridCellListComponent>().Cells[(x, y)] = cell;
+                    GridCellListSystem.AddCell(gridPlane, cell);
                 }
             }
             return gridPlane;

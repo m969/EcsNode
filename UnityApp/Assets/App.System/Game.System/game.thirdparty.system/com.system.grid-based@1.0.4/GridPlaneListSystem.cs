@@ -7,12 +7,12 @@ namespace ECSGame.Module.GridBased
     /// <summary>
     /// 网格区域列表组件系统，管理World上的GridPlane列表。
     /// </summary>
-    public class GridPlaneListSystem : AComponentSystem<EcsEntity, GridPlaneListComponent>, 
-        IAwake<EcsEntity, GridPlaneListComponent>, 
-        IInit<EcsEntity, GridPlaneListComponent>, 
-        IAfterInit<EcsEntity, GridPlaneListComponent>, 
-        IEnable<EcsEntity, GridPlaneListComponent>, 
-        IDisable<EcsEntity, GridPlaneListComponent>, 
+    public class GridPlaneListSystem : AComponentSystem<EcsEntity, GridPlaneListComponent>,
+        IAwake<EcsEntity, GridPlaneListComponent>,
+        IInit<EcsEntity, GridPlaneListComponent>,
+        IAfterInit<EcsEntity, GridPlaneListComponent>,
+        IEnable<EcsEntity, GridPlaneListComponent>,
+        IDisable<EcsEntity, GridPlaneListComponent>,
         IDestroy<EcsEntity, GridPlaneListComponent>
     {
         public void Awake(EcsEntity entity, GridPlaneListComponent component) { }
@@ -28,12 +28,15 @@ namespace ECSGame.Module.GridBased
             var comp = entity.GetComponent<GridPlaneListComponent>();
             comp.GridPlanes ??= new Dictionary<long, GridPlane>();
             comp.GridPlanes[gridPlane.Id] = gridPlane;
+            comp.ConfigId2GridPlanes ??= new Dictionary<int, GridPlane>();
+            comp.ConfigId2GridPlanes[gridPlane.ConfigId] = gridPlane;
         }
 
         /// <summary>移除网格区域</summary>
         public static void RemoveGridPlane(EcsEntity entity, long gridPlaneId)
         {
             var comp = entity.GetComponent<GridPlaneListComponent>();
+            comp.ConfigId2GridPlanes.Remove(comp.GridPlanes[gridPlaneId].ConfigId);
             comp.GridPlanes.Remove(gridPlaneId);
         }
 
@@ -42,6 +45,13 @@ namespace ECSGame.Module.GridBased
         {
             var comp = entity.GetComponent<GridPlaneListComponent>();
             return comp.GridPlanes[id];
+        }
+
+        /// <summary>根据配置Id获取网格区域</summary>
+        public static GridPlane GetGridPlaneByConfigId(EcsEntity entity, int configId)
+        {
+            var comp = entity.GetComponent<GridPlaneListComponent>();
+            return comp.ConfigId2GridPlanes[configId];
         }
     }
 }

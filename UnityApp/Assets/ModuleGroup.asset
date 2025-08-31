@@ -34,6 +34,15 @@ MonoBehaviour:
   - ModuleId: com.module.grid-based
     ModuleVersion: 1.0.4
     Dependencies: []
+  - ModuleId: com.module.message
+    ModuleVersion: 1.0.0
+    Dependencies: []
+  - ModuleId: com.module.neter
+    ModuleVersion: 1.0.0
+    Dependencies: []
+  - ModuleId: com.module.player
+    ModuleVersion: 1.0.0
+    Dependencies: []
   - ModuleId: com.module.resource-data
     ModuleVersion: 1.0.0
     Dependencies: []

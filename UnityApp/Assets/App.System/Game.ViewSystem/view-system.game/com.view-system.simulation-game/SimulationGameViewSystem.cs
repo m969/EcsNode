@@ -1,7 +1,7 @@
 ﻿using ECS;
 using ECSGame;
 using FairyGUI;
-using Login;
+using LoginUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Reflection;
 namespace ECSUnity
 {
     [SystemGameFilter((int)GameType.SimulationGameDemo)]
-    public class SimulationGameViewSystem :AEntitySystem<Game>,
+    public class SimulationGameViewSystem : AEntitySystem<Game>,
     IInit<Game>,
     IAfterInit<Game>
     {
@@ -22,6 +22,11 @@ namespace ECSUnity
         public void AfterInit(Game game)
         {
 
+        }
+
+        public static void ReloadUI()
+        {
+            UISystem.Show<GameUI.UI_GameWindow>();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using ECS;
 using ECS.Fody;
 using ECSUnity;
-using Login;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +24,7 @@ namespace ECSGame
         [After(typeof(TrueWorldSystem), nameof(TrueWorldSystem.FrameSeal))]
         public static void OnFrameSeal(TrueWorld game)
         {
-            var homePageWindow = UISystem.GetWindow<UI_HomePageWindow>();
+            var homePageWindow = UISystem.GetWindow<LoginUI.UI_HomePageWindow>();
             if (homePageWindow == null)
             {
                 return;

@@ -32,6 +32,7 @@ public interface IOnHandleScore : IDispatch
 - 只传实体和必要参数，组件在方法内获取
 - 需要详细summary注释
 - 免除判空判断，默认组件和参数不为null
+- 模块内的系统业务逻辑调用规范为：只有自身组件系统逻辑允许GetComponent，跨组件系统逻辑调用必须通过System的静态方法调用，不允许跨组件GetComponent
 
 示例：
 ```csharp

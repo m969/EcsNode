@@ -12,7 +12,7 @@ namespace ECSGame.Module.Message
     public static class MessageRequestExtensions
     {
         public static ETTask<LoginResult> LoginRequestAsync(
-            this ECSGame.Module.Player.Player entity,
+            this EcsEntity entity,
             LoginRequest request)
         {
             var task = ETTask<LoginResult>.Create();
