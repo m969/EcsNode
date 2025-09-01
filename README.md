@@ -14,7 +14,7 @@
 
 - 领域驱动设计（EcsNode，领域可看做不同的业务场景，规划对齐需求粒度，降低协作理解成本）
 
-- 高内聚低耦合（高内聚优先于低耦合（模块化），浅传参优先于深传参(扁平化)）
+- 高内聚低耦合（高内聚优先于低耦合（模块化），浅传参优先于深传参（扁平化））
 
 - 面向切面编程（避免侵入式编码）
 
@@ -48,6 +48,8 @@ copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用
 <img src="Readme/modules-info.png" width="40%">
 
 <img src="Readme/debug-editor.png" width="40%">
+
+<img src="Readme/modules-info2.png" width="100%">
 
 # SLG游戏demo（开发中）
 
