@@ -1,0 +1,4 @@
+## 1.0.2 - 功能迭代
+- 增加派遣执行体DispatchExecution实体，用于表示一个派遣任务，包含开始时间、结束时间、状态、派遣类型、所需单位数量等字段。
+- 增加DispatchExecutionSystem系统，用于管理DispatchExecution实体的生命周期，包括创建、更新状态、完成、执行单位派遣等逻辑。
+- 增加DispatchExecutionListComponent和DispatchExecutionListSystem，用于管理多个DispatchExecution实体。

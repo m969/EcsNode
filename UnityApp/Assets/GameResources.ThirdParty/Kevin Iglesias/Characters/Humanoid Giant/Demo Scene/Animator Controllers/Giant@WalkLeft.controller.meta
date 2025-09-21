@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 32468eb41507a4a49b4bdb4129fbdb65
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 215414
+  packageName: Giant Animations
+  packageVersion: 1.1
+  assetPath: Assets/Kevin Iglesias/Giant Animations/AnimatorControllers/Giant@WalkLeft.controller
+  uploadId: 644586

@@ -43,5 +43,11 @@
       <item title="背包"/>
       <item title="商店"/>
     </list>
+    <component id="n22_gvxp" name="nBuildBtn" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="199,235">
+      <Button title="建造"/>
+    </component>
+    <component id="n23_gvxp" name="nDispatchBtn" src="psy30" fileName="StyleAButton.xml" pkg="aqsec6vq" xy="200,314">
+      <Button title="派遣"/>
+    </component>
   </displayList>
 </component>

@@ -28,7 +28,7 @@
 
 - 常用prompt示例：
     - 补充完善require需求文档
-    - 根据require文档，调整修改design文档
+    - 根据新修改的require文档，调整修改design文档
     - 根据新修改的design文档，调整修改program文档
     - 根据新修改的program文档，调整修改program-test文档
     - 根据新修改的program文档，调整修改配置接口、实体、组件、类型补充代码文件
@@ -38,7 +38,7 @@
     - 根据新修改的program文档，调整修改系统代码文件
     - 根据新修改的program文档，调整修改model和system代码
     - 根据program-test文档和模块System代码，调整修改单元测试代码文件
-    - 据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档
+    - 据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档、program-test文档
 
 copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用于别的大模型指导文档，比如CLAUDE.md、cursor rule等
 

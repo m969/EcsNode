@@ -1,4 +1,5 @@
 # 永远用中文回答
+# 永远不要做兼容性的改动和保留
 
 # 理念
 
@@ -195,7 +196,7 @@ EcsNode是基于ECS（Entity-Component-System）架构的Unity游戏开发框架
 ## 通用开发规范
 
 ### 命名空间
-所有模块代码命名空间为 `ECSGame.Module.**`（**为模块名，忽略横杆下划线，大写开头）
+所有模块代码命名空间为 `ECSGame.**Module`（**为模块名，忽略横杆下划线，大写开头）
 
 ### 常用引用
 ```csharp
@@ -227,3 +228,4 @@ using System.Collections.Generic;
 - `/com.view-system.**`: 视图系统脚本
 - `/system.module-test`: 单元测试代码
 - `/docs/*-documentation.md`: 各类设计文档
+- `/docs/game.thirdparty.module`: 依赖的第三方模块代码

@@ -32,12 +32,12 @@ namespace ECSUnity
         public static void CreateView(GridPlane gridPlane)
         {
             var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("GridPlaneCanvas"));
+            modelObj.transform.parent = GameObject.Find("/Scene/PlaneCanvasGroup").transform;
+
             ModelViewSystem.SetModel(gridPlane, modelObj);
+            modelObj.transform.localPosition = TransformSystem.GetPosition(gridPlane).ToVector();
 
             modelObj.GetComponent<Canvas>().worldCamera = Camera.main;
-
-            modelObj.transform.parent = GameObject.Find("/Scene/PlaneCanvasGroup").transform;
-            modelObj.transform.localPosition = Vector3.zero;
 
             var gridPlaneTrans = modelObj.transform.Find("GridPlane");
             var cellObjPrefab = modelObj.transform.Find("GridPlane/GridRect");

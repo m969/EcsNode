@@ -5,6 +5,12 @@ using TrueSync;
 
 namespace ECSGame
 {
+    public class ActorType
+    {
+        public const int Hero = 1;
+        public const int Monster = 2;
+    }
+
     public class ActorSystem : AEntitySystem<Actor>,
         IAwake<Actor>,
         IInit<Actor>,

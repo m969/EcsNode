@@ -18,6 +18,8 @@ namespace GameUI
         public GGraph m_nRightPanelRect;
         public GList m_nRightMenu;
         public GList m_nBottomMenu;
+        public GButton m_nBuildBtn;
+        public GButton m_nDispatchBtn;
         public const string URL = "ui://m4ix6whfonq40";
 
         public static UI_GameWindow CreateInstance()
@@ -40,6 +42,8 @@ namespace GameUI
             m_nRightPanelRect = (GGraph)GetChildAt(8);
             m_nRightMenu = (GList)GetChildAt(9);
             m_nBottomMenu = (GList)GetChildAt(10);
+            m_nBuildBtn = (GButton)GetChildAt(11);
+            m_nDispatchBtn = (GButton)GetChildAt(12);
         }
     }
 }

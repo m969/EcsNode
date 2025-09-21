@@ -4,7 +4,6 @@ using ECSUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace ECSGame
 {
@@ -37,8 +36,16 @@ namespace ECSGame
             }
             if (AppStatic.GameType == GameType.SimulationGameDemo)
             {
-                var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("Hero"));
-                ModelViewSystem.SetModel(entity, modelObj);
+                if (entity.Type == ActorType.Hero)
+                {
+                    var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("Hero"));
+                    ModelViewSystem.SetModel(entity, modelObj);
+                }
+                if (entity.Type == ActorType.Monster)
+                {
+                    var modelObj = GameObject.Instantiate(Resources.Load<GameObject>("Monster"));
+                    ModelViewSystem.SetModel(entity, modelObj);
+                }
             }
         }
 

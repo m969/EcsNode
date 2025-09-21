@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <RootNamespace>ECSGame.Module.ResourceData</RootNamespace>
+    <RootNamespace>ECSGame.ResourceDataModule</RootNamespace>
     <Nullable>enable</Nullable>
 	  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>

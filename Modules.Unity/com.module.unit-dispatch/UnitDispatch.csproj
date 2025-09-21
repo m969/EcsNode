@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
-		<RootNamespace>ECSGame.Module.Player</RootNamespace>
+		<RootNamespace>ECSGame.UnitDispatchModule</RootNamespace>
 		<Nullable>enable</Nullable>
 		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -11,12 +11,12 @@
 
 	<ItemGroup>
 		<Compile Remove=".\obj\**\*.cs" />
-		<Compile Remove=".\system.module-test.player\**\*.cs" />
+		<Compile Remove=".\system.module-test.unit-dispatch\**\*.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="com.model.player\**\*.cs" />
-		<Compile Include="com.system.player\**\*.cs" />
+		<Compile Include="com.model.unit-dispatch\**\*.cs" />
+		<Compile Include="com.system.unit-dispatch\**\*.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

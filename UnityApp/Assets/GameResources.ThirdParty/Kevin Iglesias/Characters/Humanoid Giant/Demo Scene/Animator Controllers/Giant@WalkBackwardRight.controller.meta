@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 790a14cad029b5d4d8824812d5bba203
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 215414
+  packageName: Giant Animations
+  packageVersion: 1.1
+  assetPath: Assets/Kevin Iglesias/Giant Animations/AnimatorControllers/Giant@WalkBackwardRight.controller
+  uploadId: 644586

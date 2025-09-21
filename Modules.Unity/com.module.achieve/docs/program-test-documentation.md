@@ -2,7 +2,7 @@
 
 ## 1. 测试目标
 
-本单元测试文档旨在验证达成系统各核心系统类（AchieveItemSystem、AchieveConditionSystem、AchieveItemConditionSystem、AchieveItemRewardSystem）的主要业务逻辑方法的正确性，确保模块功能的健壮性和可扩展性。
+本单元测试文档旨在验证达成系统各核心系统类（AchieveItemSystem、AchieveConditionSystem、AchieveConditionListSystem）的主要业务逻辑方法的正确性，确保模块功能的健壮性和可扩展性。
 
 ## 2. 测试范围
 
@@ -42,7 +42,7 @@
   - 进度更新后 CurrentValue 正确。
   - 满足判定结果正确。
 
-### 4.3 AchieveItemConditionSystem 测试
+### 4.3 AchieveConditionListSystem 测试
 
 - **测试内容：**
   - InitConditions 条件集合初始化。
@@ -53,15 +53,7 @@
   - 进度百分比计算正确。
   - 全部满足判定结果正确。
 
-### 4.4 AchieveItemRewardSystem 测试
-
-- **测试内容：**
-  - InitRewards 奖励集合初始化。
-  - GrantRewards 奖励发放逻辑。
-  - UpdateRewardStatus 状态变更。
-- **断言建议：**
-  - 奖励集合初始化后数量与配置一致。
-  - 发放后状态与领取时间正确。
+<!-- 1.0.1 起移除奖励流程相关测试 -->
 
 ## 5. 示例测试类结构
 
@@ -69,7 +61,7 @@
 using ECS;
 using NUnit.Framework;
 
-namespace ECSGame.Module.Achieve.Tests
+namespace ECSGame.AchieveModule.Tests
 {
     [TestFixture]
     public class AchieveModuleTests

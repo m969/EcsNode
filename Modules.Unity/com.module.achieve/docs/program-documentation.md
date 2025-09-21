@@ -2,7 +2,7 @@
 
 ## 1. 程序功能概述
 
-达成系统模块用于设定和追踪玩家目标，判定完成并发放奖励，提升游戏体验。采用ECS架构，便于扩展和维护。
+达成系统模块用于设定和追踪玩家目标，判定完成并维护状态与进度；不包含奖励逻辑。奖励应通过订阅事件在上层模块实现。
 
 ## 2. 数据结构设计
 
@@ -48,26 +48,7 @@ public interface IAchieveConditionConfig
 }
 ```
 
-```csharp
-/// <summary>
-/// 达成奖励配置接口
-/// </summary>
-public interface IAchieveRewardConfig
-{
-    /// <summary>唯一标识</summary>
-    int Id { get; }
-    /// <summary>辅助名称标识</summary>
-    string Key { get; }
-    /// <summary>奖励类型（虚拟货币/道具）</summary>
-    RewardType RewardType { get; }
-    /// <summary>物品ID</summary>
-    int ItemId { get; }
-    /// <summary>奖励数量</summary>
-    int Amount { get; }
-}
-```
-
-### 实体设计
+### 实体设计（仅属性，无方法）
 
 ```csharp
 /// <summary>
@@ -117,7 +98,7 @@ public class AchieveCondition : EcsEntity
 /// <summary>
 /// 达成条件组件
 /// </summary>
-public class AchieveItemConditionComponent : EcsComponent
+public class AchieveConditionListComponent : EcsComponent
 {
     /// <summary>条件集合</summary>
     public List<AchieveCondition> ConditionList { get; set; }
@@ -129,21 +110,6 @@ public class AchieveItemConditionComponent : EcsComponent
     public int TotalProgress { get; set; }
     /// <summary>进度百分比</summary>
     public float ProgressPercentage { get; set; }
-}
-```
-
-```csharp
-/// <summary>
-/// 达成奖励组件
-/// </summary>
-public class AchieveItemRewardComponent : EcsComponent
-{
-    /// <summary>奖励列表</summary>
-    public List<IAchieveRewardConfig> RewardList { get; set; }
-    /// <summary>奖励状态（未发放/已发放）</summary>
-    public RewardStatus RewardStatus { get; set; }
-    /// <summary>领取时间</summary>
-    public long ClaimTime { get; set; }
 }
 ```
 
@@ -173,205 +139,54 @@ public enum AchieveStatus
     /// <summary>已完成</summary>
     Completed
 }
-
-/// <summary>
-/// 奖励类型
-/// </summary>
-public enum RewardType
-{
-    /// <summary>虚拟货币</summary>
-    Currency,
-    /// <summary>道具</summary>
-    Item
-}
-
-/// <summary>
-/// 奖励发放状态
-/// </summary>
-public enum RewardStatus
-{
-    /// <summary>未发放</summary>
-    NotGranted,
-    /// <summary>已发放</summary>
-    Granted
-}
 ```
 
-## 3. 系统业务设计
+## 3. 系统一览
 
+- AchieveItemSystem : `AEntitySystem<AchieveItem>`
+  - `IAwake<AchieveItem>`
+  - `IInit<AchieveItem>`
+  - `IAfterInit<AchieveItem>`
+  - `IEnable<AchieveItem>`
+  - `IDisable<AchieveItem>`
+  - `IUpdate<AchieveItem>`
+  - `IDestroy<AchieveItem>`
+  - `static AchieveItem Create(EcsEntity parent, IAchieveItemConfig config)`
+  - `static void Init(AchieveItem entity, IAchieveItemConfig config)`
+  - `static void UpdateStatus(AchieveItem entity, AchieveStatus status)`
+  - `static bool IsCompleted(AchieveItem entity)`
 
-### AchieveItemSystem
+- AchieveConditionSystem : `AEntitySystem<AchieveCondition>`
+  - `IAwake<AchieveCondition>`
+  - `IInit<AchieveCondition>`
+  - `IAfterInit<AchieveCondition>`
+  - `IEnable<AchieveCondition>`
+  - `IDisable<AchieveCondition>`
+  - `IUpdate<AchieveCondition>`
+  - `IDestroy<AchieveCondition>`
+  - `static AchieveCondition Create(EcsEntity parent, IAchieveConditionConfig config)`
+  - `static void UpdateProgress(AchieveCondition entity, int value)`
+  - `static bool IsSatisfied(AchieveCondition entity)`
 
-- 创建与初始化达成项
-- 状态管理与更新
-- 完成判定
+- AchieveConditionListSystem : `AComponentSystem<AchieveItem, AchieveConditionListComponent>`
+  - `IAwake<AchieveItem, AchieveConditionListComponent>`
+  - `IInit<AchieveItem, AchieveConditionListComponent>`
+  - `IAfterInit<AchieveItem, AchieveConditionListComponent>`
+  - `IEnable<AchieveItem, AchieveConditionListComponent>`
+  - `IDisable<AchieveItem, AchieveConditionListComponent>`
+  - `IDestroy<AchieveItem, AchieveConditionListComponent>`
+  - `static void InitConditions(AchieveItem entity, List<IAchieveConditionConfig> conditionConfigs)`
+  - `static void CalculateProgress(AchieveConditionListComponent component)`
+  - `static bool IsAllSatisfied(AchieveConditionListComponent component)`
 
-#### 生命周期接口实现要求
+## 4. 事件接口（对外扩展）
 
-系统类需继承 `AEntitySystem<AchieveItem>`，并根据业务需要实现以下生命周期接口：
+- interface `IOnAchieveCompleted` : `IDispatch`
+  - `void OnAchieveCompleted(EcsEntity entity, AchieveItem item)`
+  用于外部订阅并执行业务（如奖励、引导等）。
 
-- `IAwake<AchieveItem>`
-- `IInit<AchieveItem>`
-- `IAfterInit<AchieveItem>`
-- `IEnable<AchieveItem>`
-- `IDisable<AchieveItem>`
-- `IUpdate<AchieveItem>`
-- `IDestroy<AchieveItem>`
+## 5. 设计规范与约束
 
-#### 静态接口方法设计
-
-```csharp
-/// <summary>
-/// 创建达成项实体
-/// </summary>
-/// <param name="parent">父实体</param>
-/// <param name="config">达成项配置</param>
-/// <returns>达成项实体</returns>
-public static AchieveItem Create(EcsEntity parent, IAchieveItemConfig config);
-
-/// <summary>
-/// 初始化达成项实体
-/// </summary>
-/// <param name="entity">达成项实体</param>
-/// <param name="config">达成项配置</param>
-public static void Init(AchieveItem entity, IAchieveItemConfig config);
-
-/// <summary>
-/// 更新达成项状态
-/// </summary>
-/// <param name="entity">达成项实体</param>
-/// <param name="status">目标状态</param>
-public static void UpdateStatus(AchieveItem entity, AchieveStatus status);
-
-/// <summary>
-/// 判定达成项是否完成
-/// </summary>
-/// <param name="entity">达成项实体</param>
-/// <returns>是否完成</returns>
-public static bool IsCompleted(AchieveItem entity);
-```
-
-
-### AchieveConditionSystem
-
-- 条件创建与进度更新
-- 满足判定
-
-#### 生命周期接口实现要求
-
-系统类需继承 `AEntitySystem<AchieveCondition>`，并根据业务需要实现以下生命周期接口：
-
-- `IAwake<AchieveCondition>`
-- `IInit<AchieveCondition>`
-- `IAfterInit<AchieveCondition>`
-- `IEnable<AchieveCondition>`
-- `IDisable<AchieveCondition>`
-- `IUpdate<AchieveCondition>`
-- `IDestroy<AchieveCondition>`
-
-#### 静态接口方法设计
-
-```csharp
-/// <summary>
-/// 创建达成条件实体
-/// </summary>
-/// <param name="parent">父实体</param>
-/// <param name="config">条件配置</param>
-/// <returns>达成条件实体</returns>
-public static AchieveCondition Create(EcsEntity parent, IAchieveConditionConfig config);
-
-/// <summary>
-/// 更新达成条件进度
-/// </summary>
-/// <param name="entity">达成条件实体</param>
-/// <param name="value">增加的进度值</param>
-public static void UpdateProgress(AchieveCondition entity, int value);
-
-/// <summary>
-/// 判定条件是否满足
-/// </summary>
-/// <param name="entity">达成条件实体</param>
-/// <returns>是否满足</returns>
-public static bool IsSatisfied(AchieveCondition entity);
-```
-
-
-### AchieveItemConditionSystem
-
-- 条件集合管理与进度计算
-
-#### 生命周期接口实现要求
-
-系统类需继承 `AComponentSystem<AchieveItem, AchieveItemConditionComponent>`，并根据业务需要实现以下生命周期接口：
-
-- `IAwake<AchieveItem, AchieveItemConditionComponent>`
-- `IInit<AchieveItem, AchieveItemConditionComponent>`
-- `IAfterInit<AchieveItem, AchieveItemConditionComponent>`
-- `IEnable<AchieveItem, AchieveItemConditionComponent>`
-- `IDisable<AchieveItem, AchieveItemConditionComponent>`
-- `IDestroy<AchieveItem, AchieveItemConditionComponent>`
-
-#### 静态接口方法设计
-
-```csharp
-/// <summary>
-/// 初始化达成项条件组件
-/// </summary>
-/// <param name="entity">达成项实体</param>
-/// <param name="conditionConfigs">条件配置列表</param>
-public static void InitConditions(AchieveItem entity, List<IAchieveConditionConfig> conditionConfigs);
-
-/// <summary>
-/// 计算达成项条件进度
-/// </summary>
-/// <param name="component">达成项条件组件</param>
-public static void CalculateProgress(AchieveItemConditionComponent component);
-
-/// <summary>
-/// 判定所有条件是否全部满足
-/// </summary>
-/// <param name="component">达成项条件组件</param>
-/// <returns>是否全部满足</returns>
-public static bool IsAllSatisfied(AchieveItemConditionComponent component);
-```
-
-
-### AchieveItemRewardSystem
-
-- 奖励发放与状态更新
-
-#### 生命周期接口实现要求
-
-系统类需继承 `AComponentSystem<AchieveItem, AchieveItemRewardComponent>`，并根据业务需要实现以下生命周期接口：
-
-- `IAwake<AchieveItem, AchieveItemRewardComponent>`
-- `IInit<AchieveItem, AchieveItemRewardComponent>`
-- `IAfterInit<AchieveItem, AchieveItemRewardComponent>`
-- `IEnable<AchieveItem, AchieveItemRewardComponent>`
-- `IDisable<AchieveItem, AchieveItemRewardComponent>`
-- `IDestroy<AchieveItem, AchieveItemRewardComponent>`
-
-#### 静态接口方法设计
-
-```csharp
-/// <summary>
-/// 初始化达成项奖励组件
-/// </summary>
-/// <param name="entity">达成项实体</param>
-/// <param name="rewardConfigs">奖励配置列表</param>
-public static void InitRewards(AchieveItem entity, List<IAchieveRewardConfig> rewardConfigs);
-
-/// <summary>
-/// 发放奖励
-/// </summary>
-/// <param name="component">达成项奖励组件</param>
-/// <param name="player">玩家实体</param>
-public static void GrantRewards(AchieveItemRewardComponent component, EcsEntity player);
-
-/// <summary>
-/// 更新奖励状态
-/// </summary>
-/// <param name="component">达成项奖励组件</param>
-/// <param name="status">奖励状态</param>
-public static void UpdateRewardStatus(AchieveItemRewardComponent component, RewardStatus status);
-```
+- 系统仅实现方法逻辑，实体/组件仅承载属性数据。
+- 系统方法为静态；仅传实体与必要参数，组件在方法内获取。
+- 保持命名空间为 `ECSGame.AchieveModule`；遵循EcsNode生命周期接口规范。

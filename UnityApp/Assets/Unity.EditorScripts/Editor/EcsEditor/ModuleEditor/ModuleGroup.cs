@@ -81,21 +81,27 @@ namespace ECSEditor
             string moduleName = ModuleName;
             string targetModelRoot = Path.Combine(Application.dataPath, "App.Model/Game.Model/thirdparty.model");
             string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/thirdparty.system");
+            string assetsModelRoot = Path.Combine("Assets", "App.Model/Game.Model/thirdparty.model");
+            string assetsSystemRoot = Path.Combine("Assets", "App.System/Game.System/thirdparty.system");
             // 1. 删除 Assets/Game.Model/thirdparty.model/com.model.** 目录
             string modelDir = Path.Combine(targetModelRoot, $"com.model.{moduleName}");
             if (Directory.Exists(modelDir))
             {
                 Debug.Log($"删除 {modelDir}");
-                Directory.Delete(modelDir, true);
-                File.Delete(modelDir + ".meta");
+                //Directory.Delete(modelDir, true);
+                //File.Delete(modelDir);
+                //File.Delete(modelDir + ".meta");
+                AssetDatabase.DeleteAsset(Path.Combine(assetsModelRoot, $"com.model.{moduleName}"));
             }
             // 2. 删除 Assets/Game.System/thirdparty.system/com.system.** 目录
             string systemDir = Path.Combine(targetSystemRoot, $"com.system.{moduleName}");
             if (Directory.Exists(systemDir))
             {
                 Debug.Log($"删除 {systemDir}");
-                Directory.Delete(systemDir, true);
-                File.Delete(systemDir + ".meta");
+                //Directory.Delete(systemDir, true);
+                //File.Delete(systemDir);
+                //File.Delete(systemDir + ".meta");
+                AssetDatabase.DeleteAsset(Path.Combine(assetsSystemRoot, $"com.system.{moduleName}"));
             }
 
             if (ModuleGroup.InstalledModuleName2Versions.TryGetValue(moduleName, out string version))
@@ -104,15 +110,19 @@ namespace ECSEditor
                 if (Directory.Exists(modelDir))
                 {
                     Debug.Log($"删除 {modelDir}");
-                    Directory.Delete(modelDir, true);
-                    File.Delete(modelDir + ".meta");
+                    //Directory.Delete(modelDir, true);
+                    //File.Delete(modelDir);
+                    //File.Delete(modelDir + ".meta");
+                    AssetDatabase.DeleteAsset(Path.Combine(assetsModelRoot, $"com.model.{moduleName}@{version}"));
                 }
                 systemDir = Path.Combine(targetSystemRoot, $"com.system.{moduleName}@{version}");
                 if (Directory.Exists(systemDir))
                 {
                     Debug.Log($"删除 {systemDir}");
-                    Directory.Delete(systemDir, true);
-                    File.Delete(systemDir + ".meta");
+                    //Directory.Delete(systemDir, true);
+                    //File.Delete(systemDir);
+                    //File.Delete(systemDir + ".meta");
+                    AssetDatabase.DeleteAsset(Path.Combine(assetsSystemRoot, $"com.system.{moduleName}@{version}"));
                 }
             }
         }

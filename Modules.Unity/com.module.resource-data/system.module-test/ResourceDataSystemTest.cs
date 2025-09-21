@@ -1,10 +1,10 @@
 using ECS;
-using ECSGame.Module.ResourceData;
+using ECSGame.ResourceDataModule;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace ECSGame.Module.ResourceData.Tests
+namespace ECSGame.ResourceDataModule.Tests
 {
     [TestFixture]
     public class ResourceDataSystemTest
@@ -12,7 +12,6 @@ namespace ECSGame.Module.ResourceData.Tests
         private EcsNode ecsNode;
         private EcsEntity player;
         private ResourceDataComponent resourceData;
-        private ResourceChangeComponent resourceChange;
 
         public class TestEcsNode : EcsNode
         {
@@ -62,13 +61,12 @@ namespace ECSGame.Module.ResourceData.Tests
         [Test]
         public void TC04_资源变更日志记录测试()
         {
-            var logEntity = new ResourceChangeLog();
-            ResourceChangeLogSystem.AddChangeLog(logEntity, ResourceChangeType.Gain, 5, "任务奖励", ResourceType.Coin, 1);
-            Assert.That(logEntity.ChangeType, Is.EqualTo(ResourceChangeType.Gain));
-            Assert.That(logEntity.ChangeValue, Is.EqualTo(5));
-            Assert.That(logEntity.Reason, Is.EqualTo("任务奖励"));
-            Assert.That(logEntity.ResourceType, Is.EqualTo(ResourceType.Coin));
-            Assert.That(logEntity.OwnerId, Is.EqualTo(1));
+            var log = ResourceChangeLogSystem.AddChangeLog(player, ResourceChangeType.Gain, 5, "任务奖励", ResourceType.Coin, 1);
+            Assert.That(log.ChangeType, Is.EqualTo(ResourceChangeType.Gain));
+            Assert.That(log.ChangeValue, Is.EqualTo(5));
+            Assert.That(log.Reason, Is.EqualTo("任务奖励"));
+            Assert.That(log.ResourceType, Is.EqualTo(ResourceType.Coin));
+            Assert.That(log.OwnerId, Is.EqualTo(1));
         }
 
         [Test]

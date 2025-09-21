@@ -46,11 +46,19 @@ namespace ECSGame
 
                 if (entity is Actor)
                 {
-                    var newPos = transComp.ForecastPosition.ToVector();
-                    modelObj.transform.position = Vector3.Lerp(modelObj.transform.position, newPos, 0.5f);
+                    if (modelObj.transform.childCount > 1)
+                    {
+                        var newPos = transComp.ForecastPosition.ToVector();
+                        modelObj.transform.position = Vector3.Lerp(modelObj.transform.position, newPos, 0.5f);
 
-                    var newPos2 = transComp.Position.ToVector();
-                    modelObj.transform.GetChild(1).position = Vector3.Lerp(modelObj.transform.GetChild(1).position, newPos2, 0.5f);
+                        var newPos2 = transComp.Position.ToVector();
+                        modelObj.transform.GetChild(1).position = Vector3.Lerp(modelObj.transform.GetChild(1).position, newPos2, 0.5f);
+                    }
+                    else
+                    {
+                        var newPos = transComp.Position.ToVector();
+                        modelObj.transform.position = Vector3.Lerp(modelObj.transform.position, newPos, 0.5f);
+                    }
                 }
                 else
                 {

@@ -17,12 +17,14 @@ namespace ECSGame
             component.World = gameWorld;
 
             var actor = ActorSystem.Create(gameWorld, gameWorld.NewEntityId());
+            ActorListSystem.AddActor(gameWorld, actor);
             actor.AddComponent<FramePlayComponent>();
             CollisionSystem.SetLayer(actor, 1);
             actor.Init();
             UnityStatic.MyActor = actor;
 
             var actor1 = ActorSystem.Create(gameWorld, gameWorld.NewEntityId());
+            ActorListSystem.AddActor(gameWorld, actor1);
             actor1.AddComponent<FramePlayComponent>();
             CollisionSystem.SetLayer(actor1, 2);
             actor1.AddComponent<AIComponent>();

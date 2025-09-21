@@ -23,10 +23,7 @@ MonoBehaviour:
     SerializationNodes: []
   UnityModules:
   - ModuleId: com.module.achieve
-    ModuleVersion: 1.0.0
-    Dependencies: []
-  - ModuleId: com.module.actor
-    ModuleVersion: 1.0.0
+    ModuleVersion: 1.0.3
     Dependencies: []
   - ModuleId: com.module.building
     ModuleVersion: 1.0.2
@@ -40,12 +37,18 @@ MonoBehaviour:
   - ModuleId: com.module.neter
     ModuleVersion: 1.0.0
     Dependencies: []
-  - ModuleId: com.module.player
+  - ModuleId: com.module.resource-data
+    ModuleVersion: 1.0.2
+    Dependencies: []
+  - ModuleId: com.module.reward
     ModuleVersion: 1.0.0
     Dependencies: []
-  - ModuleId: com.module.resource-data
+  - ModuleId: com.module.task
     ModuleVersion: 1.0.0
     Dependencies: []
   - ModuleId: com.module.true-game-demo
     ModuleVersion: 1.0.0
+    Dependencies: []
+  - ModuleId: com.module.unit-dispatch
+    ModuleVersion: 1.0.3
     Dependencies: []

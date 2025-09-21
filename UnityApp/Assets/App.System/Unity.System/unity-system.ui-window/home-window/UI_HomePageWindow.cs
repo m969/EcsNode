@@ -14,7 +14,7 @@ namespace LoginUI
     {
         public void Awake()
         {
-            UIWindowBindSystem.BindClickEvent(this);
+            UIWindowHelper.BindClickEvent(this);
         }
 
         //[AfterClick(nameof(m_nBuildingBtn))]
