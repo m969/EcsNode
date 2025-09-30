@@ -279,8 +279,15 @@ namespace ECS
                                 methodName += arr[i];
                             }
                             var systemAction = systemType.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public);
-                            var systemInfo = new SystemInfo() { System = system, Action = systemAction };
-                            pairs.Add($"{item.Name}_{systemType.Name}", systemInfo);
+                            if (systemAction == null)
+                            {
+                                //ConsoleLog.Error($"RegisterSystems systemAction == null {systemType.Name} {methodName} {entityType.Name} {componentType.Name}");
+                            }
+                            else
+                            {
+                                var systemInfo = new SystemInfo() { System = system, Action = systemAction };
+                                pairs.Add($"{item.Name}_{systemType.Name}", systemInfo);
+                            }
                         }
                     }
                 }
@@ -344,9 +351,25 @@ namespace ECS
                     var systemInfo = item.Value;
                     var system = systemInfo.System;
                     var method = systemInfo.Action;
-                    method.Invoke(system, new object[] { entity, component });
+                    if (method == null)
+                    {
+                        //ConsoleLog.Error($"DriveComponentSystems method == null {entityType.Name} {driveType.Name}");
+                    }
+                    else
+                    {
+                        method.Invoke(system, new object[] { entity, component });
+                    }
                 }
             }
+            //try
+            //{
+
+            //}
+            //catch (Exception)
+            //{
+            //    ConsoleLog.Error($"DriveComponentSystems {entityType.Name} {driveType.Name}");
+            //    throw;
+            //}
         }
 
         public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type driveType) where T1 : EcsEntity where T2 : EcsComponent

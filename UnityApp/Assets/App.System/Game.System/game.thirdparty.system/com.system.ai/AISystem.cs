@@ -57,19 +57,12 @@ namespace ECSGame
     {
         public void Awake(EcsEntity entity, AIComponent component)
         {
-            
+
         }
 
         public void Enable(EcsEntity entity, AIComponent component)
         {
-            var aiNode = new AINode()
-            {
-                Id = 1,
-                AIBehaviour = AIBehaviourType.Patrol,
-                Entity = entity,
-                AIAction = ReloadSystem.CreateInstance(entity.EcsNode, typeof(MoveInputAIAction).FullName) as IAIAction
-            };
-            StartNode(aiNode);
+
         }
 
         public void Disable(EcsEntity entity, AIComponent component)
@@ -91,6 +84,24 @@ namespace ECSGame
                 //ConsoleLog.Debug($"{node.AIAction.GetType().Name}");
                 node.AIAction.Run(node);
             }
+        }
+
+        public static AINode CreateNode<T>(int behaviourType, EcsEntity entity) where T : IAIAction, new()
+        {
+            return CreateNode<T>(entity.EcsNode.NewInstanceId(), behaviourType, entity);
+        }
+
+        public static AINode CreateNode<T>(long nodeId, int behaviourType, EcsEntity entity) where T : IAIAction, new()
+        {
+            var newNode = new AINode()
+            {
+                Id = nodeId,
+                AIBehaviour = behaviourType,
+                Entity = entity,
+                AIAction = ReloadSystem.CreateInstance(entity.EcsNode, typeof(T).FullName) as IAIAction,
+                PreNode = null,
+            };
+            return newNode;
         }
 
         public static void StartNode(AINode aiNode)

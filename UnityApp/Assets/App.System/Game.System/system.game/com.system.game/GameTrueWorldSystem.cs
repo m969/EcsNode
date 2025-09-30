@@ -30,6 +30,9 @@ namespace ECSGame
             actor1.AddComponent<AIComponent>();
             actor1.Init();
             UnityStatic.OtherActor = actor1;
+
+            var aiNode = AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Patrol, actor1);
+            AISystem.StartNode(aiNode);
         }
 
         public static void Update(Game game)

@@ -1,6 +1,7 @@
 ﻿using ECS;
 using ECSGame.Module.Building;
 using ECSGame.Module.GridBased;
+using ECSGame.TaskModule;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace ECSGame.UnitDispatchModule
                 TransformSystem.ChangePosition(actor, gridCellPos);
                 CollisionSystem.SetLayer(actor, 1);
                 actor.Init();
+                AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Caution, actor);
             }
 
             if (dispatcher.ConfigId == 1002)
@@ -63,7 +65,9 @@ namespace ECSGame.UnitDispatchModule
                 ActorListSystem.AddActor(world, actor);
                 TransformSystem.ChangePosition(actor, gridCellPos);
                 CollisionSystem.SetLayer(actor, 1);
+                //TaskItemSystem.Create(actor, );
                 actor.Init();
+                AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Launch, actor);
             }
         }
 

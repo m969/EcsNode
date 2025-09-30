@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TrueSync;
+using ECSGame.TaskModule;
 
 namespace ECSGame
 {
@@ -45,6 +46,8 @@ namespace ECSGame
             actor.AddComponent<MoveComponent>();
             actor.AddComponent<HealthComponent>();
             actor.AddComponent<FireComponent>();
+            actor.AddComponent<TaskListComponent>();
+            actor.AddComponent<AIComponent>();
             return actor;
         }
 
