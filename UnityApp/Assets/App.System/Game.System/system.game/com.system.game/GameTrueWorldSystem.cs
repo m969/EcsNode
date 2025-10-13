@@ -27,12 +27,12 @@ namespace ECSGame
             ActorListSystem.AddActor(gameWorld, actor1);
             actor1.AddComponent<FramePlayComponent>();
             CollisionSystem.SetLayer(actor1, 2);
-            actor1.AddComponent<AIComponent>();
+            //actor1.AddComponent<AIComponent>();
             actor1.Init();
             UnityStatic.OtherActor = actor1;
 
-            var aiNode = AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Patrol, actor1);
-            AISystem.StartNode(aiNode);
+            //var aiNode = AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Patrol, actor1);
+            AISystem.StartBehaviour<AIBehaviour_Patrol>(actor1);
         }
 
         public static void Update(Game game)

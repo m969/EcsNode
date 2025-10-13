@@ -25,6 +25,9 @@ MonoBehaviour:
   - ModuleId: com.module.achieve
     ModuleVersion: 1.0.3
     Dependencies: []
+  - ModuleId: com.module.attack
+    ModuleVersion: 1.0.3
+    Dependencies: []
   - ModuleId: com.module.building
     ModuleVersion: 1.0.2
     Dependencies: []

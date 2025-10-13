@@ -27,7 +27,7 @@ namespace ECSGame
         public static void OnChangeForward(EcsEntity entity, TSVector target)
         {
             //ConsoleLog.Debug("OnChangeForward");
-            if (entity.GetComponent<ModelViewComponent>() is { } modelComp)
+            if (entity.GetComponent<ModelViewComponent>() is { } modelComp && modelComp.ModelObj != null)
             {
                 var modelObj = modelComp.ModelObj;
                 modelObj.transform.forward = target.ToVector();

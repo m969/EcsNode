@@ -18,7 +18,7 @@ namespace ECS
         private bool enable;
         public bool Enable
         {
-            get {  return enable; }
+            get { return enable; }
             set
             {
                 if (enable != value)

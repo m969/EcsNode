@@ -6,9 +6,9 @@ using TrueSync;
 
 namespace ECSGame
 {
-	public interface IAIAction
-	{
-        void Run(AINode aiNode);
-		void Start(AINode aiNode);
-	} 
+    public interface IAIAction
+    {
+        void Awake(AINode aiNode);
+        void Update(AINode aiNode);
+    }
 }

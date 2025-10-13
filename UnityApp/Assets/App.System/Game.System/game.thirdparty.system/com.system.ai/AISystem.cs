@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using TrueSync;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace ECSGame
 {
@@ -18,16 +17,27 @@ namespace ECSGame
         //    return actionQueue;
         //}
 
-        public static AINode NextAction<T>(this AINode aiNode) where T : IAIAction, new()
+        private static AINode NextAction<T>(this AINode aiNode) where T : IAIAction, new()
         {
             var newNode = new AINode()
             {
                 Id = aiNode.Id,
-                AIBehaviour = aiNode.AIBehaviour,
+                BehaviourId = aiNode.BehaviourId,
                 Entity = aiNode.Entity,
+                AIComponent = aiNode.Entity.GetComponent<AIComponent>(),
                 AIAction = ReloadSystem.CreateInstance(aiNode.Entity.EcsNode, typeof(T).FullName) as IAIAction,
                 PreNode = aiNode,
             };
+            return newNode;
+        }
+
+        public static AINode StartAction<T>(this AINode aiNode) where T : IAIAction, new()
+        {
+            var component = aiNode.AIComponent;
+            var queue = component.Behaviour2NodeQueue[aiNode.BehaviourId];
+            var newNode = aiNode.NextAction<T>();
+            newNode.StartNode();
+            queue.Dequeue();
             return newNode;
         }
 
@@ -70,34 +80,44 @@ namespace ECSGame
 
         }
 
-        public static void FrameUpdate(EcsEntity entity, AIComponent component, long determineFrame)
+        public static void Update(EcsEntity entity, AIComponent component, long determineFrame)
         {
-            //ConsoleLog.Debug($"AISystem FrameUpdate {component.NodeMap.Count}");
             component.DetermineFrame = determineFrame;
-            foreach (var queue in component.NodeMap.Values)
+            foreach (var queue in component.Behaviour2NodeQueue.Values)
             {
                 if (queue.Count == 0)
                 {
                     continue;
                 }
                 var node = queue.Peek();
-                //ConsoleLog.Debug($"{node.AIAction.GetType().Name}");
-                node.AIAction.Run(node);
+                node.AIAction.Update(node);
+                ConsoleLog.Debug($"AISystem Behaviour: {component.AIBehaviours[node.BehaviourId].GetType().Name} Action: {node.AIAction.GetType().Name}");
             }
         }
 
-        public static AINode CreateNode<T>(int behaviourType, EcsEntity entity) where T : IAIAction, new()
+        public static AINode StartBehaviour<T>(EcsEntity entity) where T : IAIBehaviour, new()
         {
-            return CreateNode<T>(entity.EcsNode.NewInstanceId(), behaviourType, entity);
+            var component = entity.GetComponent<AIComponent>();
+            var aiBehaviour = new T();
+            var behaviourId = entity.EcsNode.NewInstanceId();
+            component.AIBehaviours.Add(behaviourId, aiBehaviour);
+            return aiBehaviour.StartBehaviour(entity, behaviourId);
         }
 
-        public static AINode CreateNode<T>(long nodeId, int behaviourType, EcsEntity entity) where T : IAIAction, new()
+        public static AINode CreateNode<T>(EcsEntity entity) where T : IAIAction, new()
         {
+            return CreateNode<T>(entity.EcsNode.NewInstanceId(), entity);
+        }
+
+        public static AINode CreateNode<T>(long behaviourId, EcsEntity entity) where T : IAIAction, new()
+        {
+            var nodeId = entity.EcsNode.NewInstanceId();
             var newNode = new AINode()
             {
                 Id = nodeId,
-                AIBehaviour = behaviourType,
+                BehaviourId = behaviourId,
                 Entity = entity,
+                AIComponent = entity.GetComponent<AIComponent>(),
                 AIAction = ReloadSystem.CreateInstance(entity.EcsNode, typeof(T).FullName) as IAIAction,
                 PreNode = null,
             };
@@ -107,68 +127,51 @@ namespace ECSGame
         public static void StartNode(AINode aiNode)
         {
             var component = aiNode.Entity.GetComponent<AIComponent>();
-            if (!component.NodeMap.ContainsKey(aiNode.Id))
+            if (!component.Behaviour2NodeQueue.ContainsKey(aiNode.BehaviourId))
             {
                 var queue = new Queue<AINode>();
                 queue.Enqueue(aiNode);
-                component.NodeMap.Add(aiNode.Id, queue);
+                component.Behaviour2NodeQueue.Add(aiNode.BehaviourId, queue);
             }
             else
             {
-                component.NodeMap[aiNode.Id].Enqueue(aiNode);
+                component.Behaviour2NodeQueue[aiNode.BehaviourId].Enqueue(aiNode);
             }
 
             aiNode.NodeDepthGC(1);
 
-            aiNode.AIAction.Start(aiNode);
+            aiNode.AIAction.Awake(aiNode);
         }
 
-        public static void FinishAndNext(AINode aiNode)
+        public static void MoveNext(AINode aiNode)
         {
-            if (aiNode.AIBehaviour == AIBehaviourType.Patrol)
-            {
-                PatrolAINext(aiNode);
-            }
+            aiNode.Entity.GetComponent<AIComponent>().AIBehaviours[aiNode.BehaviourId].MoveNext(aiNode);
+            //if (aiNode.AIBehaviour == AIBehaviourType.Patrol)
+            //{
+            //    PatrolAINext(aiNode);
+            //}
         }
 
-        public static void PatrolAINext(AINode aiNode)
-        {
-            var component = aiNode.Entity.GetComponent<AIComponent>();
-            var queue = component.NodeMap[aiNode.Id];
+        //public static void PatrolAINext(AINode aiNode)
+        //{
+        //    var component = aiNode.Entity.GetComponent<AIComponent>();
+        //    var queue = component.NodeMap[aiNode.Id];
 
-            if (aiNode.AIAction is MoveInputAIAction)
-            {
-                aiNode.NextAction<StopMoveInputAIAction>().StartNode();
-            }
-            if (aiNode.AIAction is StopMoveInputAIAction)
-            {
-                aiNode.NextAction<WaitAIAction>().StartNode();
-            }
-            if (aiNode.AIAction is WaitAIAction)
-            {
-                aiNode.NextAction<MoveInputAIAction>().StartNode();
-            }
+        //    if (aiNode.AIAction is MoveInputAIAction)
+        //    {
+        //        aiNode.NextAction<StopMoveInputAIAction>().StartNode();
+        //    }
+        //    if (aiNode.AIAction is StopMoveInputAIAction)
+        //    {
+        //        aiNode.NextAction<WaitAIAction>().StartNode();
+        //    }
+        //    if (aiNode.AIAction is WaitAIAction)
+        //    {
+        //        aiNode.NextAction<MoveInputAIAction>().StartNode();
+        //    }
 
-            //if (aiNode.AIAction is WaitAIAction)
-            //{
-            //    if (aiNode.PreNode != null)
-            //    {
-            //        if (aiNode.PreNode.AIAction is StopMoveAIAction)
-            //        {
-            //            aiNode.NextAction<MoveAIAction>().StartNode();
-            //        }
-            //        if (aiNode.PreNode.AIAction is MoveAIAction)
-            //        {
-            //            aiNode.NextAction<StopMoveAIAction>().StartNode();
-            //        }
-            //    }
-            //}
-            //if (aiNode.AIAction is StopMoveAIAction || aiNode.AIAction is MoveAIAction)
-            //{
-            //    aiNode.NextAction<WaitAIAction>().StartNode();
-            //}
-            queue.Dequeue();
-        }
+        //    queue.Dequeue();
+        //}
 
         //public static AIActionQueue CreateActionQueue(EcsEntity entity)
         //{

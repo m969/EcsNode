@@ -8,7 +8,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 namespace ECSGame
 {
-    public class MoveSystem : AComponentSystem<EcsEntity, MoveComponent>,
+    public partial class MoveSystem : AComponentSystem<EcsEntity, MoveComponent>,
         IAwake<EcsEntity, MoveComponent>
     {
         public void Awake(EcsEntity actor, MoveComponent moveComponent)
@@ -33,104 +33,41 @@ namespace ECSGame
             moveComp.TrueDirection = target;
         }
 
-        public const float SpeedAdaptive = 0.01f;
-
-        public static FramePlay_Move MoveFrame(EcsEntity entity, TSVector target)
+        public static void StartMove(EcsEntity entity)
         {
+            ConsoleLog.Debug($"StartMove: EntityId={entity.Id}");
             var moveComp = entity.GetComponent<MoveComponent>();
+            moveComp.Moving = true;
+        }
+
+        public static void StopMove(EcsEntity entity)
+        {
+            ConsoleLog.Debug($"StopMove: EntityId={entity.Id}");
+            var moveComp = entity.GetComponent<MoveComponent>();
+            moveComp.Moving = false;
+        }
+
+        public static void Update(EcsEntity entity, MoveComponent moveComp, TSVector target)
+        {
+            if (!moveComp.Moving)
+            {
+                return;
+            }
             var transComp = entity.GetComponent<TransformComponent>();
             moveComp.TrueDirection = target;
             var beforePos = transComp.Position;
             var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
-            var framePlay = new FramePlay_Move()
+            TransformSystem.ChangePosition(entity, afterPos);
+            if (TSVector.Distance(afterPos, target) < FP.FromFloat(0.1f))
             {
-                EntityId = entity.Id,
-                Position = beforePos,
-                AfterPosition = afterPos
-            };
-            return framePlay;
-        }
-
-        public static FramePlay_StopMove StopMoveFrame(EcsEntity entity)
-        {
-            var framePlay = new FramePlay_StopMove()
-            {
-                EntityId = entity.Id,
-                LeftStopStep = entity.GetComponent<MoveComponent>().StopSpeed,
-            };
-            return framePlay;
-        }
-
-        public static FramePlay_MoveStop MoveStopFrame(EcsEntity entity, TSVector target, int leftStopStep)
-        {
-            var moveComp = entity.GetComponent<MoveComponent>();
-            var transComp = entity.GetComponent<TransformComponent>();
-            var beforePos = transComp.Position;
-            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
-            var framePlay = new FramePlay_MoveStop()
-            {
-                EntityId = entity.Id,
-                LeftStopStep = leftStopStep,
-                Position = beforePos,
-                AfterPosition = afterPos
-            };
-            return framePlay;
-        }
-
-        public static FramePlay_StopMove StopMoveForecastFrame(EcsEntity entity)
-        {
-            var framePlay = new FramePlay_StopMove()
-            {
-                EntityId = entity.Id,
-                LeftStopStep = entity.GetComponent<MoveComponent>().StopSpeed,
-            };
-            return framePlay;
-        }
-
-        public static FramePlay_MoveStop MoveForecastStopFrame(EcsEntity entity, TSVector target, int leftStopStep)
-        {
-            var moveComp = entity.GetComponent<MoveComponent>();
-            var transComp = entity.GetComponent<TransformComponent>();
-            var beforePos = transComp.ForecastPosition;
-            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
-            var framePlay = new FramePlay_MoveStop()
-            {
-                EntityId = entity.Id,
-                LeftStopStep = leftStopStep,
-                Position = beforePos,
-                AfterPosition = afterPos
-            };
-            return framePlay;
-        }
-
-        public static FramePlay_Move MoveForecastFrame(EcsEntity entity, TSVector target)
-        {
-            var moveComp = entity.GetComponent<MoveComponent>();
-            var transComp = entity.GetComponent<TransformComponent>();
-            moveComp.ForecastTrueDirection = target;
-            var beforePos = transComp.ForecastPosition;
-            var afterPos = transComp.ForecastPosition + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
-            var framePlay = new FramePlay_Move()
-            {
-                EntityId = entity.Id,
-                Position = beforePos,
-                AfterPosition = afterPos
-            };
-            return framePlay;
-        }
-
-        public static void SetMovePosition(EcsEntity actor, TSVector position)
-        {
-            var transComp = actor.GetComponent<TransformComponent>();
-            var beforePos = transComp.Position;
-            TransformSystem.ChangePosition(actor, position);
-        }
-
-        public static void SetMoveForecastPosition(EcsEntity actor, TSVector position)
-        {
-            var transComp = actor.GetComponent<TransformComponent>();
-            var beforePos = transComp.ForecastPosition;
-            TransformSystem.ChangeForecastPosition(actor, position);
+                StopMove(entity);
+            }
+            //var framePlay = new FramePlay_Move()
+            //{
+            //    EntityId = entity.Id,
+            //    Position = beforePos,
+            //    AfterPosition = afterPos
+            //};
         }
     }
 }

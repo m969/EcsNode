@@ -9,15 +9,15 @@ namespace ECSGame
 {
     public class TrueWorldAISystem
     {
-        public static void FrameUpdate(TrueWorld game, long determineFrame)
+        public static void FrameUpdate(TrueWorld world, long determineFrame)
         {
-            var allEntities = game.Id2Children.Values.ToArray();
-            foreach ( var entity in allEntities)
+            var allEntities = world.Id2Children.Values.ToArray();
+            foreach (var entity in allEntities)
             {
                 if (entity.IsDisposed) continue;
-                if (entity.GetComponent<AIComponent>() is { Enable:true } component)
+                if (entity.GetComponent<AIComponent>() is { Enable: true } component)
                 {
-                    AISystem.FrameUpdate(entity, component, determineFrame);
+                    AISystem.Update(entity, component, determineFrame);
                 }
             }
         }

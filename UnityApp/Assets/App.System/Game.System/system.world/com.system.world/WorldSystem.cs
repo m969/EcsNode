@@ -14,7 +14,8 @@ using UnityEngine;
 namespace ECSGame
 {
     public class WorldSystem : AEntitySystem<World>,
-        IInit<World>
+        IInit<World>,
+        IUpdate<World>
     {
         public static World Create(Assembly systemAssembly)
         {
@@ -54,6 +55,10 @@ namespace ECSGame
             monsterDispatcher.AddComponent<DispatchStateComponent>();
             UnitDispatcherListSystem.AddDispatcher(world, monsterDispatcher);
             UnitDispatcherSystem.StartDispatch(monsterDispatcher, 1);
+        }
+
+        public void Update(World entity)
+        {
         }
     }
 }

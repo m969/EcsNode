@@ -48,7 +48,7 @@ namespace ECSGame.UnitDispatchModule
                 TransformSystem.ChangePosition(actor, gridCellPos);
                 CollisionSystem.SetLayer(actor, 1);
                 actor.Init();
-                AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Caution, actor);
+                //AISystem.StartBehaviour<AIBehaviour_Caution>(actor);
             }
 
             if (dispatcher.ConfigId == 1002)
@@ -67,13 +67,15 @@ namespace ECSGame.UnitDispatchModule
                 CollisionSystem.SetLayer(actor, 1);
                 //TaskItemSystem.Create(actor, );
                 actor.Init();
-                AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Launch, actor);
+                AISystem.StartBehaviour<AIBehaviour_Launch>(actor);
             }
         }
 
         public void OnDispatchCompleted(EcsEntity entity)
         {
             ConsoleLog.Debug($"OnDispatchCompleted: EntityId={entity.Id}");
+
+
         }
     }
 }

@@ -15,6 +15,7 @@ namespace ECSGame
     public class ActorSystem : AEntitySystem<Actor>,
         IAwake<Actor>,
         IInit<Actor>,
+        IUpdate<Actor>,
         IHealthChangeHandler
     {
         public void Awake(Actor entity)
@@ -51,5 +52,16 @@ namespace ECSGame
             return actor;
         }
 
+        public void Update(Actor entity)
+        {
+            if (entity.GetComponent<AIComponent>() is { } component)
+            {
+                AISystem.Update(entity, component, 0);
+            }
+            if (entity.GetComponent<MoveComponent>() is { } moveComp)
+            {
+                MoveSystem.Update(entity, moveComp, moveComp.TrueDirection);
+            }
+        }
     }
 }

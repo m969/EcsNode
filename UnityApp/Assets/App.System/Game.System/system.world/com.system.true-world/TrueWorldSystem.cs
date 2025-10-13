@@ -19,6 +19,7 @@ namespace ECSGame
         public static TrueWorld Create(Assembly systemAssembly)
         {
             var trueWorld = EcsNodeSystem.Create<TrueWorld>(EcsType.TrueWorld, systemAssembly);
+            trueWorld.AddComponent<ActorListComponent>();
             trueWorld.AddComponent<TrueWorldPlayComponent>();
             trueWorld.AddComponent<TrueWorldCollisionComponent>();
             trueWorld.AddComponent<TrueWorldPlayForecastComponent>();

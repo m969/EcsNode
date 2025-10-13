@@ -26,15 +26,6 @@
       "source": "embedded",
       "dependencies": {}
     },
-    "com.singularitygroup.hotreload": {
-      "version": "file:com.singularitygroup.hotreload",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0"
-      }
-    },
     "com.unity.adaptiveperformance": {
       "version": "4.0.1",
       "depth": 1,
