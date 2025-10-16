@@ -30,6 +30,9 @@ namespace ECSGame.UnitDispatchModule
 
         }
 
+        /// <summary>
+        /// 派遣开始时触发
+        /// </summary>
         public void OnDispatchStarted(EcsEntity entity, int count)
         {
             ConsoleLog.Debug($"OnDispatchStarted: EntityId={entity.Id}");

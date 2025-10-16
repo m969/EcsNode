@@ -4,7 +4,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chase", "Chase.csproj", "{D8ACBBA4-E22F-E285-AFF5-D99AC70B0F6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.AttackModule.Test", "system.module-test.chase\System.AttackModule.Test.csproj", "{35E1E3F6-13BA-2C55-242A-6A8BC2E259CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.ChaseModule.Test", "system.module-test.chase\System.ChaseModule.Test.csproj", "{F4430954-5D60-5E73-90BB-C41489D25FC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,15 +16,15 @@ Global
 		{D8ACBBA4-E22F-E285-AFF5-D99AC70B0F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8ACBBA4-E22F-E285-AFF5-D99AC70B0F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8ACBBA4-E22F-E285-AFF5-D99AC70B0F6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35E1E3F6-13BA-2C55-242A-6A8BC2E259CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35E1E3F6-13BA-2C55-242A-6A8BC2E259CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35E1E3F6-13BA-2C55-242A-6A8BC2E259CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35E1E3F6-13BA-2C55-242A-6A8BC2E259CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4430954-5D60-5E73-90BB-C41489D25FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4430954-5D60-5E73-90BB-C41489D25FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4430954-5D60-5E73-90BB-C41489D25FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4430954-5D60-5E73-90BB-C41489D25FC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FBF01766-AF1E-44BE-A3B6-09BF8AA582A9}
+		SolutionGuid = {EFC97FBB-35BF-4719-A8CA-0F8937B8CD3F}
 	EndGlobalSection
 EndGlobal

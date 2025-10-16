@@ -18,7 +18,7 @@ namespace ECSGame
 
         public void Update(AINode aiNode)
         {
-
+            MoveSystem.ChangeDirection(aiNode.Entity, TSVector.zero);
         }
     }
 }

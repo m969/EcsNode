@@ -21,24 +21,28 @@
 - 规范化模块开发流（AI+）（Spec-Modular-Driven，类似于Kiro的Spec-Driven，基于copilot-instruction.md）
 
 # AI+ 模块开发流程示例:
-- Modules.Unity/com.module.resource-data（资源模块）
-- Modules.Unity/com.module.achieve（达成模块，用于成就和任务等）
-- Modules.Unity/com.module.grid-based（网格系统）
-- Modules.Unity/com.module.building（建筑建造模块）
+- ~~Modules.Unity/com.module.resource-data（资源模块）~~
+- ~~Modules.Unity/com.module.achieve（达成模块，用于成就和任务等）~~
+- ~~Modules.Unity/com.module.grid-based（网格系统）~~
+- ~~Modules.Unity/com.module.building（建筑建造模块）~~
 
 - 常用prompt示例：
     - 补充完善require需求文档
     - 根据新修改的require文档，调整修改design文档
-    - 根据新修改的design文档，调整修改program文档
-    - 根据新修改的program文档，调整修改program-test文档
-    - 根据新修改的program文档，调整修改配置接口、实体、组件、类型补充代码文件
-    - 根据新修改的program文档，调整修改配置接口代码文件
-    - 根据新修改的program文档，调整修改实体代码文件
-    - 根据新修改的program文档，调整修改组件代码文件
-    - 根据新修改的program文档，调整修改系统代码文件
-    - 根据新修改的program文档，调整修改model和system代码
-    - 根据program-test文档和模块System代码，调整修改单元测试代码文件
-    - 据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档、program-test文档
+    - ~~根据新修改的design文档，调整修改program文档~~
+    - ~~根据新修改的program文档，调整修改program-test文档~~
+    - ~~根据新修改的program文档，调整修改配置接口、实体、组件、类型补充代码文件~~
+    - ~~根据新修改的program文档，调整修改配置接口代码文件~~
+    - ~~根据新修改的program文档，调整修改实体代码文件~~
+    - ~~根据新修改的program文档，调整修改组件代码文件~~
+    - ~~根据新修改的program文档，调整修改系统代码文件~~
+    - ~~根据新修改的program文档，调整修改model和system代码~~
+    - ~~根据program-test文档和模块System代码，调整修改单元测试代码文件~~
+    - ~~据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档、program-test文档~~
+
+- 最新的AI+ 模块开发流程精简了文档数量，只保留require需求文档和design程序设计文档，并提升了文档的质量
+- 另添加了model层和system层的API接口文档API_DOCS.md，方便开发者和AI大模型理解并扩展模块
+- 最新的模块示例是 com.module.chase 追踪模块
 
 copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用于别的大模型指导文档，比如CLAUDE.md、cursor rule等
 
