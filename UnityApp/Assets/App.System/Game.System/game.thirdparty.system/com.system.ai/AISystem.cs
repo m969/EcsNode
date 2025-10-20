@@ -145,7 +145,10 @@ namespace ECSGame
 
         public static void MoveNext(AINode aiNode)
         {
-            aiNode.Entity.GetComponent<AIComponent>().AIBehaviours[aiNode.BehaviourId].MoveNext(aiNode);
+            if (aiNode.Entity.GetComponent<AIComponent>() is {} component)
+            {
+                component.AIBehaviours[aiNode.BehaviourId].MoveNext(aiNode);
+            }
             //if (aiNode.AIBehaviour == AIBehaviourType.Patrol)
             //{
             //    PatrolAINext(aiNode);

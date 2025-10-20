@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using ECS;
+using ECSGame;
 using UnityEngine;
 
 namespace ECSGame.ChaseModule
 {
     /// <summary>提供追踪核心业务逻辑的系统。</summary>
-    public class ChaseSystem : AComponentSystem<EcsEntity, ChaseComponent>
+    public partial class ChaseSystem : AComponentSystem<EcsEntity, ChaseComponent>
     {
         /// <summary>启动追踪流程。</summary>
         /// <param name="entity">追踪实体。</param>
@@ -147,7 +148,7 @@ namespace ECSGame.ChaseModule
                 return;
             }
 
-            UpdateTrackingState(entity, in snapshot);
+            UpdateTrackingState(entity, in snapshot, deltaTime);
         }
 
         /// <summary>更新候选列表。</summary>
@@ -309,16 +310,17 @@ namespace ECSGame.ChaseModule
             }
         }
 
-        private static void UpdateTrackingState(EcsEntity entity, in RuntimeSnapshot snapshot)
+        private static void UpdateTrackingState(EcsEntity entity, in RuntimeSnapshot snapshot, float deltaTime)
         {
             var previousDistance = ChaseStateSystem.GetCurrentDistance(entity);
             var distance = snapshot.Distance;
             ChaseStateSystem.SetCurrentDistance(entity, distance);
 
+            var speed = deltaTime > 0f ? Mathf.Abs(distance - previousDistance) / deltaTime : 0f;
             var kinematics = new ChaseKinematics
             {
                 Direction = snapshot.Direction,
-                Speed = snapshot.RelativeSpeed
+                Speed = speed
             };
             ChaseStateSystem.SetKinematics(entity, in kinematics);
 
@@ -376,55 +378,48 @@ namespace ECSGame.ChaseModule
                 return null;
             }
 
-            EcsEntity? resolved = null;
-            entity.Dispatch<IChaseTargetResolver>(resolver =>
+            var world = FindWorld(entity);
+            if (world == null)
             {
-                if (resolved == null)
-                {
-                    resolved = resolver.Resolve(entity, targetId);
-                }
-            });
+                return null;
+            }
 
-            return resolved;
+            return ActorListSystem.GetActor(world, targetId);
+        }
+
+        private static EcsEntity? FindWorld(EcsEntity entity)
+        {
+            var current = entity;
+            while (current.Parent != null)
+            {
+                current = current.Parent;
+            }
+
+            return current;
         }
 
         private static RuntimeSnapshot CaptureRuntime(EcsEntity entity, long targetId)
         {
-            var snapshot = new RuntimeSnapshot();
-            entity.Dispatch<IChaseRuntimeProvider>(provider =>
+            var snapshot = new RuntimeSnapshot
             {
-                if (!snapshot.HasOwner)
-                {
-                    snapshot.OwnerPosition = provider.GetOwnerPosition(entity);
-                    snapshot.HasOwner = true;
-                }
+                OwnerPosition = TransformSystem.GetPosition(entity),
+                HasOwner = true
+            };
 
-                if (targetId > 0 && !snapshot.HasTarget)
-                {
-                    snapshot.TargetPosition = provider.GetTargetPosition(entity, targetId);
-                    snapshot.RelativeSpeed = provider.GetRelativeSpeed(entity, targetId);
-                    snapshot.HasTarget = true;
-                }
-            });
-
-            if (!snapshot.HasTarget && targetId > 0)
+            if (targetId <= 0)
             {
-                snapshot.RelativeSpeed = 0f;
+                return snapshot;
             }
 
+            var target = ResolveTarget(entity, targetId);
+            if (target == null)
+            {
+                return snapshot;
+            }
+
+            snapshot.TargetPosition = TransformSystem.GetPosition(target);
+            snapshot.HasTarget = true;
             return snapshot;
-        }
-
-        private struct RuntimeSnapshot
-        {
-            public bool HasOwner;
-            public Vector3 OwnerPosition;
-            public bool HasTarget;
-            public Vector3 TargetPosition;
-            public float RelativeSpeed;
-
-            public float Distance => HasTarget ? Vector3.Distance(OwnerPosition, TargetPosition) : 0f;
-            public Vector3 Direction => HasTarget ? (TargetPosition - OwnerPosition).normalized : Vector3.zero;
         }
     }
 }

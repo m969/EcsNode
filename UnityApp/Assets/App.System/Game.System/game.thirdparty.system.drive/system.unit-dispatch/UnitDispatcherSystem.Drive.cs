@@ -1,4 +1,5 @@
 ﻿using ECS;
+using ECSGame.ChaseModule;
 using ECSGame.Module.Building;
 using ECSGame.Module.GridBased;
 using ECSGame.TaskModule;
@@ -51,6 +52,7 @@ namespace ECSGame.UnitDispatchModule
                 TransformSystem.ChangePosition(actor, gridCellPos);
                 CollisionSystem.SetLayer(actor, 1);
                 actor.Init();
+                AppStatic.OtherActor = actor;
                 //AISystem.StartBehaviour<AIBehaviour_Caution>(actor);
             }
 
@@ -68,6 +70,7 @@ namespace ECSGame.UnitDispatchModule
                 ActorListSystem.AddActor(world, actor);
                 TransformSystem.ChangePosition(actor, gridCellPos);
                 CollisionSystem.SetLayer(actor, 1);
+                TargetCandidatesSystem.SetCandidates(actor, new List<EcsEntity> { AppStatic.OtherActor });
                 //TaskItemSystem.Create(actor, );
                 actor.Init();
                 AISystem.StartBehaviour<AIBehaviour_Launch>(actor);
@@ -77,8 +80,6 @@ namespace ECSGame.UnitDispatchModule
         public void OnDispatchCompleted(EcsEntity entity)
         {
             ConsoleLog.Debug($"OnDispatchCompleted: EntityId={entity.Id}");
-
-
         }
     }
 }

@@ -25,6 +25,10 @@ namespace ECSGame
 
         public void Update(Game entity)
         {
+            AppStatic.DeltaTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - AppStatic.NowMilliseconds;
+            AppStatic.DeltaTimeSeconds = AppStatic.DeltaTimeMilliseconds / 1000f;
+            AppStatic.NowMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            AppStatic.NowSeconds = AppStatic.NowMilliseconds / 1000f;
             if (entity.Type == ((int)GameType.TrueGameDemo))
             {
                 GameTrueWorldSystem.Update(entity);

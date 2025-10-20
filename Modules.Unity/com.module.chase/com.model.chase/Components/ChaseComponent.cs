@@ -1,4 +1,5 @@
 using ECS;
+using UnityEngine;
 
 namespace ECSGame.ChaseModule
 {
@@ -16,5 +17,16 @@ namespace ECSGame.ChaseModule
 
         /// <summary>最近一次目标切换的时间戳。</summary>
         public float LastTargetChangeTime { get; set; }
+    }
+
+    public struct RuntimeSnapshot
+    {
+        public bool HasOwner;
+        public Vector3 OwnerPosition;
+        public bool HasTarget;
+        public Vector3 TargetPosition;
+
+        public float Distance => HasTarget ? Vector3.Distance(OwnerPosition, TargetPosition) : 0f;
+        public Vector3 Direction => HasTarget ? (TargetPosition - OwnerPosition).normalized : Vector3.zero;
     }
 }

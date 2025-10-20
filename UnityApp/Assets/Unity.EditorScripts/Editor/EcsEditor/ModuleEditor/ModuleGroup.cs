@@ -79,15 +79,15 @@ namespace ECSEditor
         {
             // 获取模块名称
             string moduleName = ModuleName;
-            string targetModelRoot = Path.Combine(Application.dataPath, "App.Model/Game.Model/thirdparty.model");
-            string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/thirdparty.system");
-            string assetsModelRoot = Path.Combine("Assets", "App.Model/Game.Model/thirdparty.model");
-            string assetsSystemRoot = Path.Combine("Assets", "App.System/Game.System/thirdparty.system");
+            string targetModelRoot = Path.Combine(Application.dataPath, "App.Model/Game.Model/game.thirdparty.model");
+            string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/game.thirdparty.system");
+            string assetsModelRoot = Path.Combine("Assets", "App.Model/Game.Model/game.thirdparty.model");
+            string assetsSystemRoot = Path.Combine("Assets", "App.System/Game.System/game.thirdparty.system");
             // 1. 删除 Assets/Game.Model/thirdparty.model/com.model.** 目录
             string modelDir = Path.Combine(targetModelRoot, $"com.model.{moduleName}");
             if (Directory.Exists(modelDir))
             {
-                Debug.Log($"删除 {modelDir}");
+                // Debug.Log($"删除 {modelDir}");
                 //Directory.Delete(modelDir, true);
                 //File.Delete(modelDir);
                 //File.Delete(modelDir + ".meta");
@@ -97,7 +97,7 @@ namespace ECSEditor
             string systemDir = Path.Combine(targetSystemRoot, $"com.system.{moduleName}");
             if (Directory.Exists(systemDir))
             {
-                Debug.Log($"删除 {systemDir}");
+                // Debug.Log($"删除 {systemDir}");
                 //Directory.Delete(systemDir, true);
                 //File.Delete(systemDir);
                 //File.Delete(systemDir + ".meta");
@@ -109,7 +109,7 @@ namespace ECSEditor
                 modelDir = Path.Combine(targetModelRoot, $"com.model.{moduleName}@{version}");
                 if (Directory.Exists(modelDir))
                 {
-                    Debug.Log($"删除 {modelDir}");
+                    // Debug.Log($"删除 {modelDir}");
                     //Directory.Delete(modelDir, true);
                     //File.Delete(modelDir);
                     //File.Delete(modelDir + ".meta");
@@ -118,7 +118,7 @@ namespace ECSEditor
                 systemDir = Path.Combine(targetSystemRoot, $"com.system.{moduleName}@{version}");
                 if (Directory.Exists(systemDir))
                 {
-                    Debug.Log($"删除 {systemDir}");
+                    // Debug.Log($"删除 {systemDir}");
                     //Directory.Delete(systemDir, true);
                     //File.Delete(systemDir);
                     //File.Delete(systemDir + ".meta");
@@ -167,7 +167,7 @@ namespace ECSEditor
             CopyDirectorys(Path.Combine(Application.dataPath, "App.Model/Game.ViewModel/game.thirdparty.view-model"), modelDirs);
             CopyDirectorys(Path.Combine(Application.dataPath, "App.System/Game.ViewSystem/game.thirdparty.view-system"), systemDirs);
 
-            Debug.Log($"模块 {ModuleId} 安装完成");
+            Debug.Log($"模块 {ModuleId}@{ModuleVersion} 安装完成");
             AssetDatabase.Refresh();
         }
 
@@ -193,7 +193,7 @@ namespace ECSEditor
                 {
                     Directory.Delete(existDstDir, true);
                 }
-                Debug.Log($"拷贝 {srcDir} 到 {dstDir}");
+                // Debug.Log($"拷贝 {srcDir} 到 {dstDir}");
                 CopyDirectory(srcDir, dstDir);
             }
         }

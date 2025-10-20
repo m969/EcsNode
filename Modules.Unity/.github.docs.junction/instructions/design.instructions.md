@@ -8,7 +8,7 @@ applyTo: "design-documentation.md"
 
 基于EcsNode框架，EcsNode是基于ECS（Entity-Component-System）架构的Unity游戏开发框架，通过实体、组件和系统的组合方式实现高效、灵活的游戏逻辑。
 
-## EcsNode核心库已有实体和组件（在ECS命名空间下）有：
+## EcsNode核心库已有的实体和组件（在ECS命名空间下）有：
 - 实体基类 EcsEntity，包含以下属性和接口：
     - Id（long）属性。
     - Parent（EcsEntity）属性。

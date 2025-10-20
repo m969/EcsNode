@@ -16,8 +16,31 @@ namespace ECSGame
         IAwake<Actor>,
         IInit<Actor>,
         IUpdate<Actor>,
-        IHealthChangeHandler
+        IHealthChangeHandler,
+        ChaseModule.IChaseTargetResolver
     {
+        public static Actor Create(EcsEntity gameWorld, long actorId)
+        {
+            var actor = gameWorld.AddChild<Actor>(actorId, beforeAwake: x => x.Type = 1);
+            actor.AddComponent<TransformComponent>();
+            actor.AddComponent<CollisionComponent>();
+            actor.AddComponent<MoveComponent>();
+            actor.AddComponent<HealthComponent>();
+            actor.AddComponent<FireComponent>();
+            actor.AddComponent<TaskListComponent>();
+            actor.AddComponent<AIComponent>();
+
+            // 追逐模块
+            actor.AddComponent<ChaseModule.ChaseComponent>();
+            actor.AddComponent<ChaseModule.ChaseStateComponent>();
+            actor.AddComponent<ChaseModule.ChaseConfigComponent>();
+            actor.AddComponent<ChaseModule.ConditionsComponent>();
+            actor.AddComponent<ChaseModule.AreaLimitComponent>();
+            actor.AddComponent<ChaseModule.TargetCandidatesComponent>();
+
+            return actor;
+        }
+
         public void Awake(Actor entity)
         {
 
@@ -35,23 +58,6 @@ namespace ECSGame
             }
         }
 
-        public void OnHealthChange(Actor entity, HealthComponent component)
-        {
-        }
-
-        public static Actor Create(EcsEntity gameWorld, long actorId)
-        {
-            var actor = gameWorld.AddChild<Actor>(actorId, beforeAwake: x => x.Type = 1);
-            actor.AddComponent<TransformComponent>();
-            actor.AddComponent<CollisionComponent>();
-            actor.AddComponent<MoveComponent>();
-            actor.AddComponent<HealthComponent>();
-            actor.AddComponent<FireComponent>();
-            actor.AddComponent<TaskListComponent>();
-            actor.AddComponent<AIComponent>();
-            return actor;
-        }
-
         public void Update(Actor entity)
         {
             if (entity.GetComponent<AIComponent>() is { } component)
@@ -62,6 +68,20 @@ namespace ECSGame
             {
                 MoveSystem.Update(entity, moveComp, moveComp.TrueDirection);
             }
+            if (entity.GetComponent<ChaseModule.ChaseComponent>() is { } chaseComp)
+            {
+                ChaseModule.ChaseSystem.Tick(entity, AppStatic.DeltaTimeSeconds);
+            }
+        }
+
+        public void OnHealthChange(Actor entity, HealthComponent component)
+        {
+        }
+
+        public EcsEntity Resolve(EcsEntity entity, long targetId)
+        {
+            var world = entity.GetParent<World>();
+            return ActorListSystem.GetActor(world, targetId);
         }
     }
 }

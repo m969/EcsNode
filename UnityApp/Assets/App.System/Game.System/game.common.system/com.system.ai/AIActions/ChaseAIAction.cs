@@ -4,6 +4,7 @@ using UnityEngine;
 using ECS;
 using ET;
 using TrueSync;
+using ECSGame.ChaseModule;
 
 namespace ECSGame
 {
@@ -12,13 +13,29 @@ namespace ECSGame
         public void Awake(AINode aiNode)
         {
             ConsoleLog.Debug("ChaseAIAction Awake");
-            //MoveSystem.ChangeDirection(aiNode.Entity, TSVector.zero);
-            //MoveSystem.StartMove(aiNode.Entity);
+            var target = ChaseSystem.SelectTarget(aiNode.Entity);
+            ChaseSystem.StartChase(aiNode.Entity);
+            MoveSystem.ChangeDirection(aiNode.Entity, TSVector.Normalize(TransformSystem.GetPosition(target) - TransformSystem.GetPosition(aiNode.Entity)));
+            MoveSystem.StartMove(aiNode.Entity);
         }
 
         public void Update(AINode aiNode)
         {
-            MoveSystem.ChangeDirection(aiNode.Entity, TSVector.zero);
+            var chaseState = ChaseSystem.GetState(aiNode.Entity);
+            if (chaseState == ChaseState.Following)
+            {
+                if (ChaseSystem.HasActiveTarget(aiNode.Entity))
+                {
+                    var target = ChaseSystem.GetCurrentTarget(aiNode.Entity);
+                    MoveSystem.ChangeDirection(aiNode.Entity, TSVector.Normalize(TransformSystem.GetPosition(target) - TransformSystem.GetPosition(aiNode.Entity)));
+                }
+            }
+            else
+            {
+                AISystem.MoveNext(aiNode);
+            }
+
+            // MoveSystem.ChangeDirection(aiNode.Entity, TSVector.zero);
         }
     }
 }

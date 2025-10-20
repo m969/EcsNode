@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using ECS;
+using ECSGame;
+using UnityEngine;
 
 namespace ECSGame.ChaseModule
 {
     /// <summary>负责管理候选目标与评分逻辑的系统。</summary>
-    public class TargetCandidatesSystem : AComponentSystem<EcsEntity, TargetCandidatesComponent>
+    public partial class TargetCandidatesSystem : AComponentSystem<EcsEntity, TargetCandidatesComponent>
     {
         /// <summary>设置候选目标列表。</summary>
         /// <param name="entity">追踪实体。</param>
@@ -188,16 +190,15 @@ namespace ECSGame.ChaseModule
 
         private static float RequestDistance(EcsEntity entity, long targetId)
         {
-            var distance = float.NaN;
-            entity.Dispatch<IChaseMetricProvider>(provider =>
+            var ownerPosition = TransformSystem.GetPosition(entity);
+            var target = ResolveTarget(entity, targetId);
+            if (target == null)
             {
-                if (float.IsNaN(distance))
-                {
-                    distance = provider.GetDistance(entity, targetId);
-                }
-            });
+                return float.MaxValue;
+            }
 
-            return float.IsNaN(distance) ? 0f : distance;
+            var targetPosition = TransformSystem.GetPosition(target);
+            return Vector3.Distance(ownerPosition, targetPosition);
         }
 
         private static float RequestMetric(EcsEntity entity, long targetId, string key)
@@ -216,16 +217,29 @@ namespace ECSGame.ChaseModule
 
         private static EcsEntity? ResolveTarget(EcsEntity entity, long targetId)
         {
-            EcsEntity? resolved = null;
-            entity.Dispatch<IChaseTargetResolver>(resolver =>
+            if (targetId <= 0)
             {
-                if (resolved == null)
-                {
-                    resolved = resolver.Resolve(entity, targetId);
-                }
-            });
+                return null;
+            }
 
-            return resolved;
+            var world = FindWorld(entity);
+            if (world == null)
+            {
+                return null;
+            }
+
+            return ActorListSystem.GetActor(world, targetId);
+        }
+
+        private static EcsEntity? FindWorld(EcsEntity entity)
+        {
+            var current = entity;
+            while (current.Parent != null)
+            {
+                current = current.Parent;
+            }
+
+            return current;
         }
     }
 }

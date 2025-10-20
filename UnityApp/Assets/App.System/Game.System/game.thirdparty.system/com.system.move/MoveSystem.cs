@@ -62,12 +62,6 @@ namespace ECSGame
             {
                 StopMove(entity);
             }
-            //var framePlay = new FramePlay_Move()
-            //{
-            //    EntityId = entity.Id,
-            //    Position = beforePos,
-            //    AfterPosition = afterPos
-            //};
         }
     }
 }

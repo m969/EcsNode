@@ -31,6 +31,9 @@ MonoBehaviour:
   - ModuleId: com.module.building
     ModuleVersion: 1.0.2
     Dependencies: []
+  - ModuleId: com.module.chase
+    ModuleVersion: 1.0.1
+    Dependencies: []
   - ModuleId: com.module.grid-based
     ModuleVersion: 1.0.4
     Dependencies: []
@@ -50,9 +53,6 @@ MonoBehaviour:
     ModuleVersion: 1.0.0
     Dependencies: []
   - ModuleId: com.module.task
-    ModuleVersion: 1.0.0
-    Dependencies: []
-  - ModuleId: com.module.true-game-demo
     ModuleVersion: 1.0.0
     Dependencies: []
   - ModuleId: com.module.unit-dispatch
