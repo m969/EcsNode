@@ -23,7 +23,7 @@ namespace ECSUnity
     {
         public void Awake(PlayerInput playerInput, TrueGameInputComponent component)
         {
-            component.PlayerActor = UnityStatic.MyActor;
+            component.PlayerActor = UnityAppStatic.MyActor;
             component.TrueWorld = EcsDomain.TrueWorld;
         }
 

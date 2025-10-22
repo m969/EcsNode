@@ -32,7 +32,7 @@ MonoBehaviour:
     ModuleVersion: 1.0.2
     Dependencies: []
   - ModuleId: com.module.chase
-    ModuleVersion: 1.0.1
+    ModuleVersion: 1.0.2
     Dependencies: []
   - ModuleId: com.module.grid-based
     ModuleVersion: 1.0.4

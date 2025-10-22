@@ -28,14 +28,16 @@ namespace ECSGame
                 {
                     var target = ChaseSystem.GetCurrentTarget(aiNode.Entity);
                     MoveSystem.ChangeDirection(aiNode.Entity, TSVector.Normalize(TransformSystem.GetPosition(target) - TransformSystem.GetPosition(aiNode.Entity)));
+                    
+                    var distance = Vector3.Distance(TransformSystem.GetPosition(aiNode.Entity).ToVector(), TransformSystem.GetPosition(target).ToVector());
+                    if (distance <= 2.0f)
+                    {
+                        MoveSystem.StopMove(aiNode.Entity);
+                        ChaseSystem.StopChase(aiNode.Entity);
+                        aiNode.StartAction<CombatIdleAIAction>();
+                    }
                 }
             }
-            else
-            {
-                AISystem.MoveNext(aiNode);
-            }
-
-            // MoveSystem.ChangeDirection(aiNode.Entity, TSVector.zero);
         }
     }
 }

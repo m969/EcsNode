@@ -15,16 +15,10 @@ namespace ECSGame
 
         public void MoveNext(AINode aiNode)
         {
-            //var component = aiNode.Entity.GetComponent<AIComponent>();
-            //var queue = component.Behaviour2NodeQueue[aiNode.BehaviourId];
-            //if (queue.Count > 0)
-            //{
-            //    queue.Dequeue();
-            //}
-
-            if (aiNode.AIAction is MoveInputAIAction) aiNode.StartAction<StopMoveInputAIAction>();
-            if (aiNode.AIAction is StopMoveInputAIAction) aiNode.StartAction<WaitAIAction>();
-            if (aiNode.AIAction is WaitAIAction) aiNode.StartAction<MoveInputAIAction>();
+            var action = aiNode.AIAction;
+            if (action is MoveInputAIAction) aiNode.StartAction<StopMoveInputAIAction>();
+            if (action is StopMoveInputAIAction) aiNode.StartAction<WaitAIAction>();
+            if (action is WaitAIAction) aiNode.StartAction<MoveInputAIAction>();
         }
     }
 }

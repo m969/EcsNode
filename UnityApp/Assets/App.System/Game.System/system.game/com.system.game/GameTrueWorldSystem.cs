@@ -21,7 +21,7 @@ namespace ECSGame
             actor.AddComponent<FramePlayComponent>();
             CollisionSystem.SetLayer(actor, 1);
             actor.Init();
-            UnityStatic.MyActor = actor;
+            UnityAppStatic.MyActor = actor;
 
             var actor1 = ActorSystem.Create(gameWorld, gameWorld.NewEntityId());
             ActorListSystem.AddActor(gameWorld, actor1);
@@ -29,7 +29,7 @@ namespace ECSGame
             CollisionSystem.SetLayer(actor1, 2);
             //actor1.AddComponent<AIComponent>();
             actor1.Init();
-            UnityStatic.OtherActor = actor1;
+            UnityAppStatic.OtherActor = actor1;
 
             //var aiNode = AISystem.CreateNode<MoveInputAIAction>(AIBehaviourType.Patrol, actor1);
             AISystem.StartBehaviour<AIBehaviour_Patrol>(actor1);

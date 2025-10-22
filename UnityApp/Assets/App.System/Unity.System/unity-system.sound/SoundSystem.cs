@@ -34,7 +34,7 @@ namespace ECSUnity
             //}
 
             soundMaster.Id2Source.TryGetValue(clipType, out var audioSource);
-            if (UnityStatic.SoundEditorTest)
+            if (UnityAppStatic.SoundEditorTest)
             {
                 if (audioSource != null)
                 {

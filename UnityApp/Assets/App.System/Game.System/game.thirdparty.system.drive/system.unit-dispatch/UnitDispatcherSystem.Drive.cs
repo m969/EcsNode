@@ -28,7 +28,6 @@ namespace ECSGame.UnitDispatchModule
         public void OnDispatchTimeout(EcsEntity entity)
         {
             ConsoleLog.Debug($"OnDispatchTimeout: EntityId={entity.Id}");
-
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace ECSGame.UnitDispatchModule
                 CollisionSystem.SetLayer(actor, 1);
                 actor.Init();
                 AppStatic.OtherActor = actor;
-                //AISystem.StartBehaviour<AIBehaviour_Caution>(actor);
+                AISystem.StartBehaviour<AIBehaviour_Caution>(actor);
             }
 
             if (dispatcher.ConfigId == 1002)
@@ -73,6 +72,7 @@ namespace ECSGame.UnitDispatchModule
                 TargetCandidatesSystem.SetCandidates(actor, new List<EcsEntity> { AppStatic.OtherActor });
                 //TaskItemSystem.Create(actor, );
                 actor.Init();
+                AppStatic.MyActor = actor;
                 AISystem.StartBehaviour<AIBehaviour_Launch>(actor);
             }
         }

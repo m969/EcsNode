@@ -29,7 +29,7 @@ namespace ECSGame
             {
                 return;
             }
-            if (UnityStatic.OtherActor == actor)
+            if (UnityAppStatic.OtherActor == actor)
             {
                 homePageWindow.ActorUIRefill(actor);
             }

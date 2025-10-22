@@ -16,8 +16,7 @@ namespace ECSGame
         IAwake<Actor>,
         IInit<Actor>,
         IUpdate<Actor>,
-        IHealthChangeHandler,
-        ChaseModule.IChaseTargetResolver
+        IHealthChangeHandler
     {
         public static Actor Create(EcsEntity gameWorld, long actorId)
         {
@@ -78,10 +77,10 @@ namespace ECSGame
         {
         }
 
-        public EcsEntity Resolve(EcsEntity entity, long targetId)
-        {
-            var world = entity.GetParent<World>();
-            return ActorListSystem.GetActor(world, targetId);
-        }
+        // public EcsEntity Resolve(EcsEntity entity, long targetId)
+        // {
+        //     var world = entity.GetParent<World>();
+        //     return ActorListSystem.GetActor(world, targetId);
+        // }
     }
 }

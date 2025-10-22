@@ -20,7 +20,13 @@ namespace ECSGame
         {
             if (Time.time >= aiNode.AIComponent.IdleTime)
             {
-                AISystem.MoveNext(aiNode);
+                aiNode.StartAction<AttackAIAction>();
+            }
+            if (AppStatic.MyActor == null) return;
+            var distance = Vector3.Distance(TransformSystem.GetPosition(AppStatic.OtherActor).ToVector(), TransformSystem.GetPosition(AppStatic.MyActor).ToVector());
+            if (distance > 2.0f)
+            {
+                aiNode.StartAction<IdleAIAction>();
             }
         }
     }

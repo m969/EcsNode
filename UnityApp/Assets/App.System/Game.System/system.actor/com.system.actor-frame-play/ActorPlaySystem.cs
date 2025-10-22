@@ -20,7 +20,7 @@ IAwake<Actor, FramePlayComponent>
             component.DetermineFrame = determineFrame;
 
             ActorDeterminePlaySystem.DetermineCreate(actor, determineFrame);
-            if (UnityStatic.MyActor == actor)
+            if (UnityAppStatic.MyActor == actor)
             {
                 // 本地先行
                 ActorAdvancePlaySystem.LocalAdvanceCreate(actor, determineFrame);

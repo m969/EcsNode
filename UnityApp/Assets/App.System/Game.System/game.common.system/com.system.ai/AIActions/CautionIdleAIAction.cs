@@ -12,7 +12,7 @@ namespace ECSGame
     {
         public void Awake(AINode aiNode)
         {
-            //ConsoleLog.Debug("CautionIdleAIAction Awake");
+            ConsoleLog.Debug("CautionIdleAIAction Awake");
             //aiNode.AIComponent.IdleTime = Time.time + 2f;
         }
 
@@ -22,6 +22,12 @@ namespace ECSGame
             //{
             //    AISystem.MoveNext(aiNode);
             //}
+            if (AppStatic.MyActor == null) return;
+            var distance = Vector3.Distance(TransformSystem.GetPosition(aiNode.Entity).ToVector(), TransformSystem.GetPosition(AppStatic.MyActor).ToVector());
+            if (distance <= 2.0f)
+            {
+                aiNode.StartAction<CombatIdleAIAction>();
+            }
         }
     }
 }

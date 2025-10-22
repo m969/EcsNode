@@ -20,7 +20,6 @@ public class AppLoad : MonoBehaviour
     public static bool NeedReload { get; set; } = false;
     public static bool NeedCompilePlay { get; set; } = false;
     public static bool NeedReloadShare { get; set; } = false;
-    private EcsNode EcsNode { get; set; }
     private float NextCheckReloadTime { get; set; }
     private Dictionary<string, string> ScriptFiles { get; set; } = new Dictionary<string, string>();
     public GameObject ReloadPanelObj;
@@ -50,7 +49,7 @@ public class AppLoad : MonoBehaviour
         var assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "App.System.dll"));
         var pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "App.System.pdb"));
         var assembly = Assembly.Load(assBytes, pdbBytes);
-        var methodInfo = assembly.GetType("ECSUnity.AppRunStatic").GetMethod(method);
+        var methodInfo = assembly.GetType("ECSUnity.UnityAppRun").GetMethod(method);
         methodInfo.Invoke(null, new object[2] { assembly, ((int)GameType) });
         SystemAssembly = assembly;
     }
@@ -62,7 +61,7 @@ public class AppLoad : MonoBehaviour
 
     public void ReloadUI()
     {
-        AppRunStatic.ReloadUI();
+        UnityAppRun.ReloadUI();
     }
 
     bool CheckScriptFiles()
@@ -123,7 +122,7 @@ public class AppLoad : MonoBehaviour
             return;
         }
 
-        AppRunStatic.Update();
+        UnityAppRun.Update();
 
         if (Time.realtimeSinceStartup > NextCheckReloadTime)
         {
@@ -142,6 +141,6 @@ public class AppLoad : MonoBehaviour
         {
             return;
         }
-        AppRunStatic.FixedUpdate();
+        UnityAppRun.FixedUpdate();
     }
 }

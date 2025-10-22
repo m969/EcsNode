@@ -21,7 +21,7 @@ namespace ECSGame
         {
             if (Time.time >= aiNode.AIComponent.AttackTime)
             {
-                AISystem.MoveNext(aiNode);
+                aiNode.StartAction<CombatIdleAIAction>();
             }
         }
     }
