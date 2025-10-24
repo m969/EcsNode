@@ -309,7 +309,7 @@ namespace ECS
             return system as T;
         }
 
-        public void DriveEntitySystems(EcsEntity entity, Type entityType, Type driveType)
+        public void DriveEntitySystems(EcsEntity entity, Type entityType, Type driveType, object[] args = null)
         {
             AllEntitySystems.TryGetValue(entityType, out var systems);
             if (systems == null)
@@ -325,16 +325,23 @@ namespace ECS
                     {
                         var system = systemInfo.System;
                         var method = systemInfo.Action;
-                        method.Invoke(system, new object[] { entity });
+                        if (args == null)
+                        {
+                            method.Invoke(system, new object[] { entity });
+                        }
+                        else
+                        {
+                            method.Invoke(system, args);
+                        }
                     }
                 }
             }
         }
 
-        public void DriveEntitySystems<T1>(T1 entity, Type driveType) where T1 : EcsEntity
+        public void DriveEntitySystems<T1>(T1 entity, Type driveType, object[] args = null) where T1 : EcsEntity
         {
-            DriveEntitySystems(entity, typeof(EcsEntity), driveType);
-            DriveEntitySystems(entity, entity.GetType(), driveType);
+            DriveEntitySystems(entity, typeof(EcsEntity), driveType, args);
+            DriveEntitySystems(entity, entity.GetType(), driveType, args);
         }
 
         public void DriveComponentSystems<T1, T2>(T1 entity, T2 component, Type entityType, Type driveType) where T1 : EcsEntity where T2 : EcsComponent

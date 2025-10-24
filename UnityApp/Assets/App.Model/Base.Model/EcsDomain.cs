@@ -11,9 +11,9 @@ namespace ECS
     public class EcsType
     {
         /// <summary>
-        /// 游戏主流程
+        /// Unity应用
         /// </summary>
-        public const ushort Game = 1;
+        public const ushort UnityApp = 1;
 
         /// <summary>
         /// UI
@@ -44,6 +44,11 @@ namespace ECS
         /// 玩家实体
         /// </summary>
         public const ushort Player = 7;
+        
+        /// <summary>
+        /// 游戏主流程
+        /// </summary>
+        public const ushort Game = 8;
     }
 
     public static class EcsDomain

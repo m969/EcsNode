@@ -96,6 +96,28 @@ namespace ECS
             return entity;
         }
 
+        public EcsEntity AddChild(Type type, Action<EcsEntity> beforeAwake = null)
+        {
+            return AddChild(EcsNode.NewInstanceId(), type, beforeAwake);
+        }
+
+        public EcsEntity AddChild(long id, Type type, Action<EcsEntity> beforeAwake = null)
+        {
+            var entity = Activator.CreateInstance(type) as EcsEntity;
+            entity.Id = id;
+            entity.InstanceId = EcsNode.NewInstanceId();
+
+            entity.EntityState = new EntityState<EcsEntity>();
+            entity.EntityState.SetEntity(entity);
+
+            entity.Parent = this;
+            Id2Children.Add(entity.Id, entity);
+            beforeAwake?.Invoke(entity);
+            EcsNode.AddEntity(entity);
+            DriveAwake(entity);
+            return entity;
+        }
+
         public T GetChild<T>(long id) where T : EcsEntity, new()
         {
             Id2Children.TryGetValue(id, out var entity);
@@ -116,6 +138,7 @@ namespace ECS
             Components.Add(typeof(T), component);
             beforeAwake?.Invoke(component);
             DriveAwake(component);
+            EcsNode.DriveEntitySystems(this, typeof(IOnAddComponent), new object[] { this, component });
             return component;
         }
 
@@ -126,7 +149,9 @@ namespace ECS
 
         public void RemoveComponent(Type type)
         {
-            DriveDestroy(Components[type]);
+            var component = Components[type];
+            DriveDestroy(component);
+            EcsNode.DriveEntitySystems(this, typeof(IOnRemoveComponent), new object[] { this, component });
             Components.Remove(type);
         }
 
@@ -141,6 +166,24 @@ namespace ECS
             Components.TryGetValue(typeof(T), out var component2);
             component = component2 as T;
             return component2 != null;
+        }
+        
+        public void ComponentChange<T>() where T : EcsComponent, new()
+        {
+            var entity = this;
+            var component = GetComponent<T>();
+            if (component == null)
+            {
+                return;
+            }
+            entity.EcsNode.DriveComponentSystems(entity, component, typeof(IOnChange));
+            entity.EcsNode.DriveEntitySystems(entity, typeof(IOnChange), new object[] { entity });
+        }
+
+        public void Change<T>(Action<T> changeAction) where T : EcsComponent, new()
+        {
+            changeAction?.Invoke(GetComponent<T>());
+            ComponentChange<T>();
         }
 
         private void DriveAwake(EcsEntity entity)

@@ -22,34 +22,21 @@ namespace ECSUnity
 
             DomainSystem.InitEventHandlers(systemAssembly);
 
-            string gameConfDir = Path.Combine(Application.dataPath, "GameResources\\LubanConfigs\\GenerateDatas\\json"); // 替换为gen.bat中outputDataDir指向的目录
-            var tables = new cfg.Tables(file => JSON.Parse(File.ReadAllText($"{gameConfDir}/{file}.json")));
-            ItemConfig.Tables = tables;
-            GridPlaneConfig.Tables = tables;
-            ConsoleLog.Debug($"Tables loaded: {ItemConfig.DataList.Count}");
+            var app = UnityAppSystem.Create(systemAssembly);
+            app.AddComponent<UnityConfigComponent>();// 添加配置模块
+            app.AddComponent<UnitySceneComponent>();// 添加场景模块
+            app.AddComponent<UnityUIComponent>();// 添加UI模块
+            app.AddComponent<UnitySoundComponent>();// 添加声音模块
+            app.AddComponent<UnityInputComponent>();// 添加输入模块
+            // app.AddComponent<UnityNeterComponent>();// 添加网络通讯模块
+            app.Init();
 
             var game = DomainSystem.AddGame(gameType, systemAssembly);
-            if (gameType == (int)GameType.TrueGameDemo)
-            {
-                game.AddComponent<GameTrueWorldComponent>();
-            }
-            else
-            {
-                game.AddComponent<GameWorldComponent>();
-            }
+            if (gameType == (int)GameType.TrueGameDemo) game.AddComponent<GameTrueWorldComponent>();
+            if (gameType == (int)GameType.ECSGame) game.AddComponent<GameWorldComponent>();
+            if (gameType == (int)GameType.SimulationGameDemo) game.AddComponent<GameWorldComponent>();
             game.AddComponent<GamePlayerComponent>();
-            game.AddComponent<GamePlayerInputComponent>();
             game.Init();
-
-            DomainViewSystem.AddUI(systemAssembly);
-
-            DomainViewSystem.AddSound(systemAssembly);
-
-            var groot = GRoot.inst;
-            groot.SetContentScaleFactor(1280, 720);
-            //groot.height = Screen.height; // 设置高度
-            //groot.width = Screen.width; // 设置宽度
-            ReloadUI();
         }
 
         public static void ReloadUI()

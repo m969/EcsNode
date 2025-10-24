@@ -14,21 +14,16 @@ namespace ECS
             {
                 entity.InstanceId = 0;
 
-                var components = entity.Components.Values.ToArray();
-                foreach (var item in components)
-                {
-                    //entity.DriveDestroy(item);
-                    entity.EcsNode.DriveComponentSystems(entity, item, typeof(IDestroy));
-                }
-                foreach (var item in components)
-                {
-                    entity.Components.Remove(item.GetType());
-                }
-
                 var children = entity.Id2Children.Values.ToArray();
                 foreach (var item in children)
                 {
                     Destroy(item);
+                }
+
+                var components = entity.Components.Values.ToArray();
+                foreach (var item in components)
+                {
+                    entity.RemoveComponent(item.GetType());
                 }
 
                 entity.Parent.RemoveChild(entity);
@@ -36,9 +31,7 @@ namespace ECS
 
             if (ecsObject is EcsComponent component)
             {
-                //component.Entity.DriveDestroy(component);
-                component.Entity.EcsNode.DriveComponentSystems(component.Entity, component, typeof(IDestroy));
-                component.Entity.Components.Remove(component.GetType());
+                component.Entity.RemoveComponent(component.GetType());
             }
         }
     }
