@@ -33,9 +33,6 @@ namespace ECSGame
             actor.AddComponent<ChaseModule.ChaseComponent>();
             actor.AddComponent<ChaseModule.ChaseStateComponent>();
             actor.AddComponent<ChaseModule.ChaseConfigComponent>();
-            actor.AddComponent<ChaseModule.ConditionsComponent>();
-            actor.AddComponent<ChaseModule.AreaLimitComponent>();
-            actor.AddComponent<ChaseModule.TargetCandidatesComponent>();
 
             return actor;
         }

@@ -14,6 +14,7 @@ namespace ECSUnity
         public void Awake(EcsEntity entity)
         {
             entity.AddComponent<EntityObjComponent>();
+            entity.AddComponent<AnimationComponent>();
         }
 
         public void Init(EcsEntity entity)

@@ -181,41 +181,49 @@ namespace ET
         /// <summary>
         /// 编译成dll
         /// </summary>
-        static bool CompileDlls()
+    static bool CompileDlls()
+    {
+        // 运行时编译需要先设置为UnitySynchronizationContext, 编译完再还原为CurrentContext
+        SynchronizationContext lastSynchronizationContext = Application.isPlaying ? SynchronizationContext.Current : null;
+        SynchronizationContext.SetSynchronizationContext(unitySynchronizationContext);
+
+        bool isCompileOk = false;
+
+        try
         {
-            // 运行时编译需要先设置为UnitySynchronizationContext, 编译完再还原为CurrentContext
-            SynchronizationContext lastSynchronizationContext = Application.isPlaying ? SynchronizationContext.Current : null;
-            SynchronizationContext.SetSynchronizationContext(unitySynchronizationContext);
-
-            bool isCompileOk = false;
-
-            try
+            Directory.CreateDirectory(Define.BuildOutputDir);
+            // Use the active, supported build target to keep player/editor assemblies in sync.
+            BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+            BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
+            if (!BuildPipeline.IsBuildTargetSupported(group, target))
             {
-                Directory.CreateDirectory(Define.BuildOutputDir);
-                //BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
-                BuildTarget target = BuildTarget.Stadia;
-                BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-                ScriptCompilationSettings scriptCompilationSettings = new()
-                {
-                    group = group,
-                    target = target,
-                    extraScriptingDefines = new[] { "UNITY_COMPILE" },
-                    options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None
-                };
-                ScriptCompilationResult result = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
-                isCompileOk = result.assemblies.Count > 0;
-                EditorUtility.ClearProgressBar();
-            }
-            finally
-            {
-                if (lastSynchronizationContext != null)
-                {
-                    SynchronizationContext.SetSynchronizationContext(lastSynchronizationContext);
-                }
+                // Fallback for safety on Windows
+                target = BuildTarget.StandaloneWindows64;
+                group = BuildPipeline.GetBuildTargetGroup(target);
+                Debug.LogWarning($"Active build target not supported. Falling back to {target}.");
             }
 
-            return isCompileOk;
+            ScriptCompilationSettings scriptCompilationSettings = new()
+            {
+                group = group,
+                target = target,
+                extraScriptingDefines = new[] { "UNITY_COMPILE" },
+                options = EditorUserBuildSettings.development ? ScriptCompilationOptions.DevelopmentBuild : ScriptCompilationOptions.None
+            };
+            ScriptCompilationResult result = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, Define.BuildOutputDir);
+            isCompileOk = result.assemblies.Count > 0;
+            EditorUtility.ClearProgressBar();
         }
+        finally
+        {
+            if (lastSynchronizationContext != null)
+            {
+                SynchronizationContext.SetSynchronizationContext(lastSynchronizationContext);
+            }
+        }
+
+        return isCompileOk;
+    }
 
         public static void BuildHotfix(CodeOptimization codeOptimization)
         {

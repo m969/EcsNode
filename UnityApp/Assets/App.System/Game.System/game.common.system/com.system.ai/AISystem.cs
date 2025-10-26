@@ -96,7 +96,7 @@ namespace ECSGame
                 }
                 var node = queue.Peek();
                 node.AIAction.Update(node);
-                ConsoleLog.Debug($"AISystem Behaviour: {component.AIBehaviours[node.BehaviourId].GetType().Name} Action: {node.AIAction.GetType().Name}");
+                // ConsoleLog.Debug($"AISystem Behaviour: {component.AIBehaviours[node.BehaviourId].GetType().Name} Action: {node.AIAction.GetType().Name}");
             }
         }
 

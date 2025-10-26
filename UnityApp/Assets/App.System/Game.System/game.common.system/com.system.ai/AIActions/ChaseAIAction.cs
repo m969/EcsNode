@@ -12,10 +12,17 @@ namespace ECSGame
     {
         public void Awake(AINode aiNode)
         {
-            ConsoleLog.Debug("ChaseAIAction Awake");
-            var target = ChaseSystem.SelectTarget(aiNode.Entity);
+            ConsoleLog.Debug($"ChaseAIAction Awake: EntityId={aiNode.Entity.Id} {aiNode.Entity.GetComponent<ChaseComponent>().CurrentTargetId}");
+            var target = ChaseSystem.GetCurrentTarget(aiNode.Entity);
+            if (target == null)
+            {
+                ConsoleLog.Error("ChaseAIAction Awake: No target to chase");
+                return;
+            }
             ChaseSystem.StartChase(aiNode.Entity);
-            MoveSystem.ChangeDirection(aiNode.Entity, TSVector.Normalize(TransformSystem.GetPosition(target) - TransformSystem.GetPosition(aiNode.Entity)));
+            var direction = TSVector.Normalize(TransformSystem.GetPosition(target) - TransformSystem.GetPosition(aiNode.Entity));
+            MoveSystem.ChangeDirection(aiNode.Entity, direction);
+            TransformSystem.ChangeForward(aiNode.Entity, direction);
             MoveSystem.StartMove(aiNode.Entity);
         }
 

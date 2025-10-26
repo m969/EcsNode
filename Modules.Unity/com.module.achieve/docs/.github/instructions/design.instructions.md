@@ -8,9 +8,10 @@ applyTo: "design-documentation.md"
 
 基于EcsNode框架，EcsNode是基于ECS（Entity-Component-System）架构的Unity游戏开发框架，通过实体、组件和系统的组合方式实现高效、灵活的游戏逻辑。
 
-## EcsNode核心库已有实体和组件（在ECS命名空间下）有：
+## EcsNode核心库已有的实体和组件（在ECS命名空间下）有：
 - 实体基类 EcsEntity，包含以下属性和接口：
-    - Id（long）属性。
+    - Id（long）属性，实体唯一id。
+    - ConfigId（long）属性，配置id。
     - Parent（EcsEntity）属性。
     - EcsNode 所属Ecs域根节点。
     - Id2Children（存放子实体的字典）。
@@ -45,23 +46,9 @@ using System.Collections.Generic;
 2. 组件承载可插拔的复杂功能
 3. 同类型组件在实体中唯一
 4. 实体创建只能通过AddChild<T>()方法添加到父实体（parent）下
+5. 不提供配置实现，配置由开发者自行设计，所有功能数据都通过组件和实体实现
 
 ## 文档模板
-
-- 配置接口设计（没有需求则留空，命名以Config结尾，如IItemConfig）
-    - 配置项1
-        - 配置项1用途
-        - 配置项1字段设计
-    - 配置项2
-        - 配置项2用途
-        - 配置项2字段设计
-
-- 其他类型补充
-    - 流程节点派发接口补充（方便外部监听扩展，例如其他模块依赖或视图刷新，一个节点一个接口，方法命名以On开头，没有需求则留空）
-        - 为遵循开闭原则和依赖倒置原则，可扩展的系统功能应提供节点接口派发到外部由开发者自定义扩展逻辑
-        - 例如：ITaskActivated：void OnTaskActivated(int taskId)，节点派发接口继承 `IDispatch`
-    - 基础数据类型补充（没有需求则留空）
-    - 枚举补充（没有需求则留空）
 
 - 实体设计（没有需求则留空）
     - 实体1
@@ -102,3 +89,10 @@ using System.Collections.Generic;
         - 组件A系统功能接口设计
     - 组件B系统设计（命名省略 Component 并以 System 为后缀）
         - 组件B系统功能接口设计
+
+- 其他类型补充
+    - 流程节点派发接口补充（方便外部监听扩展，例如其他模块依赖或视图刷新，一个节点一个接口，方法命名以On开头，没有需求则留空）
+        - 为遵循开闭原则和依赖倒置原则，可扩展的系统功能应提供节点接口派发到外部由开发者自定义扩展逻辑
+        - 例如：ITaskActivated：void OnTaskActivated(int taskId)，节点派发接口继承 `IDispatch`
+    - 基础数据类型补充（没有需求则留空）
+    - 枚举补充（没有需求则留空）

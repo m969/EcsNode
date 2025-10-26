@@ -39,7 +39,7 @@ namespace ECSGame.UnitDispatchModule
             var dispatcher = entity.As<UnitDispatcher>();
             if (dispatcher.ConfigId == 1001)
             {
-                var world = entity.GetParent<World>();
+                var world = dispatcher.GetParent<World>();
 
                 var gridPlane = GridPlaneListSystem.GetGridPlaneByConfigId(world, 1002);
                 var gridCell = GridCellListSystem.GetCell(gridPlane, 1, 1);
@@ -50,14 +50,19 @@ namespace ECSGame.UnitDispatchModule
                 ActorListSystem.AddActor(world, actor);
                 TransformSystem.ChangePosition(actor, gridCellPos);
                 CollisionSystem.SetLayer(actor, 1);
+                // ChaseConfigSystem.SetConfig(actor, new ChaseModule.ChaseConfig
+                // {
+                //     CandidateCapacity = 1,
+                //     PriorityRule = new ChaseModule.ChasePriority_Random(),
+                // });
                 actor.Init();
                 AppStatic.OtherActor = actor;
-                AISystem.StartBehaviour<AIBehaviour_Caution>(actor);
+                // AISystem.StartBehaviour<AIBehaviour_Caution>(actor);
             }
 
             if (dispatcher.ConfigId == 1002)
             {
-                var building = entity.GetParent<BuildingEntity>();
+                var building = dispatcher.GetParent<BuildingEntity>();
                 var world = building.GetParent<World>();
 
                 var gridPlane = GridPlaneListSystem.GetGridPlaneByConfigId(world, 1001);
@@ -69,9 +74,12 @@ namespace ECSGame.UnitDispatchModule
                 ActorListSystem.AddActor(world, actor);
                 TransformSystem.ChangePosition(actor, gridCellPos);
                 CollisionSystem.SetLayer(actor, 1);
-                TargetCandidatesSystem.SetCandidates(actor, new List<EcsEntity> { AppStatic.OtherActor });
+                ChaseConfigSystem.SetConfig(actor, "", 50, 51, 2, 55);
+                ChaseSystem.SetCurrentTarget(actor, AppStatic.OtherActor);
+                ConsoleLog.Debug($"Set Hero's chase target to OtherActor Id={AppStatic.OtherActor.Id} {actor.GetComponent<ChaseComponent>().CurrentTargetId}");
                 //TaskItemSystem.Create(actor, );
                 actor.Init();
+                MoveSystem.ChangeSpeed(actor, 1);
                 AppStatic.MyActor = actor;
                 AISystem.StartBehaviour<AIBehaviour_Launch>(actor);
             }

@@ -14,7 +14,7 @@ namespace ECSGame
         {
             ConsoleLog.Debug("AttackAIAction Awake");
             AttackModule.AttackActionSystem.TryStartAttack(aiNode.Entity, 0, out var failureReason, out var newActionId);
-            aiNode.AIComponent.AttackTime = Time.time + 2f;
+            aiNode.AIComponent.AttackTime = Time.time + 1.2f;
         }
 
         public void Update(AINode aiNode)

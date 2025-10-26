@@ -62,4 +62,6 @@ using System.Collections.Generic;
 - `/com.view-system.**`: 视图系统脚本
 - `/system.module-test`: 单元测试代码
 - `/docs/*-documentation.md`: 各类设计文档
-- `/docs/game.thirdparty.module`: 依赖的第三方模块代码
+- `/docs/thirdparty-system-api-docs`: 依赖的第三方模块API文档文件夹
+- `/com.model.**/API_DOCS.md`: 数据模型层API文档
+- `/com.system.**/API_DOCS.md`: 系统逻辑层API文档

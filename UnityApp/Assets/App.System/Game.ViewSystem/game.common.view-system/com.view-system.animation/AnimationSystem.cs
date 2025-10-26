@@ -7,15 +7,6 @@ using ECS.Fody;
 
 namespace ECSGame
 {
-    public enum AnimationState
-    {
-        Idle,
-        Walk,
-        Run,
-        Attack,
-        Die
-    }
-
     public class AnimationSystem : AComponentSystem<EcsEntity, AnimationComponent>,
         IAwake<EcsEntity, AnimationComponent>,
         IDestroy<EcsEntity, AnimationComponent>
@@ -34,7 +25,7 @@ namespace ECSGame
         public static void OnSetModel(EcsEntity entity, GameObject modelObj)
         {
             var component = entity.GetComponent<AnimationComponent>();
-            component.Animator = modelObj.GetComponent<Animator>();
+            component.Animator = modelObj.GetComponentInChildren<Animator>();
         }
 
         public static void Play(EcsEntity entity, AnimationState animState)
@@ -42,7 +33,17 @@ namespace ECSGame
             var component = entity.GetComponent<AnimationComponent>();
             if (component.Animator != null)
             {
-                component.Animator.Play(animState.ToString());
+                if (component.CurrentState == animState)
+                {
+                    return;
+                }
+                component.CurrentState = animState;
+                var animName = animState.ToString();
+                if (animState == AnimationState.Attack)
+                {
+                    animName = "Attack01";
+                }
+                component.Animator.CrossFade(animName, 0.15f);
             }
         }
 

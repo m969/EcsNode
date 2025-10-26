@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using ECS;
 using ECSGame;
 using UnityEngine;
@@ -13,26 +12,23 @@ namespace ECSGame.ChaseModule
         /// <param name="target">可选的初始目标。</param>
         public static void StartChase(EcsEntity entity, EcsEntity? target = null)
         {
-            if (!ConditionsSystem.ShouldStart(entity))
-            {
-                return;
-            }
-
             var chaseComponent = entity.GetComponent<ChaseComponent>();
             chaseComponent.IsPaused = false;
 
-            var effectiveTarget = target;
-            if (effectiveTarget != null)
+            EcsEntity? effectiveTarget;
+            if (target != null)
             {
-                SetCurrentTarget(entity, effectiveTarget);
-            }
-            else if (!HasActiveTarget(entity))
-            {
-                effectiveTarget = SelectTarget(entity);
+                SetCurrentTarget(entity, target);
+                effectiveTarget = target;
             }
             else
             {
                 effectiveTarget = GetCurrentTarget(entity);
+            }
+
+            if (effectiveTarget == null)
+            {
+                ClearCurrentTarget(entity);
             }
 
             var nextState = effectiveTarget != null ? ChaseState.Following : ChaseState.Searching;
@@ -100,26 +96,7 @@ namespace ECSGame.ChaseModule
         /// <param name="deltaTime">帧间隔时间。</param>
         public static void Tick(EcsEntity entity, float deltaTime)
         {
-            if (ConditionsSystem.ShouldStop(entity))
-            {
-                StopChase(entity, "condition");
-                return;
-            }
-
             var chaseComponent = entity.GetComponent<ChaseComponent>();
-            var snapshot = CaptureRuntime(entity, chaseComponent.CurrentTargetId);
-            if (snapshot.HasOwner)
-            {
-                if (!AreaLimitSystem.CheckInside(entity, snapshot.OwnerPosition))
-                {
-                    AreaLimitSystem.HandleOutOfArea(entity);
-                    if (ChaseStateSystem.GetState(entity) == ChaseState.Idle)
-                    {
-                        return;
-                    }
-                }
-            }
-
             if (chaseComponent.IsPaused)
             {
                 return;
@@ -127,21 +104,18 @@ namespace ECSGame.ChaseModule
 
             if (!HasActiveTarget(entity))
             {
-                var selected = SelectTarget(entity);
-                if (selected == null)
+                ChaseStateSystem.SetState(entity, ChaseState.Searching);
+                ChaseStateSystem.SetCurrentDistance(entity, 0f);
+                var idleKinematics = new ChaseKinematics
                 {
-                    ChaseStateSystem.SetState(entity, ChaseState.Searching);
-                    return;
-                }
-
-                chaseComponent = entity.GetComponent<ChaseComponent>();
-                snapshot = CaptureRuntime(entity, chaseComponent.CurrentTargetId);
-            }
-            else if (!snapshot.HasTarget)
-            {
-                snapshot = CaptureRuntime(entity, chaseComponent.CurrentTargetId);
+                    Direction = Vector3.zero,
+                    Speed = 0f
+                };
+                ChaseStateSystem.SetKinematics(entity, in idleKinematics);
+                return;
             }
 
+            var snapshot = CaptureRuntime(entity, chaseComponent.CurrentTargetId);
             if (!snapshot.HasTarget)
             {
                 HandleLostTarget(entity, chaseComponent.CurrentTargetId);
@@ -149,50 +123,6 @@ namespace ECSGame.ChaseModule
             }
 
             UpdateTrackingState(entity, in snapshot, deltaTime);
-        }
-
-        /// <summary>更新候选列表。</summary>
-        /// <param name="entity">追踪实体。</param>
-        /// <param name="candidates">候选实体集合。</param>
-        public static void UpdateTargetCandidates(EcsEntity entity, List<EcsEntity> candidates)
-        {
-            TargetCandidatesSystem.SetCandidates(entity, candidates);
-            TargetCandidatesSystem.Score(entity);
-
-            var chaseComponent = entity.GetComponent<ChaseComponent>();
-            var config = ChaseConfigSystem.GetConfig(entity);
-            if (HasActiveTarget(entity))
-            {
-                if (TargetCandidatesSystem.Contains(entity, chaseComponent.CurrentTargetId))
-                {
-                    return;
-                }
-
-                if (!config.AutoReselectOnInvalid)
-                {
-                    return;
-                }
-            }
-
-            SelectTarget(entity);
-        }
-
-        /// <summary>选出最佳目标。</summary>
-        /// <param name="entity">追踪实体。</param>
-        /// <returns>选中的目标实体。</returns>
-        public static EcsEntity? SelectTarget(EcsEntity entity)
-        {
-            TargetCandidatesSystem.Score(entity);
-            var target = TargetCandidatesSystem.Pick(entity);
-            if (target != null)
-            {
-                SetCurrentTarget(entity, target);
-                return target;
-            }
-
-            ClearCurrentTarget(entity);
-            ChaseStateSystem.SetState(entity, ChaseState.Searching);
-            return null;
         }
 
         /// <summary>获取当前追踪状态。</summary>
@@ -233,22 +163,6 @@ namespace ECSGame.ChaseModule
         public static Vector3 GetVelocity(EcsEntity entity)
         {
             return ChaseStateSystem.GetKinematics(entity).Velocity;
-        }
-
-        /// <summary>设置启动条件。</summary>
-        /// <param name="entity">追踪实体。</param>
-        /// <param name="conditions">启动条件列表。</param>
-        public static void SetStartConditions(EcsEntity entity, List<IStartConditionConfig> conditions)
-        {
-            ConditionsSystem.SetStartConditions(entity, conditions);
-        }
-
-        /// <summary>设置停止条件。</summary>
-        /// <param name="entity">追踪实体。</param>
-        /// <param name="conditions">停止条件列表。</param>
-        public static void SetStopConditions(EcsEntity entity, List<IStopConditionConfig> conditions)
-        {
-            ConditionsSystem.SetStopConditions(entity, conditions);
         }
 
         /// <summary>设置当前追踪目标。</summary>
@@ -293,21 +207,7 @@ namespace ECSGame.ChaseModule
             ClearCurrentTarget(entity);
             ChaseStateSystem.SetState(entity, ChaseState.Lost);
             entity.Dispatch<IOnChaseLostTarget>(handler => handler.OnChaseLostTarget(entity, lastTarget));
-
-            TargetCandidatesSystem.Invalidate(entity, lostTargetId);
-            var config = ChaseConfigSystem.GetConfig(entity);
-            if (config.AutoReselectOnInvalid && !HasActiveTarget(entity))
-            {
-                var nextTarget = SelectTarget(entity);
-                if (nextTarget == null)
-                {
-                    ChaseStateSystem.SetState(entity, ChaseState.Searching);
-                }
-            }
-            else if (!config.AutoReselectOnInvalid)
-            {
-                ChaseStateSystem.SetState(entity, ChaseState.Searching);
-            }
+            ChaseStateSystem.SetState(entity, ChaseState.Searching);
         }
 
         private static void UpdateTrackingState(EcsEntity entity, in RuntimeSnapshot snapshot, float deltaTime)
