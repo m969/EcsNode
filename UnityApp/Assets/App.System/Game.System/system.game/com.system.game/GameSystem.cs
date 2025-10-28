@@ -23,6 +23,10 @@ namespace ECSGame
 
         }
 
+        /// <summary>
+        /// 游戏核心循环，每帧更新游戏状态。
+        /// </summary>
+        /// <param name="entity"></param>
         public void Update(Game entity)
         {
             AppStatic.DeltaTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - AppStatic.NowMilliseconds;

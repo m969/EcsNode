@@ -12,6 +12,15 @@ namespace ECSGame
     public class HealthSystem : AComponentSystem<Actor, HealthComponent>,
 IAwake<Actor, HealthComponent>
     {
+        public static void AddOn(Actor actor, int health)
+        {
+            var healthComp = actor.AddComponent<HealthComponent>(beforeAwake: (comp) =>
+            {
+                comp.Health = health;
+                comp.MaxHealth = health;
+            });
+        }
+
         public void Awake(Actor entity, HealthComponent component)
         {
             //ConsoleLog.Debug($"HealthSystem Awake {entity.GetType().Name}");
