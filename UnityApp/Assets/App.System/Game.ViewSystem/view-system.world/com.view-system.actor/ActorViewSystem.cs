@@ -22,9 +22,9 @@ namespace ECSGame
 
         }
 
-        public void AfterInit(Actor buildingEntity)
+        public void AfterInit(Actor entity)
         {
-            CreateView(buildingEntity);
+            CreateView(entity);
         }
 
         public static void CreateView(Actor entity)

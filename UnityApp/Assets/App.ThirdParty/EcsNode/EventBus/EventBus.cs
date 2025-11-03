@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ECS
 {
-    public interface IEvent
+    public interface IEvent : IDomainEvent
     {
     }
 
@@ -84,6 +85,14 @@ namespace ECS
             //{
             //    //ecsNode.Dispatch<>
             //}
+        }
+
+        public static void Send<T>(T eventObject) where T : IEvent
+        {
+            Instance.ForeachNodeFromFirst((ecsNode) =>
+            {
+                ecsNode.Dispatch<IEventDispatch<T>>(x => x.OnHandleEvent(ecsNode, eventObject));
+            });
         }
     }
 }

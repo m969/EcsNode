@@ -76,7 +76,7 @@ namespace ECSGame.UnitDispatchModule
                 CollisionSystem.SetLayer(actor, 1);
                 ChaseConfigSystem.SetConfig(actor, "", 50, 51, 2, 55);
                 ChaseSystem.SetCurrentTarget(actor, AppStatic.OtherActor);
-                ConsoleLog.Debug($"Set Hero's chase target to OtherActor Id={AppStatic.OtherActor.Id} {actor.GetComponent<ChaseComponent>().CurrentTargetId}");
+                // ConsoleLog.Debug($"Set Hero's chase target to OtherActor Id={AppStatic.OtherActor.Id} {actor.GetComponent<ChaseComponent>().CurrentTargetId}");
                 //TaskItemSystem.Create(actor, );
                 actor.Init();
                 MoveSystem.ChangeSpeed(actor, 1);

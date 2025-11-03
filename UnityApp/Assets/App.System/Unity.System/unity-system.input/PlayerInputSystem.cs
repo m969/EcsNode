@@ -13,7 +13,9 @@ namespace ECSUnity
 {
     public class PlayerInputSystem : AEntitySystem<PlayerInput>,
         IInit<PlayerInput>,
-        IUpdate<PlayerInput>
+        IUpdate<PlayerInput>,
+        IEventDispatch<InputEvent>,
+        IEventDispatch<FireEvent>
     {
         public void Init(PlayerInput playerInput)
         {
@@ -36,6 +38,16 @@ namespace ECSUnity
         {
             var playerInput = EcsNodeSystem.Create<PlayerInput>(EcsType.PlayerInput, systemAssembly);
             return playerInput;
+        }
+
+        public void OnHandleEvent(EcsNode ecsNode, InputEvent inputEvent)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnHandleEvent(EcsNode ecsNode, FireEvent inputEvent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -165,11 +165,13 @@ namespace ECSUnity
             {
                 component.NextFireTime = nowTime + interval;
                 var direction = Vector3.forward * fireJoystick.Vertical + Vector3.right * fireJoystick.Horizontal;
-                playerInput.PublishAsync(new InputEvent()
+                var inputEvent = new InputEvent()
                 {
                     InputType = InputType.Fire,
                     Direction = direction
-                }).Coroutine();
+                };
+                EventBus.Send(inputEvent);
+                // playerInput.PublishAsync().Coroutine();
             }
         }
 
