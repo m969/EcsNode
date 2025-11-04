@@ -12,9 +12,10 @@ using ECSGame;
 
 namespace ECSUnity
 {
-    public class UIShowWindowEvent : IDomainEvent
+    public class UIShowWindowEvent : IEvent
     {
         public Type WindowType { get; set; }
         public Action<IUIWindow> BeforeAwake { get; set; }
+        public ET.ETTask CompleteTask { get; set; }
     }
 }

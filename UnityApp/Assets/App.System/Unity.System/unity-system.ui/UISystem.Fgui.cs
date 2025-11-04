@@ -12,7 +12,8 @@ using ECSGame;
 
 namespace ECSUnity
 {
-    public class UIShowWindowEventHandler : AEventRun<UIStage, UIShowWindowEvent>
+    public partial class UISystem : AEntitySystem<UIStage>,
+        IEventDispatch<UIShowWindowEvent>
     {
         private IUIWindow Show(Type type, Action<IUIWindow> beforeAwake = null)
         {
@@ -40,9 +41,10 @@ namespace ECSUnity
             }
         }
 
-        protected override async ETTask Run(UIStage uiStage, UIShowWindowEvent showWindowEvent)
+        public void OnHandleEvent(EcsNode ecsNode, UIShowWindowEvent eventContext)
         {
-            Show(showWindowEvent.WindowType, showWindowEvent.BeforeAwake);
+            Show(eventContext.WindowType, eventContext.BeforeAwake);
+            eventContext.CompleteTask?.SetResult();
         }
     }
 }

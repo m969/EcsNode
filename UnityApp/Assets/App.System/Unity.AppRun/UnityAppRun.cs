@@ -20,7 +20,7 @@ namespace ECSUnity
 
             AppStatic.GameType = (GameType)gameType;
 
-            DomainSystem.InitEventHandlers(systemAssembly);
+            // DomainSystem.InitEventHandlers(systemAssembly);
 
             var app = UnityAppSystem.Create(systemAssembly);
             app.AddComponent<UnityConfigComponent>();// 添加配置模块

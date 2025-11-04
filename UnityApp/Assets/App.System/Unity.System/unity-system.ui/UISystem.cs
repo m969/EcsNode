@@ -12,7 +12,7 @@ using ECSGame;
 
 namespace ECSUnity
 {
-    public class UISystem : AEntitySystem<UIStage>,
+    public partial class UISystem : AEntitySystem<UIStage>,
         IInit<UIStage>
     {
         public void Init(UIStage entity)
@@ -51,11 +51,14 @@ namespace ECSUnity
         {
             var type = typeof(T);
 
-            await EcsDomain.UIStage.PublishAsync(new UIShowWindowEvent()
+            var showEvent = new UIShowWindowEvent()
             {
                 WindowType = type,
-                BeforeAwake = (Action<IUIWindow>)beforeAwake
-            });
+                BeforeAwake = (Action<IUIWindow>)beforeAwake,
+                CompleteTask = ETTask.Create()
+            };
+            EventBus.Send(showEvent);
+            await showEvent.CompleteTask;
 
             EcsDomain.UIStage.Type2Windows.TryGetValue(type, out var window);
             if (window == null)
@@ -69,15 +72,13 @@ namespace ECSUnity
         public static void Show<T>(Action<T> beforeAwake = null) where T : UIPanel, IUIWindow
         {
             var type = typeof(T);
-            Action<IUIWindow> action = (window) =>
-            {
-                beforeAwake?.Invoke((T)window);
-            };
-            EcsDomain.UIStage.PublishAsync(new UIShowWindowEvent()
+            var showEvent = new UIShowWindowEvent()
             {
                 WindowType = type,
-                BeforeAwake = action
-            }).Coroutine();
+                BeforeAwake = (Action<IUIWindow>)beforeAwake,
+                CompleteTask = ETTask.Create()
+            };
+            EventBus.Send(showEvent);
         }
 
         public static void Hide<T>() where T : UIPanel, IUIWindow

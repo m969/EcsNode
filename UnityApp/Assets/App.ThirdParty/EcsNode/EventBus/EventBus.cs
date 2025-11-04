@@ -5,19 +5,19 @@ using UnityEngine;
 
 namespace ECS
 {
-    public interface IEvent : IDomainEvent
+    public interface IEvent
     {
     }
 
-    public abstract class AEvent : IEvent
-    {
-    }
+    // public abstract class AEvent : IEvent
+    // {
+    // }
 
-    public abstract class AAsyncEvent : IEvent
-    {
-        public List<ET.ETTask> HandlerTasks { get; set; } = new List<ET.ETTask>();
-        public object NetworkMessage { get; set; }
-    }
+    // public abstract class AAsyncEvent : IEvent
+    // {
+    //     public List<ET.ETTask> HandlerTasks { get; set; } = new List<ET.ETTask>();
+    //     public object NetworkMessage { get; set; }
+    // }
 
     public class EventBusNode
     {
@@ -35,7 +35,7 @@ namespace ECS
         public EventBusNode LastNode { get; set; }
 
 
-        public void AddEcsNode(EcsNode ecsNode)
+        public void AddEcs(EcsNode ecsNode)
         {
             if (FirstNode == null)
             {
@@ -51,7 +51,7 @@ namespace ECS
             //}
         }
 
-        public void RemoveEcsNode(EcsNode ecsNode)
+        public void RemoveEcs(EcsNode ecsNode)
         {
             //if (EcsNodes.Contains(ecsNode))
             //{
@@ -77,14 +77,6 @@ namespace ECS
                 action(node.EcsNode);
                 node = node.PreNode;
             }
-        }
-
-        public void Send(IEvent eventObject)
-        {
-            //foreach (var ecsNode in EcsNodes)
-            //{
-            //    //ecsNode.Dispatch<>
-            //}
         }
 
         public static void Send<T>(T eventObject) where T : IEvent

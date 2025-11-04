@@ -12,15 +12,4 @@ namespace ECSGame
         public InputType InputType { get; set; }
         public Vector3 Direction { get; set; }
     }
-
-        public class FireEvent : IEvent
-    {
-        public InputType InputType { get; set; }
-        public Vector3 Direction { get; set; }
-    }
-
-    public interface IInputEventHandler : IDispatch
-    {
-        void OnHandleInputEvent(EcsNode ecsNode, InputEvent inputEvent);
-    }
 }

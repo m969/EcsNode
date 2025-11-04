@@ -14,8 +14,7 @@ namespace ECSUnity
     public class PlayerInputSystem : AEntitySystem<PlayerInput>,
         IInit<PlayerInput>,
         IUpdate<PlayerInput>,
-        IEventDispatch<InputEvent>,
-        IEventDispatch<FireEvent>
+        IEventDispatch<InputEvent>
     {
         public void Init(PlayerInput playerInput)
         {
@@ -42,12 +41,28 @@ namespace ECSUnity
 
         public void OnHandleEvent(EcsNode ecsNode, InputEvent inputEvent)
         {
-            throw new NotImplementedException();
-        }
+            ConsoleLog.Debug("OnHandleEvent: InputEvent " + inputEvent.InputType);
+            if (ecsNode.TryGetComponent<TrueGameInputComponent>(out var component) == false)
+            {
+                return;
+            }
 
-        public void OnHandleEvent(EcsNode ecsNode, FireEvent inputEvent)
-        {
-            throw new NotImplementedException();
+            var myActor = component.PlayerActor;
+            var advanceFrame = component.TrueWorld.DetermineFrame + TrueWorld.ForecastFrame;
+
+            if (inputEvent.InputType == InputType.Fire)
+            {
+                component.FireVector = inputEvent.Direction;
+                var input = new InputData()
+                {
+                    Frame = advanceFrame,
+                    PlayerId = myActor.Id,
+                    InputType = InputType.Fire,
+                    InputVector = inputEvent.Direction.ToTSVector(),
+                };
+
+                ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, input, advanceFrame);
+            }
         }
     }
 }

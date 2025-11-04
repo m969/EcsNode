@@ -12,47 +12,47 @@ namespace ECSGame
 {
     public static class DomainSystem
     {
-        public static void InitEventHandlers(Assembly assembly)
-        {
-            foreach (var type in assembly.GetTypes())
-            {
-                var interfaces = type.GetInterfaces();
-                if (interfaces.Contains(typeof(IEventRun)))
-                {
-                    var eventType = type.BaseType.GetGenericArguments()[1];
-                    if (!EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
-                    {
-                        handlers = new List<IEventRun>();
-                        EcsDomain.EventHandlers[eventType] = handlers;
-                    }
-                    handlers.Add((IEventRun)Activator.CreateInstance(type));
-                }
-            }
-        }
+        // public static void InitEventHandlers(Assembly assembly)
+        // {
+        //     foreach (var type in assembly.GetTypes())
+        //     {
+        //         var interfaces = type.GetInterfaces();
+        //         if (interfaces.Contains(typeof(IEventRun)))
+        //         {
+        //             var eventType = type.BaseType.GetGenericArguments()[1];
+        //             if (!EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
+        //             {
+        //                 handlers = new List<IEventRun>();
+        //                 EcsDomain.EventHandlers[eventType] = handlers;
+        //             }
+        //             handlers.Add((IEventRun)Activator.CreateInstance(type));
+        //         }
+        //     }
+        // }
 
-        public static async ETTask PublishAsync<A>(this EcsEntity entity, A eventData) where A : IDomainEvent
-        {
-            var eventType = eventData.GetType();
-            if (EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
-            {
-                foreach (var item in handlers)
-                {
-                    await item.Handle(entity.EcsNode, eventData);
-                }
-            }
-        }
+        // public static async ETTask PublishAsync<A>(this EcsEntity entity, A eventData) where A : IDomainEvent
+        // {
+        //     var eventType = eventData.GetType();
+        //     if (EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
+        //     {
+        //         foreach (var item in handlers)
+        //         {
+        //             await item.Handle(entity.EcsNode, eventData);
+        //         }
+        //     }
+        // }
 
-        public static void Publish<A>(this EcsEntity entity, A eventData) where A : IDomainEvent
-        {
-            var eventType = eventData.GetType();
-            if (EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
-            {
-                foreach (var item in handlers)
-                {
-                    item.Handle(entity.EcsNode, eventData).Coroutine();
-                }
-            }
-        }
+        // public static void Publish<A>(this EcsEntity entity, A eventData) where A : IDomainEvent
+        // {
+        //     var eventType = eventData.GetType();
+        //     if (EcsDomain.EventHandlers.TryGetValue(eventType, out var handlers))
+        //     {
+        //         foreach (var item in handlers)
+        //         {
+        //             item.Handle(entity.EcsNode, eventData).Coroutine();
+        //         }
+        //     }
+        // }
 
         public static Game AddGame(int gameType, Assembly systemAssembly)
         {
