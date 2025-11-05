@@ -91,12 +91,14 @@ namespace ECSUnity
 
         public static void Update()
         {
-            EcsDomain.Game?.DriveEntityUpdate();
+            EventBus.Instance.DriveUpdate();
+            // EcsDomain.Game?.DriveEntityUpdate();
         }
 
         public static void FixedUpdate()
         {
-            EcsDomain.Game?.DriveEntityFixedUpdate();
+            EventBus.Instance.DriveFixedUpdate();
+            // EcsDomain.Game?.DriveEntityFixedUpdate();
         }
     }
 }

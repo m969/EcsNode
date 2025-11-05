@@ -39,26 +39,26 @@ namespace ECSUnity
             return playerInput;
         }
 
-        public void OnHandleEvent(EcsNode ecsNode, InputEvent inputEvent)
+        public void OnHandleEvent(EcsNode ecsNode, InputEvent eventContext)
         {
-            ConsoleLog.Debug("OnHandleEvent: InputEvent " + inputEvent.InputType);
+            ConsoleLog.Debug("OnHandleEvent: InputEvent " + eventContext.InputType);
             if (ecsNode.TryGetComponent<TrueGameInputComponent>(out var component) == false)
             {
                 return;
             }
 
-            var myActor = component.PlayerActor;
-            var advanceFrame = component.TrueWorld.DetermineFrame + TrueWorld.ForecastFrame;
+            var myActor = UnityAppStatic.MyActor;
+            var advanceFrame = EcsDomain.TrueWorld.DetermineFrame + TrueWorld.ForecastFrame;
 
-            if (inputEvent.InputType == InputType.Fire)
+            if (eventContext.InputType == InputType.Fire)
             {
-                component.FireVector = inputEvent.Direction;
+                component.FireVector = eventContext.Direction;
                 var input = new InputData()
                 {
                     Frame = advanceFrame,
                     PlayerId = myActor.Id,
                     InputType = InputType.Fire,
-                    InputVector = inputEvent.Direction.ToTSVector(),
+                    InputVector = eventContext.Direction.ToTSVector(),
                 };
 
                 ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, input, advanceFrame);

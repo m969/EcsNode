@@ -35,14 +35,20 @@ namespace ECSGame
         {
             var component = aiNode.AIComponent;
             var queue = component.Behaviour2NodeQueue[aiNode.BehaviourId];
-            if (queue.Count == 0 || queue.Peek() != aiNode)
+            if (queue.Count == 0)
             {
-                ConsoleLog.Error("AIAction StartAction Error: not current node");
+                // ConsoleLog.Error($"AIAction StartAction Error: queue.Count == 0 {aiNode.AIAction.GetType().Name}");
                 return null;
             }
+            if (queue.Peek() != aiNode)
+            {
+                // ConsoleLog.Error($"AIAction StartAction Error: not current node {queue.Peek().AIAction.GetType().Name} {aiNode.AIAction.GetType().Name}");
+                return null;
+            }
+            queue.Dequeue();
+
             var newNode = aiNode.NextAction<T>();
             newNode.StartNode();
-            queue.Dequeue();
             return newNode;
         }
 
@@ -143,7 +149,7 @@ namespace ECSGame
                 component.Behaviour2NodeQueue[aiNode.BehaviourId].Enqueue(aiNode);
             }
 
-            aiNode.NodeDepthGC(1);
+            aiNode.NodeDepthGC(3);
 
             aiNode.AIAction.Awake(aiNode);
         }

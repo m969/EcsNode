@@ -247,9 +247,9 @@ namespace ECS
             {
                 foreach (var item in systems)
                 {
-                    if (item is T eventInstance)
+                    if (item is T eventHandleSystem)
                     {
-                        action.Invoke(eventInstance);
+                        action.Invoke(eventHandleSystem);
                     }
                 }
             }

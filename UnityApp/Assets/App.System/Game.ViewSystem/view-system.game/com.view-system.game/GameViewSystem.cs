@@ -18,7 +18,7 @@ namespace ECSGame
 
         public void Update(Game entity)
         {
-            GamePlayerInputSystem.Update(entity);
+            // GamePlayerInputSystem.Update(entity);
         }
     }
 }

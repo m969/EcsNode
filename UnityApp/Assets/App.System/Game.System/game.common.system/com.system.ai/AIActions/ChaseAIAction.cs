@@ -40,7 +40,7 @@ namespace ECSGame
                     if (distance <= 2.0f)
                     {
                         MoveSystem.StopMove(aiNode.Entity);
-                        ChaseSystem.StopChase(aiNode.Entity);
+                        // ChaseSystem.StopChase(aiNode.Entity);
                         aiNode.StartAction<CombatIdleAIAction>();
                     }
                 }

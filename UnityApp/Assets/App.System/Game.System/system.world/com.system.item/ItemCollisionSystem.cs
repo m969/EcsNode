@@ -9,6 +9,11 @@ namespace ECSGame
     {
         public void OnCollision(EcsEntity self, EcsEntity other)
         {
+            var eventContext = new CollisionEvent{
+                Self = self,
+                Other = other
+            };
+            EventBus.Send(eventContext);
             EcsObject.Destroy(self);
         }
     }

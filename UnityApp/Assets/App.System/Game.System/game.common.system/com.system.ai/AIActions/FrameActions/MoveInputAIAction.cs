@@ -35,8 +35,7 @@ namespace ECSGame
             var timerProgress = FrameTimerSystem.FrameTimer(aiNode.Entity, TimerType.RunAIAction_FrameTimer, 40);
             if (timerProgress == TimerProgress.Ended)
             {
-                ConsoleLog.Debug("MoveAIAction End");
-                AISystem.MoveNext(aiNode);
+                aiNode.StartAction<StopMoveInputAIAction>();
             }
         }
     }

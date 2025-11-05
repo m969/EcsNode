@@ -79,6 +79,26 @@ namespace ECS
             }
         }
 
+        public void DriveUpdate()
+        {
+            var node = FirstNode;
+            while (node != null)
+            {
+                node.EcsNode.DriveEntityUpdate();
+                node = node.NextNode;
+            }
+        }
+
+        public void DriveFixedUpdate()
+        {
+            var node = FirstNode;
+            while (node != null)
+            {
+                node.EcsNode.DriveEntityFixedUpdate();
+                node = node.NextNode;
+            }
+        }
+
         public static void Send<T>(T eventObject) where T : IEvent
         {
             Instance.ForeachNodeFromFirst((ecsNode) =>

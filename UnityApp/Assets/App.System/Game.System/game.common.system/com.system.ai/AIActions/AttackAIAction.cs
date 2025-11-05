@@ -30,7 +30,10 @@ namespace ECSGame
             if (Time.time >= aiNode.AIComponent.AttackTime)
             {
                 var targetActor = ChaseSystem.GetCurrentTarget(aiNode.Entity) as Actor;
-                HealthSystem.ChangeHealth(targetActor, -10);
+                if (targetActor != null)
+                {
+                    HealthSystem.ChangeHealth(targetActor, -10);
+                }
                 aiNode.StartAction<CombatIdleAIAction>();
             }
         }

@@ -9,7 +9,7 @@ using System.Reflection;
 namespace ECSUnity
 {
     [SystemGameFilter((int)GameType.TrueGameDemo)]
-    public class TrueWorldInputSystem : AEntitySystem<TrueWorld>,
+    public class TrueWorldFrameUpdateSystem : AEntitySystem<TrueWorld>,
         IOnFrameUpdate
     {
         public void OnFrameUpdate(TrueWorld trueWorld, long determineFrame)

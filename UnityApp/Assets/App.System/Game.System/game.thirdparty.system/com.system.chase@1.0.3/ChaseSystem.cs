@@ -287,7 +287,7 @@ namespace ECSGame.ChaseModule
 
 
             var target = ActorListSystem.GetActor(world, targetId);
-            ConsoleLog.Debug($"ResolveTarget: EntityId={entity.Id}, TargetId={targetId}, Found={(target != null)}");
+            // ConsoleLog.Debug($"ResolveTarget: EntityId={entity.Id}, TargetId={targetId}, Found={(target != null)}");
             return target;
         }
 

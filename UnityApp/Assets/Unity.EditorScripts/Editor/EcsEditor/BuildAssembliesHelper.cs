@@ -159,7 +159,7 @@ namespace ET
         /// 执行编译代码流程
         /// </summary>
         [MenuItem("EcsNode/DoCompile")]
-        public static void DoCompile()
+        public static bool DoCompile()
         {
             // 强制刷新一下，防止关闭auto refresh，编译出老代码
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
@@ -170,12 +170,13 @@ namespace ET
                 {
                     EditorApplication.isPlaying = false;
                 }
-                return;
+                return false;
             }
 
             Debug.Log("DoCompile finished");
 
             FodyWeaver.Default.Weave(FodyWeavingPostprocessor.ASSEMBLIES_DLL_PATH);
+            return true;
         }
 
         /// <summary>

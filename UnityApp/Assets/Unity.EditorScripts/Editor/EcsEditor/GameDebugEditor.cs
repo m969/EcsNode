@@ -108,9 +108,8 @@ namespace ECSEditor
         [Button("FastCompile & Play", ButtonHeight = 25)]
         public void FastCompileAndPlay()
         {
-            BuildAssembliesHelper.DoCompile();
             //BuildAssembliesHelper.CompileAssemblies();
-            if (!Application.isPlaying)
+            if (BuildAssembliesHelper.DoCompile() && !Application.isPlaying)
             {
                 //PlayerPrefs.SetInt("GameSystemLoad", 0);
                 //PlayerPrefs.SetInt("MergeSystemLoad", 1);
@@ -122,9 +121,8 @@ namespace ECSEditor
         [Button("FastCompile & Reload", ButtonHeight = 25)]
         public void FastCompileAndReload()
         {
-            BuildAssembliesHelper.DoCompile();
             //BuildAssembliesHelper.CompileAssemblies();
-            if (Application.isPlaying)
+            if (BuildAssembliesHelper.DoCompile() && Application.isPlaying)
             {
                 PlayerPrefs.SetInt("GameSystemLoad", 0);
                 PlayerPrefs.SetInt("MergeSystemLoad", 1);

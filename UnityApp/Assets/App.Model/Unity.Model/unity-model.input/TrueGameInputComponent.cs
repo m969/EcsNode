@@ -11,8 +11,8 @@ namespace ECSUnity
     {
         public readonly List<InputData> InputDatas = new();
 
-        public TrueWorld TrueWorld { get; set; }
-        public Actor PlayerActor { get; set; }
+        // public TrueWorld TrueWorld { get; set; }
+        // public Actor PlayerActor { get; set; }
         public Vector3 MoveVector { get; set; }
         public Vector3 LookVector { get; set; }
         public Vector3 FireVector { get; set; }

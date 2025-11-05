@@ -49,7 +49,7 @@ namespace ECSGame
             long nextFrameTime = trueWorld.NextFrame * trueWorld.FrameInterval + trueWorld.StartFrameTime;
 
             // 等待到下一帧时间
-            while ((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) < nextFrameTime)
+            if ((DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) < nextFrameTime)
             {
                 return;
             }

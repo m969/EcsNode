@@ -16,7 +16,7 @@ namespace ECSGame
             var component = actor.GetComponent<AIComponent>();
             var input = new InputData() { InputType = InputType.StopMove, PlayerId = aiNode.Entity.Id };
             ActorPredictPlaySystem.AddNetworkPlayerInput(actor, input, component.DetermineFrame);
-            AISystem.MoveNext(aiNode);
+            aiNode.StartAction<WaitAIAction>();
         }
 
         public void Update(AINode aiNode)

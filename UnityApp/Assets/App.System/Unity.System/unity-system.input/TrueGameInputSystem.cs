@@ -23,8 +23,8 @@ namespace ECSUnity
     {
         public void Awake(PlayerInput playerInput, TrueGameInputComponent component)
         {
-            component.PlayerActor = UnityAppStatic.MyActor;
-            component.TrueWorld = EcsDomain.TrueWorld;
+            // component.PlayerActor = UnityAppStatic.MyActor;
+            // component.TrueWorld = EcsDomain.TrueWorld;
         }
 
         public void Init(PlayerInput playerInput, TrueGameInputComponent component)
@@ -59,9 +59,9 @@ namespace ECSUnity
 
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                foreach (var item in component.TrueWorld.Id2Children.Values)
+                foreach (var item in EcsDomain.TrueWorld.Id2Children.Values)
                 {
-                    if (item != component.PlayerActor)
+                    if (item != UnityAppStatic.MyActor)
                     {
                         var transComp = item.GetComponent<TransformComponent>();
                         //ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
@@ -78,7 +78,7 @@ namespace ECSUnity
             }
             component.InputDatas.Add(new InputData()
             {
-                PlayerId = component.PlayerActor.Id,
+                PlayerId = UnityAppStatic.MyActor.Id,
                 InputType = InputType.StopMove
             });
         }
@@ -158,7 +158,7 @@ namespace ECSUnity
             }
 
             var fireJoystick = component.FireJoystick;
-            var fireSpeed = component.PlayerActor.GetComponent<FireComponent>().FireSpeed;
+            var fireSpeed = UnityAppStatic.MyActor.GetComponent<FireComponent>().FireSpeed;
             var interval = FP.FromRaw(1) / FP.FromRaw(fireSpeed);
             var nowTime = FP.FromFloat(Time.realtimeSinceStartup);
             if (nowTime > component.NextFireTime)
@@ -196,12 +196,13 @@ namespace ECSUnity
                 return;
             }
 
+            var myActor = UnityAppStatic.MyActor;
             if (component.LookVector != Vector3.zero)
             {
                 var input = new InputData()
                 {
                     Frame = newInputFrame,
-                    PlayerId = component.PlayerActor.Id,
+                    PlayerId = myActor.Id,
                     InputType = InputType.Look,
                     InputVector = component.LookVector.ToTSVector(),
                 };
@@ -213,7 +214,7 @@ namespace ECSUnity
                 var input = new InputData()
                 {
                     Frame = newInputFrame,
-                    PlayerId = component.PlayerActor.Id,
+                    PlayerId = myActor.Id,
                     InputType = InputType.Move,
                     InputVector = component.MoveVector.ToTSVector(),
                 };
@@ -221,7 +222,7 @@ namespace ECSUnity
             }
 
             {// 本地模拟服务端权威帧返回，改成真服务端流程这里需要注释掉
-                var framePlayComp = component.PlayerActor.GetComponent<FramePlayComponent>();
+                var framePlayComp = myActor.GetComponent<FramePlayComponent>();
                 if (framePlayComp.AdvanceFrameInputs.TryGetValue(determineFrame, out var playerInputs))
                 {
                     if (framePlayComp.DetermineFrameInputs.ContainsKey(determineFrame) == false)
@@ -233,8 +234,7 @@ namespace ECSUnity
 
             foreach (var item in component.InputDatas)
             {
-                //ConsoleLog.Debug($"ProcessLocalPlayerInput {newInputFrame}");
-                ActorAdvancePlaySystem.AddLocalPlayerInput(component.PlayerActor, item, newInputFrame);
+                ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, item, newInputFrame);
             }
 
             component.InputDatas.Clear();
