@@ -21,24 +21,11 @@
 - 规范化模块开发流（AI+）（Spec-Modular-Driven，类似于Kiro的Spec-Driven，基于copilot-instruction.md）
 
 # AI+ 模块开发流程示例:
-- ~~Modules.Unity/com.module.resource-data（资源模块）~~
-- ~~Modules.Unity/com.module.achieve（达成模块，用于成就和任务等）~~
-- ~~Modules.Unity/com.module.grid-based（网格系统）~~
-- ~~Modules.Unity/com.module.building（建筑建造模块）~~
+- Modules.Unity/com.module.chase（追踪模块）
 
 - 常用prompt示例：
     - 补充完善require需求文档
     - 根据新修改的require文档，调整修改design文档
-    - ~~根据新修改的design文档，调整修改program文档~~
-    - ~~根据新修改的program文档，调整修改program-test文档~~
-    - ~~根据新修改的program文档，调整修改配置接口、实体、组件、类型补充代码文件~~
-    - ~~根据新修改的program文档，调整修改配置接口代码文件~~
-    - ~~根据新修改的program文档，调整修改实体代码文件~~
-    - ~~根据新修改的program文档，调整修改组件代码文件~~
-    - ~~根据新修改的program文档，调整修改系统代码文件~~
-    - ~~根据新修改的program文档，调整修改model和system代码~~
-    - ~~根据program-test文档和模块System代码，调整修改单元测试代码文件~~
-    - ~~据version-iteration版本迭代文档中版本1.x.x的修改需求，依次调整修改require文档、design文档、program文档、program-test文档~~
 
 - 最新的AI+ 模块开发流程精简了文档数量，只保留require需求文档和design程序设计文档，并提升了文档的质量
 - 另添加了model层和system层的API接口文档API_DOCS.md，方便开发者和AI大模型理解并扩展模块
@@ -74,6 +61,29 @@ copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用
 
 <img src="Readme/帧同步demo.gif" width="100%">
 
+
+## 关于目录管理的重要性
+实际开发中，很多项目都没有做到很好的目录管理，大多都是这里写一个功能建一个文件夹，那里写一个功能建一个文件夹，非常混乱，项目大了之后维护成本会很高
+
+就好比如用收纳盒收拾房间杂物，如果收纳盒大小形状不一，放的位置也杂乱无章，就会显得房间杂乱没有规律，东西无从找起
+
+我们要做的就是用统一大小和形状的收纳盒，把杂物收集起来放到规定的地方
+
+EcsNode框架项目中定义了清晰规范的目录层次，重点看脚本的目录管理
+
+脚本用了四级目录管理：
+
+1、首先第一级按数据和逻辑划分，App.Model（数据模型）和App.System（系统逻辑）
+
+2、第二级按业务层级划分，比如 Game.System（游戏核心业务）、Game.ViewSystem（游戏视图逻辑）、Unity.System（Unity引擎部分）
+
+3、第三级按Ecs域划分，UnityApp、Game、World、UI、Scene
+- 命名以 model.*、system.* 的格式来命名，这里的*是实体名称
+- 第三方模块 放在 *.thirdparty.model、*.thirdparty.system 目录下，这里的*是所属业务层级
+- 自定义的共用模块 放在 *.common.model、*.common.system 目录下，这里的*是所属业务层级
+
+4、第四级按模块（实体和组件）进行划分，Actor、Item、MoveComponent等
+- 模块文件夹命名以 com.model.*、com.system.* 的格式来命名
 
 ## 基于实体和组件的数据驱动
 model
