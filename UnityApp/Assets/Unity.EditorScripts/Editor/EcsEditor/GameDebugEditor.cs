@@ -105,7 +105,7 @@ namespace ECSEditor
         //    }
         //}
 
-        [Button("FastCompile & Play", ButtonHeight = 25)]
+        [Button("Compile & Play", ButtonHeight = 25)]
         public void FastCompileAndPlay()
         {
             //BuildAssembliesHelper.CompileAssemblies();
@@ -118,7 +118,7 @@ namespace ECSEditor
             }
         }
 
-        [Button("FastCompile & Reload", ButtonHeight = 25)]
+        [Button("Compile & Reload", ButtonHeight = 25)]
         public void FastCompileAndReload()
         {
             //BuildAssembliesHelper.CompileAssemblies();
