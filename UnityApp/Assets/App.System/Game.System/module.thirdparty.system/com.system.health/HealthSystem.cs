@@ -28,6 +28,7 @@ IAwake<Actor, HealthComponent>
 
         public static void ChangeHealth(Actor entity, int value)
         {
+            ConsoleLog.Error($"HealthSystem ChangeHealth {entity.Id} {value}");
             var healthComp = entity.GetComponent<HealthComponent>();
             healthComp.Health += value;
             if (healthComp.Health < 0)
