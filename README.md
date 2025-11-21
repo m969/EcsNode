@@ -10,15 +10,17 @@
 
 - 业务渲染分离（System-ViewSystem）
 
-- 组合优于继承（Entity-Component）
+- 组合优于继承（Entity-Component，组合优于封装类，尤其是上层业务，当上层业务需要对封装好的类进行侵入式修改这是不好的设计，上层业务包括UI、动画、特效、场景渲染、消息处理等需求多变的场景）
 
 - 领域驱动设计（EcsNode，领域可看做不同的业务场景，规划对齐需求粒度，降低协作理解成本）
 
-- 高内聚低耦合（高内聚优先于低耦合（模块化），浅传参优先于深传参（扁平化），异常捕获优先于判空防御）
+- 高内聚低耦合（高内聚（模块化）优先于低耦合，浅传参（扁平化）优先于深传参，异常捕获优先于判空防御）
 
 - 面向切面编程（避免侵入式编码）
 
 - 规范化模块开发流（AI+）（Spec-Modular-Driven，类似于Kiro的Spec-Driven，基于copilot-instruction.md）
+
+- 用面向过程的思维实现逻辑功能，用面向对象的思维设计数据结构
 
 # AI+ 模块开发流程示例:
 - Modules.Unity/com.module.chase（追踪模块）
@@ -62,28 +64,44 @@ copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用
 <img src="Readme/帧同步demo.gif" width="100%">
 
 
-## 关于目录管理的重要性
+## 关于目录管理
 实际开发中，很多项目都没有做到很好的目录管理，大多都是这里写一个功能建一个文件夹，那里写一个功能建一个文件夹，非常混乱，项目大了之后维护成本会很高
 
 就好比如用收纳盒收拾房间杂物，如果收纳盒大小形状不一，放的位置也杂乱无章，就会显得房间杂乱没有规律，东西无从找起
 
 我们要做的就是用统一大小和形状的收纳盒，把杂物收集起来放到规定的地方
 
-EcsNode框架项目中定义了清晰规范的目录层次，重点看脚本的目录管理
+要做到规范的目录管理，首先需要做到合理的层级规划
+
+EcsNode框架中使用了三级层级划分，域、层、块
+
+域，代表领域、Ecs域，如UnityApp、Game、World等
+
+层，代表层级，如数据层（业务数据层、视图数据层）、逻辑层（业务逻辑层、视图逻辑层）、引擎工具层
+
+块，代表模块，如角色模块、战斗模块、移动模块等
+
+基于这三级层级划分，定义规范的目录层次，重点看脚本的目录管理
 
 脚本用了四级目录管理：
 
-1、首先第一级按数据和逻辑划分，App.Model（数据模型）和App.System（系统逻辑）
+前2级都是基于层的目录
 
-2、第二级按业务层级划分，比如 Game.System（游戏核心业务）、Game.ViewSystem（游戏视图逻辑）、Unity.System（Unity引擎部分）
+1、第一级按数据层和逻辑层划分，App.Model（数据模型层）和App.System（系统逻辑层）
 
-3、第三级按Ecs域划分，UnityApp、Game、World、UI、Scene
-- 命名以 model.*、system.* 的格式来命名，这里的*是实体名称
-- 第三方模块 放在 *.thirdparty.model、*.thirdparty.system 目录下，这里的*是所属业务层级
-- 自定义的共用模块 放在 *.common.model、*.common.system 目录下，这里的*是所属业务层级
+2、第二级按业务类型进一步对层级进行细分，比如 Game.System（核心系统逻辑）、Game.ViewSystem（视图系统逻辑）、Unity.System（引擎系统逻辑）
+
+3、第三级按ecs域划分，UnityApp、Game、World、UI、Scene
+- 命名以 model.xxx、system.xxx 的格式来命名，这里的xxx是ecs域名称
+- 第三方模块 放在 module.thirdparty.model、module.thirdparty.system 目录下
+- 自定义的共用模块 放在 module.common.model、module.common.system 目录下
 
 4、第四级按模块（实体和组件）进行划分，Actor、Item、MoveComponent等
-- 模块文件夹命名以 com.model.*、com.system.* 的格式来命名
+- 模块文件夹命名以 com.model.xxx、com.system.xxx 的格式来命名
+
+
+<img src="Readme/ecsnode.drawio.png" width="100%">
+
 
 ## 基于实体和组件的数据驱动
 model
