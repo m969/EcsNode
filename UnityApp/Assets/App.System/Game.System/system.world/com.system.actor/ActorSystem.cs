@@ -28,7 +28,11 @@ namespace ECSGame
             actor.AddComponent<FireComponent>();
             actor.AddComponent<TaskListComponent>();
             actor.AddComponent<AIComponent>();
-            HealthSystem.AddOn(actor, 100);
+            var healthComp = actor.AddComponent<HealthComponent>(beforeAwake: (comp) =>
+            {
+                comp.Health = 100;
+                comp.MaxHealth = 100;
+            });
 
             // 追逐模块
             actor.AddComponent<ChaseModule.ChaseComponent>();
