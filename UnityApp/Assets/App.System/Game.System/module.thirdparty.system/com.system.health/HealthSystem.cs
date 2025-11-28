@@ -1,4 +1,5 @@
 ﻿using ECS;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,34 +13,22 @@ namespace ECSGame
     public class HealthSystem : AComponentSystem<Actor, HealthComponent>,
 IAwake<Actor, HealthComponent>
     {
-        public static void AddOn(Actor actor, int health)
-        {
-            var healthComp = actor.AddComponent<HealthComponent>(beforeAwake: (comp) =>
-            {
-                comp.Health = health;
-                comp.MaxHealth = health;
-            });
-        }
-
         public void Awake(Actor entity, HealthComponent component)
         {
             //ConsoleLog.Debug($"HealthSystem Awake {entity.GetType().Name}");
+        }
+
+        public static int GetHealth(Actor entity)
+        {
+            var healthComp = entity.GetComponent<HealthComponent>();
+            return healthComp.Health;
         }
 
         public static void ChangeHealth(Actor entity, int value)
         {
             ConsoleLog.Error($"HealthSystem ChangeHealth {entity.Id} {value}");
             var healthComp = entity.GetComponent<HealthComponent>();
-            healthComp.Health += value;
-            if (healthComp.Health < 0)
-            {
-                healthComp.Health = 0;
-            }
-            if (healthComp.Health > healthComp.MaxHealth)
-            {
-                healthComp.Health = healthComp.MaxHealth;
-            }
-
+            healthComp.Health = Math.Clamp(healthComp.Health + value, 0, healthComp.MaxHealth);
             entity.Dispatch<IHealthChangeHandler>((anySystem) => anySystem.OnHealthChange(entity, healthComp));
         }
     }

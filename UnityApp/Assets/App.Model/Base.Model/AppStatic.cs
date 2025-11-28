@@ -1,5 +1,6 @@
 ﻿using ECS;
 using ECSGame;
+using ECSGame.UnitDispatchModule;
 using ECSUnity;
 using System;
 using System.Collections;
@@ -24,5 +25,6 @@ namespace ECS
         public static GameType GameType { get; set; } = GameType.ECSGame;
         public static Actor MyActor { get; set; }
         public static Actor OtherActor { get; set; }
+        public static UnitDispatcher MonsterDispatcher { get; set; }
     }
 }

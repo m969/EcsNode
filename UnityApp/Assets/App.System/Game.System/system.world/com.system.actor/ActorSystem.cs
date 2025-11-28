@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using TrueSync;
 using ECSGame.TaskModule;
 using ECSGame.AttackModule;
+using ECSGame.ActorStateModule;
+using ET;
 
 namespace ECSGame
 {
@@ -17,7 +19,8 @@ namespace ECSGame
         IAwake<Actor>,
         IInit<Actor>,
         IUpdate<Actor>,
-        IHealthChangeHandler
+        IHealthChangeHandler,
+        IStateEnterHandler
     {
         public static Actor Create(EcsEntity gameWorld, long actorId)
         {
@@ -33,6 +36,7 @@ namespace ECSGame
                 comp.Health = 100;
                 comp.MaxHealth = 100;
             });
+            actor.AddComponent<ActorStateComponent>();
 
             // 追逐模块
             actor.AddComponent<ChaseModule.ChaseComponent>();
@@ -77,7 +81,37 @@ namespace ECSGame
 
         public void OnHealthChange(Actor entity, HealthComponent component)
         {
-            
+            if (component.Health <= 0)
+            {
+                // 设置状态为死亡
+                ActorStateSystem.RequestChangeState(entity, new ChangeStateRequest
+                {
+                    StateType = ActorStateType.Death,
+                    Enable = true,
+                    Force = true
+                });
+            }
+        }
+
+        public void OnStateEnter(EcsEntity entity, ActorStateType stateType)
+        {
+            if (stateType == ActorStateType.Death)
+            {
+                // 处理角色死亡逻辑
+                // 停止所有动作，播放死亡动画等
+                AnimationSystem.Play(entity as Actor, AnimationState.Die);
+                DisposeAfterSeconds(entity as Actor, 3).Coroutine();
+                EventBus.Send(new ActorDeathEvent
+                {
+                    Actor = entity as Actor
+                });
+            }
+        }
+
+        public static async ETTask DisposeAfterSeconds(Actor actor, float seconds)
+        {
+            await TimerSystem.WaitAsync(actor, (int)(seconds * 1000));
+            EcsObject.Destroy(actor);
         }
     }
 }

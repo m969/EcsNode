@@ -15,7 +15,8 @@ namespace ECSGame
 {
     public class WorldSystem : AEntitySystem<World>,
         IInit<World>,
-        IUpdate<World>
+        IUpdate<World>,
+        IEventDispatch<ActorDeathEvent>
     {
         public static World Create(Assembly systemAssembly)
         {
@@ -59,6 +60,17 @@ namespace ECSGame
 
         public void Update(World entity)
         {
+        }
+
+        public void OnHandleEvent(EcsNode ecsNode, ActorDeathEvent eventContext)
+        {
+            var world = ecsNode.As<World>();
+            var actor = eventContext.Actor;
+            if (actor == AppStatic.OtherActor)
+            {
+                //派遣新的怪物
+                UnitDispatcherSystem.StartDispatch(AppStatic.MonsterDispatcher, 1);
+            }
         }
     }
 }

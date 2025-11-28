@@ -5,6 +5,7 @@ using ECS;
 using ET;
 using TrueSync;
 using System;
+using ECSGame.ChaseModule;
 
 namespace ECSGame
 {
@@ -23,10 +24,16 @@ namespace ECSGame
                 aiNode.StartAction<AttackAIAction>();
             }
             if (AppStatic.MyActor == null) return;
+            var targetActor = ChaseSystem.GetCurrentTarget(aiNode.Entity) as Actor;
+            if (targetActor == null || HealthSystem.GetHealth(targetActor) <= 0)
+            {
+                aiNode.StartAction<IdleAIAction>();
+                return;
+            }
             var distance = Vector3.Distance(TransformSystem.GetPosition(AppStatic.OtherActor).ToVector(), TransformSystem.GetPosition(AppStatic.MyActor).ToVector());
             if (distance > 2.0f)
             {
-                aiNode.StartAction<IdleAIAction>();
+                aiNode.StartAction<ChaseAIAction>();
             }
         }
     }

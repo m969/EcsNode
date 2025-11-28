@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<RootNamespace>ECSGame.ActorState</RootNamespace>
+		<Nullable>enable</Nullable>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove=".\obj\**\*.cs" />
+		<Compile Remove=".\system.module-test.actor-state\**\*.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="com.model.actor-state\**\*.cs" />
+		<Compile Include="com.system.actor-state\**\*.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EcsNode" Version="1.0.2" />
+		<PackageReference Include="MessagePack" Version="3.1.4" />
+		<PackageReference Include="NUnit" Version="4.3.2" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+		<PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+	</ItemGroup>
+
+</Project>
