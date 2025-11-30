@@ -13,6 +13,7 @@ namespace ECS
             if (ecsObject is EcsEntity entity)
             {
                 entity.InstanceId = 0;
+                ConsoleLog.Debug($"Destroy EcsEntity: Id={entity.Id}, InstanceId={entity.InstanceId}");
 
                 var children = entity.Id2Children.Values.ToArray();
                 foreach (var item in children)

@@ -19,6 +19,7 @@ namespace ECSGame
         IAwake<Actor>,
         IInit<Actor>,
         IUpdate<Actor>,
+        IDestroy<Actor>,
         IHealthChangeHandler,
         IStateEnterHandler
     {
@@ -61,6 +62,11 @@ namespace ECSGame
             {
                 component.Enable = true;
             }
+        }
+
+        public void Destroy(Actor actor)
+        {
+            ActorListSystem.RemoveActor(actor.Parent, actor);
         }
 
         public void Update(Actor entity)

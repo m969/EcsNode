@@ -56,6 +56,7 @@ namespace ECSGame
             monsterDispatcher.AddComponent<DispatchStateComponent>();
             UnitDispatcherListSystem.AddDispatcher(world, monsterDispatcher);
             UnitDispatcherSystem.StartDispatch(monsterDispatcher, 1);
+            AppStatic.MonsterDispatcher = monsterDispatcher;
         }
 
         public void Update(World entity)

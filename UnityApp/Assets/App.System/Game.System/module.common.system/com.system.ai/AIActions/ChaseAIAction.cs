@@ -12,7 +12,7 @@ namespace ECSGame
     {
         public void Awake(AINode aiNode)
         {
-            ConsoleLog.Debug($"ChaseAIAction Awake: EntityId={aiNode.Entity.Id} {aiNode.Entity.GetComponent<ChaseComponent>().CurrentTargetId}");
+            // ConsoleLog.Debug($"ChaseAIAction Awake: EntityId={aiNode.Entity.Id} {aiNode.Entity.GetComponent<ChaseComponent>().CurrentTargetId}");
             var target = ChaseSystem.GetCurrentTarget(aiNode.Entity);
             if (target == null)
             {

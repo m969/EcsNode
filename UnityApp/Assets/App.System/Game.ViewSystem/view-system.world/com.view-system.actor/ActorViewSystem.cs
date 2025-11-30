@@ -15,6 +15,7 @@ namespace ECSGame
     {
         public void Awake(Actor entity)
         {
+            entity.AddComponent<HudUIComponent>();
         }
 
         public void Init(Actor entity)

@@ -35,14 +35,14 @@ namespace ECSGame
 
         public static void StartMove(EcsEntity entity)
         {
-            ConsoleLog.Debug($"StartMove: EntityId={entity.Id}");
+            // ConsoleLog.Debug($"StartMove: EntityId={entity.Id}");
             var moveComp = entity.GetComponent<MoveComponent>();
             moveComp.Moving = true;
         }
 
         public static void StopMove(EcsEntity entity)
         {
-            ConsoleLog.Debug($"StopMove: EntityId={entity.Id}");
+            // ConsoleLog.Debug($"StopMove: EntityId={entity.Id}");
             var moveComp = entity.GetComponent<MoveComponent>();
             moveComp.Moving = false;
         }

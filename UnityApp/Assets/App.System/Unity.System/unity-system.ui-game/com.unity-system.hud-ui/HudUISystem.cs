@@ -26,12 +26,16 @@ namespace ECSUnity
         [After(typeof(ModelViewSystem), nameof(ModelViewSystem.SetModel))]
         public static void OnSetModel(EcsEntity entity, GameObject modelObj)
         {
+            var hudUIComp = entity.GetComponent<HudUIComponent>();
+            if (hudUIComp == null)
+            {
+                return;
+            }
             if (modelObj.transform.childCount < 2)
             {
                 return;
             }
             var canvasObj = modelObj.transform.GetChild(1);
-            var hudUIComp = entity.GetComponent<HudUIComponent>();
             hudUIComp.HudCanvas = canvasObj.GetComponent<Canvas>();
         }
 
@@ -39,6 +43,10 @@ namespace ECSUnity
         public static void OnChangeHealth(Actor entity, int value)
         {
             var hudUIComp = entity.GetComponent<HudUIComponent>();
+            if (hudUIComp == null)
+            {
+                return;
+            }
             var healthComp = entity.GetComponent<HealthComponent>();
             if (hudUIComp.HealthSlider == null)
             {

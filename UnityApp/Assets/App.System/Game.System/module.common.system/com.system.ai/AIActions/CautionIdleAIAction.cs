@@ -12,7 +12,7 @@ namespace ECSGame
     {
         public void Awake(AINode aiNode)
         {
-            ConsoleLog.Debug("CautionIdleAIAction Awake");
+            // ConsoleLog.Debug("CautionIdleAIAction Awake");
             //aiNode.AIComponent.IdleTime = Time.time + 2f;
         }
 

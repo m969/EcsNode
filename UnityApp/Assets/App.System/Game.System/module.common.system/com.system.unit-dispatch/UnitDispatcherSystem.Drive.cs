@@ -49,6 +49,7 @@ namespace ECSGame.UnitDispatchModule
                 actor.Type = ActorType.Monster;
                 ActorListSystem.AddActor(world, actor);
                 TransformSystem.ChangePosition(actor, gridCellPos);
+                ConsoleLog.Debug($"gridCellPos={gridCellPos}");
                 CollisionSystem.SetLayer(actor, 1);
                 // ChaseConfigSystem.SetConfig(actor, new ChaseModule.ChaseConfig
                 // {
