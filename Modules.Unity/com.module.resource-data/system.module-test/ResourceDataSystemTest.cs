@@ -25,7 +25,7 @@ namespace ECSGame.ResourceDataModule.Tests
             player = ecsNode.AddChild<EcsEntity>();
             resourceData = player.AddComponent<ResourceDataComponent>(c =>
             {
-                c.ResourceValues = new Dictionary<ResourceType, int>
+                c.ResourceValues = new Dictionary<int, int>
                 {
                     { ResourceType.Coin, 100 },
                     { ResourceType.Diamond, 50 },
@@ -72,7 +72,7 @@ namespace ECSGame.ResourceDataModule.Tests
         [Test]
         public void TC05_资源批量变更测试()
         {
-            var changes = new Dictionary<ResourceType, int>
+            var changes = new Dictionary<int, int>
             {
                 {ResourceType.Coin, 20 },
                 {ResourceType.Diamond, -10 }
@@ -111,7 +111,7 @@ namespace ECSGame.ResourceDataModule.Tests
         {
             Assert.DoesNotThrow(() =>
             {
-                ResourceDataSystem.GainResource(player, (ResourceType)999, 10, 0);
+                ResourceDataSystem.GainResource(player, 999, 10, 0);
             });
         }
     }

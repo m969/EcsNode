@@ -8,7 +8,7 @@ namespace ECSGame.ResourceDataModule
     /// </summary>
     public interface IResourceChanged : IDispatch
     {
-        void OnResourceChanged(EcsEntity entity, ResourceType type, int delta, int newValue, ResourceChangeType changeType, string reason);
+        void OnResourceChanged(EcsEntity entity, int type, int delta, int newValue, ResourceChangeType changeType, string reason);
     }
 
     /// <summary>

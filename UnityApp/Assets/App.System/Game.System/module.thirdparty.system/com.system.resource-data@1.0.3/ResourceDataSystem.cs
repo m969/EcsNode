@@ -7,13 +7,6 @@ namespace ECSGame.ResourceDataModule
 {
     public class ResourceDataSystem : AComponentSystem<EcsEntity, ResourceDataComponent>
     {
-        public void Awake(EcsEntity entity, ResourceDataComponent component) { }
-        public void Init(EcsEntity entity, ResourceDataComponent component) { }
-        public void AfterInit(EcsEntity entity, ResourceDataComponent component) { }
-        public void Enable(EcsEntity entity, ResourceDataComponent component) { }
-        public void Disable(EcsEntity entity, ResourceDataComponent component) { }
-        public void Destroy(EcsEntity entity, ResourceDataComponent component) { }
-
         /// <summary>
         /// 增加资源：内部执行合法性校验、日志写入、同步
         /// </summary>

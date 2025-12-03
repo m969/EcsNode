@@ -7,17 +7,10 @@ namespace ECSGame.ResourceDataModule
 {
     public class ResourceDataSystem : AComponentSystem<EcsEntity, ResourceDataComponent>
     {
-        public void Awake(EcsEntity entity, ResourceDataComponent component) { }
-        public void Init(EcsEntity entity, ResourceDataComponent component) { }
-        public void AfterInit(EcsEntity entity, ResourceDataComponent component) { }
-        public void Enable(EcsEntity entity, ResourceDataComponent component) { }
-        public void Disable(EcsEntity entity, ResourceDataComponent component) { }
-        public void Destroy(EcsEntity entity, ResourceDataComponent component) { }
-
         /// <summary>
         /// 增加资源：内部执行合法性校验、日志写入、同步
         /// </summary>
-        public static void GainResource(EcsEntity entity, ResourceType type, int value, long itemId = 0)
+        public static void GainResource(EcsEntity entity, int type, int value, long itemId = 0)
         {
             var comp = entity.GetComponent<ResourceDataComponent>();
             // 初始化缺失的键
@@ -42,7 +35,7 @@ namespace ECSGame.ResourceDataModule
         /// <summary>
         /// 消耗资源：不足返回false；成功则写日志与同步
         /// </summary>
-        public static bool ConsumeResource(EcsEntity entity, ResourceType type, int value, long itemId = 0)
+        public static bool ConsumeResource(EcsEntity entity, int type, int value, long itemId = 0)
         {
             var comp = entity.GetComponent<ResourceDataComponent>();
             if (!comp.ResourceValues.ContainsKey(type) || comp.ResourceValues[type] < value)
@@ -79,7 +72,7 @@ namespace ECSGame.ResourceDataModule
         /// <summary>
         /// 校验资源合法性
         /// </summary>
-        public static bool ValidateResource(EcsEntity entity, ResourceType type, int value)
+        public static bool ValidateResource(EcsEntity entity, int type, int value)
         {
             var comp = entity.GetComponent<ResourceDataComponent>();
             return value >= 0 && comp.ResourceValues.ContainsKey(type) && comp.ResourceValues[type] >= value;
@@ -88,7 +81,7 @@ namespace ECSGame.ResourceDataModule
         /// <summary>
         /// 查询资源数值
         /// </summary>
-        public static int GetResourceValue(EcsEntity entity, ResourceType type)
+        public static int GetResourceValue(EcsEntity entity, int type)
         {
             var comp = entity.GetComponent<ResourceDataComponent>();
             return comp.ResourceValues.TryGetValue(type, out var v) ? v : 0;
@@ -98,13 +91,13 @@ namespace ECSGame.ResourceDataModule
         /// 批量变更资源：原子预检，任一变更导致负值则整体取消
         /// 变更成功后逐条写日志与同步
         /// </summary>
-        public static bool BatchChange(EcsEntity entity, Dictionary<ResourceType, int> changes)
+        public static bool BatchChange(EcsEntity entity, Dictionary<int, int> changes)
         {
             var comp = entity.GetComponent<ResourceDataComponent>();
             if (changes == null || changes.Count == 0) return true;
 
             // 快照预检
-            var snapshot = new Dictionary<ResourceType, int>(comp.ResourceValues);
+            var snapshot = new Dictionary<int, int>(comp.ResourceValues);
             foreach (var kv in changes)
             {
                 if (!snapshot.ContainsKey(kv.Key)) snapshot[kv.Key] = 0;
@@ -138,7 +131,7 @@ namespace ECSGame.ResourceDataModule
             if (comp.ResourceValues.Count > 0)
             {
                 // 逐条派发清零事件（delta为负）
-                var snapshot = new Dictionary<ResourceType, int>(comp.ResourceValues);
+                var snapshot = new Dictionary<int, int>(comp.ResourceValues);
                 foreach (var kv in snapshot)
                 {
                     if (kv.Value != 0)

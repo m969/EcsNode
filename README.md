@@ -23,7 +23,8 @@
 - 用面向过程的思维实现逻辑功能，用面向对象的思维设计数据结构
 
 # AI+ 模块开发流程示例:
-- Modules.Unity/com.module.chase（追踪模块）
+- Modules.Unity/com.module.chase（追逐模块）
+- Modules.Unity/com.module.actor-state（角色状态模块）
 
 - 常用prompt示例：
     - 补充完善require需求文档
@@ -31,7 +32,7 @@
 
 - 最新的AI+ 模块开发流程精简了文档数量，只保留require需求文档和design程序设计文档，并提升了文档的质量
 - 另添加了model层和system层的API接口文档API_DOCS.md，方便开发者和AI大模型理解并扩展模块
-- 最新的模块示例是 com.module.chase 追踪模块
+- 最新的模块示例是 com.module.chase （追逐模块） 和 com.module.actor-state（角色状态模块）
 
 copilot-instruction.md 里的都是自然语言描述的指导文档，亦可用于别的大模型指导文档，比如CLAUDE.md、cursor rule等
 

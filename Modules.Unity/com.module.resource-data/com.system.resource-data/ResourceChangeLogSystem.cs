@@ -7,14 +7,6 @@ namespace ECSGame.ResourceDataModule
 {
     public class ResourceChangeLogSystem : AEntitySystem<ResourceChangeLog>
     {
-        public void Awake(ResourceChangeLog entity) { }
-        public void Init(ResourceChangeLog entity) { }
-        public void AfterInit(ResourceChangeLog entity) { }
-        public void Enable(ResourceChangeLog entity) { }
-        public void Disable(ResourceChangeLog entity) { }
-        public void Update(ResourceChangeLog entity) { }
-        public void Destroy(ResourceChangeLog entity) { }
-
         /// <summary>
         /// 记录资源变更日志（在owner下创建子实体）
         /// </summary>
@@ -24,7 +16,7 @@ namespace ECSGame.ResourceDataModule
         /// <param name="reason">变更原因</param>
         /// <param name="type">资源类型</param>
         /// <param name="ownerId">所属玩家Id</param>
-        public static ResourceChangeLog AddChangeLog(EcsEntity owner, ResourceChangeType changeType, int value, string reason, ResourceType type, long ownerId)
+        public static ResourceChangeLog AddChangeLog(EcsEntity owner, ResourceChangeType changeType, int value, string reason, int type, long ownerId)
         {
             return owner.AddChild<ResourceChangeLog>(log =>
             {
@@ -61,14 +53,14 @@ namespace ECSGame.ResourceDataModule
         /// </summary>
         /// <param name="owner">日志所属实体</param>
         /// <param name="type">资源类型（可选，传入null统计所有类型）</param>
-        public static int StatChangeLogs(EcsEntity owner, ResourceType? type)
+        public static int StatChangeLogs(EcsEntity owner, int type)
         {
             int sum = 0;
             foreach (var kv in owner.Id2Children)
             {
                 if (kv.Value is ResourceChangeLog log)
                 {
-                    if (!type.HasValue || log.ResourceType == type.Value)
+                    if (log.ResourceType == type)
                         sum += log.ChangeValue;
                 }
             }

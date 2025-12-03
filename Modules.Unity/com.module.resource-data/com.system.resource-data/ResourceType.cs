@@ -1,26 +1,26 @@
 namespace ECSGame.ResourceDataModule
 {
     /// <summary>
-    /// 资源类型枚举
+    /// 资源类型常量
     /// </summary>
-    public enum ResourceType
+    public static class ResourceType
     {
         /// <summary>
         /// 金币
         /// </summary>
-        Coin,
+        public const int Coin = 1;
         /// <summary>
         /// 钻石
         /// </summary>
-        Diamond,
+        public const int Diamond = 2;
         /// <summary>
         /// 体力
         /// </summary>
-        Stamina,
+        public const int Stamina = 3;
         /// <summary>
         /// 物品
         /// </summary>
-        Item,
+        public const int Item = 4;
         // 可扩展更多类型
     }
 }

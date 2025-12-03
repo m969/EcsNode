@@ -33,7 +33,7 @@ namespace ECSGame.ResourceDataModule
         /// <summary>
         /// 资源类型
         /// </summary>
-        public ResourceType ResourceType { get; set; }
+        public int ResourceType { get; set; }
 
         /// <summary>
         /// 资源所属者Id

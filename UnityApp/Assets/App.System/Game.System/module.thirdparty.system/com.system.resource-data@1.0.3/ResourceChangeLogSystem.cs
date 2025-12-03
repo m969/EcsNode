@@ -7,14 +7,6 @@ namespace ECSGame.ResourceDataModule
 {
     public class ResourceChangeLogSystem : AEntitySystem<ResourceChangeLog>
     {
-        public void Awake(ResourceChangeLog entity) { }
-        public void Init(ResourceChangeLog entity) { }
-        public void AfterInit(ResourceChangeLog entity) { }
-        public void Enable(ResourceChangeLog entity) { }
-        public void Disable(ResourceChangeLog entity) { }
-        public void Update(ResourceChangeLog entity) { }
-        public void Destroy(ResourceChangeLog entity) { }
-
         /// <summary>
         /// 记录资源变更日志（在owner下创建子实体）
         /// </summary>

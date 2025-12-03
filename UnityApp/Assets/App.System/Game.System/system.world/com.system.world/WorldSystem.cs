@@ -10,6 +10,7 @@ using System.Reflection;
 using TrueSync;
 using ECSGame.UnitDispatchModule;
 using UnityEngine;
+using ECSGame.ResourceDataModule;
 
 namespace ECSGame
 {
@@ -63,12 +64,19 @@ namespace ECSGame
         {
         }
 
+        /// <summary>
+        /// 处理角色死亡事件
+        /// </summary>
+        /// <param name="ecsNode"></param>
+        /// <param name="eventContext"></param>
         public void OnHandleEvent(EcsNode ecsNode, ActorDeathEvent eventContext)
         {
             var world = ecsNode.As<World>();
             var actor = eventContext.Actor;
             if (actor == AppStatic.OtherActor)
             {
+                //添加道具奖励给玩家
+                ResourceDataSystem.GainResource(AppStatic.MyActor, ResourceType.Coin, 10);
                 //派遣新的怪物
                 UnitDispatcherSystem.StartDispatch(AppStatic.MonsterDispatcher, 1);
             }

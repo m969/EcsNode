@@ -42,6 +42,7 @@ namespace ECSUnity
         [After(typeof(HealthSystem), nameof(HealthSystem.ChangeHealth))]
         public static void OnChangeHealth(Actor entity, int value)
         {
+            ConsoleLog.Debug("HudUISystem OnChangeHealth");
             var hudUIComp = entity.GetComponent<HudUIComponent>();
             if (hudUIComp == null)
             {
@@ -53,6 +54,7 @@ namespace ECSUnity
                 return;
             }
             hudUIComp.HealthSlider.value = healthComp.Health / (float)healthComp.MaxHealth;
+            ConsoleLog.Debug($"HealthSlider value set to {hudUIComp.HealthSlider.value}");
         }
     }
 }
