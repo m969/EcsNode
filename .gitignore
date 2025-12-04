@@ -8,6 +8,10 @@ _ReSharper.CSharp/
 */.svn/
 .svn/
 
+#github
+*/.github/
+.github/
+
 #Excel的临时文件
 ~$*.xlsx
 ~$*.xlsx.meta

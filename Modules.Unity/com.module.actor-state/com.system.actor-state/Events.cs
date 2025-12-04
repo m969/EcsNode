@@ -7,7 +7,7 @@ namespace ECSGame.ActorStateModule
     /// </summary>
     public interface IStateEnterHandler : IDispatch
     {
-        void OnStateEnter(EcsEntity entity, ActorStateType stateType);
+        void OnStateEnterHandle(EcsEntity entity, ActorStateType stateType);
     }
 
     /// <summary>
@@ -15,7 +15,7 @@ namespace ECSGame.ActorStateModule
     /// </summary>
     public interface IStateExitHandler : IDispatch
     {
-        void OnStateExit(EcsEntity entity, ActorStateType stateType);
+        void OnStateExitHandle(EcsEntity entity, ActorStateType stateType);
     }
 
     /// <summary>
@@ -23,6 +23,6 @@ namespace ECSGame.ActorStateModule
     /// </summary>
     public interface IStateUpdateHandler : IDispatch
     {
-        void OnStateUpdate(EcsEntity entity);
+        void OnStateUpdateHandle(EcsEntity entity);
     }
 }

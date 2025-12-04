@@ -85,7 +85,7 @@ namespace ECSGame
             }
         }
 
-        public void OnHealthChange(Actor entity, HealthComponent component)
+        public void OnHealthChangeHandle(Actor entity, HealthComponent component)
         {
             if (component.Health <= 0)
             {
@@ -99,7 +99,7 @@ namespace ECSGame
             }
         }
 
-        public void OnStateEnter(EcsEntity entity, ActorStateType stateType)
+        public void OnStateEnterHandle(EcsEntity entity, ActorStateType stateType)
         {
             if (stateType == ActorStateType.Death)
             {

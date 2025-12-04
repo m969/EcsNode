@@ -21,7 +21,7 @@ EcsNode是基于ECS（Entity-Component-System）架构的Unity游戏开发框架
     - Dispatch<T>((T system) => system.Handle(entity, a))方法，用于分发事件。
         - 例如：
             ```csharp
-            entity.Dispatch<IOnStartBuild>((system) => system.OnStartBuild(entity, count));
+            entity.Dispatch<IStartBuildHandler>((system) => system.OnStartBuildHandle(entity, count));
             ```
 
 - 组件基类 EcsComponent：

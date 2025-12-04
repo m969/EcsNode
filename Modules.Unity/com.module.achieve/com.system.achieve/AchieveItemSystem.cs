@@ -9,13 +9,7 @@ namespace ECSGame.AchieveModule
     /// 达成项系统
     /// </summary>
     public class AchieveItemSystem : AEntitySystem<AchieveItem>,
-        IAwake<AchieveItem>,
-        IInit<AchieveItem>,
-        IAfterInit<AchieveItem>,
-        IEnable<AchieveItem>,
-        IDisable<AchieveItem>,
-        IUpdate<AchieveItem>,
-        IDestroy<AchieveItem>
+        IAwake<AchieveItem>
     {
         void IAwake<AchieveItem>.Awake(AchieveItem entity)
         {
@@ -24,13 +18,6 @@ namespace ECSGame.AchieveModule
             entity.CreateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             entity.CompleteTime = 0;
         }
-
-    void IInit<AchieveItem>.Init(AchieveItem entity) { }
-    void IAfterInit<AchieveItem>.AfterInit(AchieveItem entity) { }
-    void IEnable<AchieveItem>.Enable(AchieveItem entity) { }
-    void IDisable<AchieveItem>.Disable(AchieveItem entity) { }
-    void IUpdate<AchieveItem>.Update(AchieveItem entity) { }
-    void IDestroy<AchieveItem>.Destroy(AchieveItem entity) { }
 
         /// <summary>
         /// 创建达成项实体
@@ -83,6 +70,7 @@ namespace ECSGame.AchieveModule
             if (status == AchieveStatus.Completed)
             {
                 entity.CompleteTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                entity.Dispatch<IAchieveCompletedHandler>(d => d.OnAchieveCompletedHandle(entity, entity));
             }
         }
 

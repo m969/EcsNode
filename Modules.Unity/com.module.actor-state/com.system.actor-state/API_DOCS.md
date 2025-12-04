@@ -73,7 +73,7 @@
 
 | 方法签名 | 描述 |
 | :--- | :--- |
-| `void OnStateEnter(EcsEntity entity, ActorStateType stateType)` | 状态进入回调。 |
+| `void OnStateEnterHandle(EcsEntity entity, ActorStateType stateType)` | 状态进入回调。 |
 
 ### IStateExitHandler
 **继承自:** `IDispatch`
@@ -82,7 +82,7 @@
 
 | 方法签名 | 描述 |
 | :--- | :--- |
-| `void OnStateExit(EcsEntity entity, ActorStateType stateType)` | 状态退出回调。 |
+| `void OnStateExitHandle(EcsEntity entity, ActorStateType stateType)` | 状态退出回调。 |
 
 ### IStateUpdateHandler
 **继承自:** `IDispatch`
@@ -91,4 +91,4 @@
 
 | 方法签名 | 描述 |
 | :--- | :--- |
-| `void OnStateUpdate(EcsEntity entity)` | 状态更新回调。 |
+| `void OnStateUpdateHandle(EcsEntity entity)` | 状态更新回调。 |

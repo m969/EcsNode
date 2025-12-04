@@ -11,9 +11,9 @@ namespace ECSGame.AchieveModule
     public enum AchieveType
     {
         /// <summary>一次性达成</summary>
-    OneTime,
-    /// <summary>可重复达成</summary>
-    Repeatable
+        OneTime,
+        /// <summary>可重复达成</summary>
+        Repeatable
     }
 
     /// <summary>
@@ -24,8 +24,8 @@ namespace ECSGame.AchieveModule
         /// <summary>未开始</summary>
         NotStarted,
         /// <summary>进行中</summary>
-    InProgress,
-    /// <summary>已完成</summary>
-    Completed
+        InProgress,
+        /// <summary>已完成</summary>
+        Completed
     }
 }

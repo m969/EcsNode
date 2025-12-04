@@ -7,7 +7,7 @@ namespace ECSGame
 {
     public interface IHealthChangeHandler : IDispatch
     {
-        void OnHealthChange(Actor entity, HealthComponent component);
+        void OnHealthChangeHandle(Actor entity, HealthComponent component);
     }
 
     public class HealthSystem : AComponentSystem<Actor, HealthComponent>,
@@ -28,7 +28,7 @@ IAwake<Actor, HealthComponent>
         {
             var healthComp = entity.GetComponent<HealthComponent>();
             healthComp.Health = Math.Clamp(healthComp.Health + value, 0, healthComp.MaxHealth);
-            entity.Dispatch<IHealthChangeHandler>((anySystem) => anySystem.OnHealthChange(entity, healthComp));
+            entity.Dispatch<IHealthChangeHandler>((anySystem) => anySystem.OnHealthChangeHandle(entity, healthComp));
         }
     }
 }

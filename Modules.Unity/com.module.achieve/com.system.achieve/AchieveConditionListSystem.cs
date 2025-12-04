@@ -10,11 +10,7 @@ namespace ECSGame.AchieveModule
     /// </summary>
     public class AchieveConditionListSystem : AComponentSystem<AchieveItem, AchieveConditionListComponent>,
         IAwake<AchieveItem, AchieveConditionListComponent>,
-        IInit<AchieveItem, AchieveConditionListComponent>,
-        IAfterInit<AchieveItem, AchieveConditionListComponent>,
-        IEnable<AchieveItem, AchieveConditionListComponent>,
-        IDisable<AchieveItem, AchieveConditionListComponent>,
-        IDestroy<AchieveItem, AchieveConditionListComponent>
+        IInit<AchieveItem, AchieveConditionListComponent>
     {
         void IAwake<AchieveItem, AchieveConditionListComponent>.Awake(AchieveItem entity, AchieveConditionListComponent component)
         {
@@ -30,11 +26,6 @@ namespace ECSGame.AchieveModule
             CalculateProgress(component);
         }
 
-        void IAfterInit<AchieveItem, AchieveConditionListComponent>.AfterInit(AchieveItem entity, AchieveConditionListComponent component) { }
-        void IEnable<AchieveItem, AchieveConditionListComponent>.Enable(AchieveItem entity, AchieveConditionListComponent component) { }
-        void IDisable<AchieveItem, AchieveConditionListComponent>.Disable(AchieveItem entity, AchieveConditionListComponent component) { }
-        void IDestroy<AchieveItem, AchieveConditionListComponent>.Destroy(AchieveItem entity, AchieveConditionListComponent component) { }
-
         /// <summary>
         /// 初始化达成项条件组件
         /// </summary>
@@ -44,17 +35,49 @@ namespace ECSGame.AchieveModule
             component.ConditionList = new List<AchieveCondition>();
             foreach (var config in conditionConfigs)
             {
-                var condition = entity.AddChild<AchieveCondition>(e =>
+                var condition = new AchieveCondition
                 {
-                    e.ConditionType = config.ConditionType;
-                    e.TargetValue = config.TargetValue;
-                    e.Parameters = config.Parameters;
-                    e.CurrentValue = 0;
-                    e.IsSatisfied = false;
-                });
+                    ConditionType = config.ConditionType,
+                    TargetValue = config.TargetValue,
+                    Parameters = config.Parameters,
+                    CurrentValue = 0,
+                    IsSatisfied = false
+                };
                 component.ConditionList.Add(condition);
             }
             CalculateProgress(component);
+        }
+
+        /// <summary>
+        /// 更新特定条件进度
+        /// </summary>
+        /// <param name="entity">达成项实体</param>
+        /// <param name="conditionIndex">条件索引</param>
+        /// <param name="delta">增加的进度值</param>
+        public static void UpdateConditionProgress(AchieveItem entity, int conditionIndex, int delta)
+        {
+            var component = entity.GetComponent<AchieveConditionListComponent>();
+            if (conditionIndex < 0 || conditionIndex >= component.ConditionList.Count)
+                return;
+
+            var condition = component.ConditionList[conditionIndex];
+            
+            // 更新单个条件
+            condition.CurrentValue += delta;
+            if (condition.CurrentValue >= condition.TargetValue)
+            {
+                condition.CurrentValue = condition.TargetValue;
+                condition.IsSatisfied = true;
+            }
+
+            // 重新计算整体进度
+            CalculateProgress(component);
+
+            // 自动判定完成
+            if (component.IsAllSatisfied && entity.Status != AchieveStatus.Completed)
+            {
+                AchieveItemSystem.UpdateStatus(entity, AchieveStatus.Completed);
+            }
         }
 
         /// <summary>
@@ -80,6 +103,8 @@ namespace ECSGame.AchieveModule
         /// </summary>
         public static bool IsAllSatisfied(AchieveConditionListComponent component)
         {
+            if (component.ConditionList.Count == 0) return false;
+
             foreach (var condition in component.ConditionList)
             {
                 if (!condition.IsSatisfied)

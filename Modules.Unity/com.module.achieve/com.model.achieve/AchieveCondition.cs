@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace ECSGame.AchieveModule
 {
     /// <summary>
-    /// 达成条件实体
+    /// 达成条件数据对象
     /// </summary>
-    public class AchieveCondition : EcsEntity
+    public class AchieveCondition
     {
         /// <summary>条件类型</summary>
         public string ConditionType { get; set; }

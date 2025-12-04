@@ -67,7 +67,7 @@ namespace ECSGame.ActorStateModule
                 stateComponent.CurrentStates[stateType] = specificComponent;
             }
             
-            entity.Dispatch<IStateEnterHandler>(x => x.OnStateEnter(entity, stateType));
+            entity.Dispatch<IStateEnterHandler>(x => x.OnStateEnterHandle(entity, stateType));
         }
 
         private static void ExitState(EcsEntity entity, ActorStateComponent stateComponent, ActorStateType stateType)
@@ -92,7 +92,7 @@ namespace ECSGame.ActorStateModule
 
             stateComponent.CurrentStates.Remove(stateType);
             
-            entity.Dispatch<IStateExitHandler>(x => x.OnStateExit(entity, stateType));
+            entity.Dispatch<IStateExitHandler>(x => x.OnStateExitHandle(entity, stateType));
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace ECSGame.ActorStateModule
                 }
             }
             
-            entity.Dispatch<IStateUpdateHandler>(x => x.OnStateUpdate(entity));
+            entity.Dispatch<IStateUpdateHandler>(x => x.OnStateUpdateHandle(entity));
         }
     }
 }
