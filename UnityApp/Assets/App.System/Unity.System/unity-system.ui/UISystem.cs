@@ -29,7 +29,7 @@ namespace ECSUnity
         public static async ETTask WaitDelay(EcsNode entity, long time)
         {
             //ConsoleLog.Debug("UISystem WaitDelay");
-            await TimerSystem.WaitAsync(entity, time);
+            await TimerSystem.WaitAsync(time);
             //ConsoleLog.Debug("UISystem WaitDelay2");
         }
 

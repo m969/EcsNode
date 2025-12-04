@@ -66,7 +66,6 @@ namespace ECSGame
 
         public void Destroy(Actor actor)
         {
-            ActorListSystem.RemoveActor(actor.Parent, actor);
         }
 
         public void Update(Actor entity)
@@ -116,8 +115,9 @@ namespace ECSGame
 
         public static async ETTask DisposeAfterSeconds(Actor actor, float seconds)
         {
-            await TimerSystem.WaitAsync(actor, (int)(seconds * 1000));
+            await TimerSystem.WaitAsync((int)(seconds * 1000));
             EcsObject.Destroy(actor);
+            ActorListSystem.RemoveActor(actor.Parent, actor);
         }
     }
 }
