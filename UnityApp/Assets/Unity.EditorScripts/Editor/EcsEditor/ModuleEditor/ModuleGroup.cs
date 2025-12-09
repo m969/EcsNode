@@ -79,10 +79,10 @@ namespace ECSEditor
         {
             // 获取模块名称
             string moduleName = ModuleName;
-            string targetModelRoot = Path.Combine(Application.dataPath, "App.Model/Game.Model/module.thirdparty.model");
-            string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/module.thirdparty.system");
-            string assetsModelRoot = Path.Combine("Assets", "App.Model/Game.Model/module.thirdparty.model");
-            string assetsSystemRoot = Path.Combine("Assets", "App.System/Game.System/module.thirdparty.system");
+            string targetModelRoot = Path.Combine(Application.dataPath, "App.Model/Game.Model/base-module.thirdparty.model");
+            string targetSystemRoot = Path.Combine(Application.dataPath, "App.System/Game.System/base-module.thirdparty.system");
+            string assetsModelRoot = Path.Combine("Assets", "App.Model/Game.Model/base-module.thirdparty.model");
+            string assetsSystemRoot = Path.Combine("Assets", "App.System/Game.System/base-module.thirdparty.system");
             // 1. 删除 Assets/Game.Model/thirdparty.model/com.model.** 目录
             string modelDir = Path.Combine(targetModelRoot, $"com.model.{moduleName}");
             if (Directory.Exists(modelDir))
@@ -159,13 +159,13 @@ namespace ECSEditor
 
             string[] modelDirs = Directory.GetDirectories(moduleDir, "com.model.*", SearchOption.TopDirectoryOnly);
             string[] systemDirs = Directory.GetDirectories(moduleDir, "com.system.*", SearchOption.TopDirectoryOnly);
-            CopyDirectorys(Path.Combine(Application.dataPath, "App.Model/Game.Model/module.thirdparty.model"), modelDirs);
-            CopyDirectorys(Path.Combine(Application.dataPath, "App.System/Game.System/module.thirdparty.system"), systemDirs);
+            CopyDirectorys(Path.Combine(Application.dataPath, "App.Model/Game.Model/base-module.thirdparty.model"), modelDirs);
+            CopyDirectorys(Path.Combine(Application.dataPath, "App.System/Game.System/base-module.thirdparty.system"), systemDirs);
 
-            modelDirs = Directory.GetDirectories(moduleDir, "com.view-model.*", SearchOption.TopDirectoryOnly);
-            systemDirs = Directory.GetDirectories(moduleDir, "com.view-system.*", SearchOption.TopDirectoryOnly);
-            CopyDirectorys(Path.Combine(Application.dataPath, "App.Model/Game.ViewModel/module.thirdparty.view-model"), modelDirs);
-            CopyDirectorys(Path.Combine(Application.dataPath, "App.System/Game.ViewSystem/module.thirdparty.view-system"), systemDirs);
+            // modelDirs = Directory.GetDirectories(moduleDir, "com.view-model.*", SearchOption.TopDirectoryOnly);
+            // systemDirs = Directory.GetDirectories(moduleDir, "com.view-system.*", SearchOption.TopDirectoryOnly);
+            // CopyDirectorys(Path.Combine(Application.dataPath, "App.Model/Game.ViewModel/base-module.thirdparty.view-model"), modelDirs);
+            // CopyDirectorys(Path.Combine(Application.dataPath, "App.System/Game.ViewSystem/base-module.thirdparty.view-system"), systemDirs);
 
             Debug.Log($"模块 {ModuleId}@{ModuleVersion} 安装完成");
             AssetDatabase.Refresh();
@@ -283,7 +283,7 @@ namespace ECSEditor
         {
             //Debug.Log("ModuleGroup OnEnable");
             InstalledModuleName2Versions.Clear();
-            string modelDir = Path.Combine(Application.dataPath, $"App.Model/Game.Model/module.thirdparty.model/");
+            string modelDir = Path.Combine(Application.dataPath, $"App.Model/Game.Model/base-module.thirdparty.model/");
             var director = Directory.CreateDirectory(modelDir);
             director.GetDirectories("com.model.*", SearchOption.TopDirectoryOnly).ToList().ForEach(d =>
             {

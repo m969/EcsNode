@@ -37,12 +37,12 @@ namespace ECSUnity
             }
             var canvasObj = modelObj.transform.GetChild(1);
             hudUIComp.HudCanvas = canvasObj.GetComponent<Canvas>();
+            hudUIComp.HealthSlider = hudUIComp.HudCanvas.GetComponentInChildren<UnityEngine.UI.Slider>();
         }
 
         [After(typeof(HealthSystem), nameof(HealthSystem.ChangeHealth))]
         public static void OnChangeHealth(Actor entity, int value)
         {
-            ConsoleLog.Debug("HudUISystem OnChangeHealth");
             var hudUIComp = entity.GetComponent<HudUIComponent>();
             if (hudUIComp == null)
             {
@@ -54,7 +54,6 @@ namespace ECSUnity
                 return;
             }
             hudUIComp.HealthSlider.value = healthComp.Health / (float)healthComp.MaxHealth;
-            ConsoleLog.Debug($"HealthSlider value set to {hudUIComp.HealthSlider.value}");
         }
     }
 }

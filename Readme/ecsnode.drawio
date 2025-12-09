@@ -90,6 +90,23 @@
         <mxCell id="Yw6Le5cZRrDQFrqoSu_l-4" value="com.move.system" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
           <mxGeometry x="610" y="890" width="120" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="L8wKZWC_CCnvn36C9sup-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="f4zyaTDbla738M9cC43T-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1140" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f4zyaTDbla738M9cC43T-3" value="工程师（创作者）" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=3;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="980" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L8wKZWC_CCnvn36C9sup-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="f4zyaTDbla738M9cC43T-4" target="L8wKZWC_CCnvn36C9sup-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4zyaTDbla738M9cC43T-4" value="艺术家" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=3;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="1181" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="L8wKZWC_CCnvn36C9sup-1" value="Demo" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;strokeWidth=3;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="510" width="80" height="80" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

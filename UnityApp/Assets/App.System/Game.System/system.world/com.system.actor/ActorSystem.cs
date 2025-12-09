@@ -6,6 +6,7 @@ using ECSGame.TaskModule;
 using ECSGame.AttackModule;
 using ECSGame.ActorStateModule;
 using ET;
+using ECSGame.ResourceDataModule;
 
 namespace ECSGame
 {
@@ -30,6 +31,7 @@ namespace ECSGame
             actor.AddComponent<CollisionComponent>();
             actor.AddComponent<MoveComponent>();
             actor.AddComponent<FireComponent>();
+            actor.AddComponent<ResourceDataComponent>();
             actor.AddComponent<TaskListComponent>();
             actor.AddComponent<AIComponent>();
             var healthComp = actor.AddComponent<HealthComponent>(beforeAwake: (comp) =>

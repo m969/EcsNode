@@ -243,9 +243,19 @@ namespace ECS
             {
                 return;
             }
-            if (entity.EcsNode.EntityType2Systems.TryGetValue(entity.GetType(), out var systems))
+            if (entity.EcsNode.EntityType2Systems.TryGetValue(typeof(EcsEntity), out var systems1))
             {
-                foreach (var item in systems)
+                foreach (var item in systems1)
+                {
+                    if (item is T eventHandleSystem)
+                    {
+                        action.Invoke(eventHandleSystem);
+                    }
+                }
+            }
+            if (entity.EcsNode.EntityType2Systems.TryGetValue(entity.GetType(), out var systems2))
+            {
+                foreach (var item in systems2)
                 {
                     if (item is T eventHandleSystem)
                     {

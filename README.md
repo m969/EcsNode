@@ -75,7 +75,9 @@
 
 ## AI+ 模块开发流程
 
-基于 `copilot-instruction.md` (自然语言描述的指导文档，适用于 Copilot, Claude, Cursor 等)。
+基于前面清晰规范的 层级模块目录、Ecs模式以及事件机制，使用AI生成可维护可扩展的功能模块。
+
+基于 `copilot-instruction.md` (自然语言描述的说明文档，适用于 Copilot, Claude, Cursor 等)。
 
 - **核心文档**:
   - `require-documentation.md` (需求文档)

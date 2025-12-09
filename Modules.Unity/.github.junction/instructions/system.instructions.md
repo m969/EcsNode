@@ -22,6 +22,10 @@ public interface IStateEnterHandler : IDispatch
 {
     void OnStateEnterHandle(EcsEntity entity, int param);
 }
+public interface IEnterHandler : IDispatch
+{
+    void OnEnterHandle(EcsComponent component, int param);
+}
 ```
 - 为遵循开闭原则和依赖倒置原则，可扩展的系统功能应提供事件接口派发到外部由开发者自定义扩展逻辑
 
