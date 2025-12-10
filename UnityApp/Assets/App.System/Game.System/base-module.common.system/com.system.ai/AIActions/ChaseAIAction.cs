@@ -16,8 +16,13 @@ namespace ECSGame
             var target = ChaseSystem.GetCurrentTarget(aiNode.Entity);
             if (target == null)
             {
-                ConsoleLog.Error("ChaseAIAction Awake: No target to chase");
-                return;
+                if (AppStatic.OtherActor == null)
+                {
+                    aiNode.StartAction<IdleAIAction>();
+                    return;
+                }
+                ChaseSystem.SetCurrentTarget(aiNode.Entity, AppStatic.OtherActor);
+                target = AppStatic.OtherActor;
             }
             ChaseSystem.StartChase(aiNode.Entity);
             var direction = TSVector.Normalize(TransformSystem.GetPosition(target) - TransformSystem.GetPosition(aiNode.Entity));

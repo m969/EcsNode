@@ -24,7 +24,7 @@ applyTo: "design-documentation.md"
     - Dispatch<T>((T system) => system.Handle(entity, a))方法，用于分发系统事件。
         - 例如：
             ```csharp
-            entity.Dispatch<IOnStartBuild>((system) => system.OnStartBuild(entity, count));
+            entity.Dispatch<IStartBuildHandler>((system) => system.OnStartBuildHandle(entity, count));
             ```
 
 - 组件基类 EcsComponent：
@@ -93,6 +93,6 @@ using System.Collections.Generic;
 - 其他类型补充
     - 流程节点派发接口补充（方便外部监听扩展，例如其他模块依赖或视图刷新，一个节点一个接口，方法命名以On开头，没有需求则留空）
         - 为遵循开闭原则和依赖倒置原则，可扩展的系统功能应提供节点接口派发到外部由开发者自定义扩展逻辑
-        - 例如：ITaskActivated：void OnTaskActivated(int taskId)，节点派发接口继承 `IDispatch`
+        - 例如：ITaskActivatedHandler：void OnTaskActivatedHandle(int taskId)，节点派发接口继承 `IDispatch`
     - 基础数据类型补充（没有需求则留空）
     - 枚举补充（没有需求则留空）

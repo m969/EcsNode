@@ -47,6 +47,18 @@ namespace ECSGame
             }
         }
 
+        [After(typeof(MoveSystem), nameof(MoveSystem.StartMove))]
+        public static void OnStartMove(EcsEntity entity)
+        {
+            Play(entity, AnimationState.Walk);
+        }
+
+        [After(typeof(MoveSystem), nameof(MoveSystem.StopMove))]
+        public static void OnStopMove(EcsEntity entity)
+        {
+            Play(entity, AnimationState.Idle);
+        }
+
         [After(typeof(AISystem), nameof(AISystem.StartNode))]
         public static void OnStartNode(AINode aiNode)
         {

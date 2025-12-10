@@ -17,7 +17,6 @@ IDestroy<EcsEntity, ModelViewComponent>
 
         public void Destroy(EcsEntity entity, ModelViewComponent component)
         {
-            ConsoleLog.Error($"Destroy ModelViewComponent {entity.Id}");
             if (component.ModelObj != null)
             {
                 GameObject.Destroy(component.ModelObj.gameObject);
