@@ -45,7 +45,7 @@ IDestroy<EcsEntity, ModelViewComponent>
             modelObj.transform.position = TransformSystem.GetPosition(entity).ToVector();
             modelObj.transform.rotation = TransformSystem.GetRotation(entity).ToQuaternion();
         }
-
+        
         public static void Update(EcsEntity entity)
         {
             if (entity.TryGetComponent<ModelViewComponent>(out var component) == false)

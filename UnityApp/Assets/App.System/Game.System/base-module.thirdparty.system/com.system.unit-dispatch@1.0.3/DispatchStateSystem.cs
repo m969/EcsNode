@@ -6,19 +6,8 @@ namespace ECSGame.UnitDispatchModule
     /// <summary>
     /// 基于 DispatchStateComponent 的运行时 Tick 与规则校验系统。
     /// </summary>
-    public class DispatchStateSystem : AComponentSystem<EcsEntity, DispatchStateComponent>,
-        IAwake<EcsEntity, DispatchStateComponent>, IInit<EcsEntity, DispatchStateComponent>, IAfterInit<EcsEntity, DispatchStateComponent>,
-        IEnable<EcsEntity, DispatchStateComponent>, IDisable<EcsEntity, DispatchStateComponent>, IDestroy<EcsEntity, DispatchStateComponent>
+    public class DispatchStateSystem : AComponentSystem<EcsEntity, DispatchStateComponent>
     {
-        #region 生命周期 (空实现)
-        public void Awake(EcsEntity entity, DispatchStateComponent c) { }
-        public void Init(EcsEntity entity, DispatchStateComponent c) { }
-        public void AfterInit(EcsEntity entity, DispatchStateComponent c) { }
-        public void Enable(EcsEntity entity, DispatchStateComponent c) { }
-        public void Disable(EcsEntity entity, DispatchStateComponent c) { }
-        public void Destroy(EcsEntity entity, DispatchStateComponent c) { }
-        #endregion
-
         /// <summary>
         /// 每帧调用以处理超时逻辑。
         /// 说明：组件系统内仅读取自身组件，无跨组件依赖。

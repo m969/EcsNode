@@ -7,7 +7,7 @@ namespace ECSGame.UnitDispatchModule.Tests
     [TestFixture]
     public class UnitDispatchModuleTests
     {
-    private EcsNode ecsNode = null!;
+        private EcsNode ecsNode = null!;
 
         public class TestEcsNode : EcsNode
         {
@@ -21,135 +21,130 @@ namespace ECSGame.UnitDispatchModule.Tests
         }
 
         [Test]
-        public void Create_AddsDispatchUnitComponent_WithDefaults()
+        public void Create_AddsDispatchAgentComponent_WithDefaults()
         {
             var entity = ecsNode.AddChild<EcsEntity>(e => { });
 
-            var comp = UnitDispatcherSystem.Create(entity, 42);
+            var agent = entity.AddComponent<DispatchAgentComponent>(c => 
+            {
+                c.ConfigId = 42;
+            });
 
-            Assert.That(comp, Is.Not.Null);
-            Assert.That(comp.ConfigId, Is.EqualTo(42));
-            Assert.That(comp.DispatchCount, Is.EqualTo(0));
-            Assert.That(comp.TargetEntityId, Is.EqualTo(0));
-            Assert.That(comp.Timeout, Is.EqualTo(0f));
+            Assert.That(agent, Is.Not.Null);
+            Assert.That(agent.ConfigId, Is.EqualTo(42));
+            Assert.That(agent.CurrentDispatchCount, Is.EqualTo(0));
+            Assert.That(agent.TargetEntityId, Is.EqualTo(0));
+            Assert.That(agent.RemainingTimeout, Is.EqualTo(0f));
+            Assert.That(agent.State, Is.EqualTo(DispatchState.Idle));
         }
 
         [Test]
         public void StartDispatch_Succeeds_WhenIdle()
         {
             var entity = ecsNode.AddChild<EcsEntity>(e => { });
-            var unit = UnitDispatcherSystem.Create(entity, 1);
-            entity.AddComponent<DispatchStateComponent>(c =>
+            var agent = entity.AddComponent<DispatchAgentComponent>(c =>
             {
+                c.ConfigId = 1;
                 c.State = DispatchState.Idle;
-                c.TargetEntityId = 0;
-                c.RemainingTimeout = 0f;
             });
 
-            unit.TargetEntityId = 100L;
-            unit.Timeout = 5f;
-            var ok = UnitDispatcherSystem.StartDispatch(unit, 2);
+            long targetId = 100L;
+            float timeout = 5f;
+            int count = 2;
+
+            var ok = DispatchAgentSystem.StartDispatch(entity, targetId, count, timeout);
 
             Assert.That(ok, Is.True);
-            Assert.That(unit.DispatchCount, Is.EqualTo(2));
-            Assert.That(unit.TargetEntityId, Is.EqualTo(100L));
-            Assert.That(unit.Timeout, Is.EqualTo(5f));
-
-            var state = entity.GetComponent<DispatchStateComponent>();
-            Assert.That(state.State, Is.EqualTo(DispatchState.Dispatching));
-            Assert.That(state.TargetEntityId, Is.EqualTo(100L));
-            Assert.That(state.RemainingTimeout, Is.EqualTo(5f));
+            Assert.That(agent.CurrentDispatchCount, Is.EqualTo(count));
+            Assert.That(agent.TargetEntityId, Is.EqualTo(targetId));
+            Assert.That(agent.RemainingTimeout, Is.EqualTo(timeout));
+            Assert.That(agent.State, Is.EqualTo(DispatchState.Dispatching));
         }
 
         [Test]
         public void StartDispatch_Fails_WhenAlreadyDispatching()
         {
             var entity = ecsNode.AddChild<EcsEntity>(e => { });
-            var unit = UnitDispatcherSystem.Create(entity, 1);
-            entity.AddComponent<DispatchStateComponent>(c =>
+            var agent = entity.AddComponent<DispatchAgentComponent>(c =>
             {
+                c.ConfigId = 1;
                 c.State = DispatchState.Dispatching;
                 c.TargetEntityId = 99;
                 c.RemainingTimeout = 10f;
             });
 
-            unit.TargetEntityId = 200L;
-            unit.Timeout = 3f;
-            var ok = UnitDispatcherSystem.StartDispatch(unit, 1);
+            var ok = DispatchAgentSystem.StartDispatch(entity, 200L, 1, 3f);
 
             Assert.That(ok, Is.False);
-            // 失败时不应覆盖执行实体既有数据
-            Assert.That(unit.TargetEntityId, Is.EqualTo(200L));
+            // 失败时不应修改既有数据
+            Assert.That(agent.TargetEntityId, Is.EqualTo(99));
+            Assert.That(agent.State, Is.EqualTo(DispatchState.Dispatching));
         }
 
         [Test]
         public void CancelDispatch_ClearsState_And_SetsCancelled()
         {
             var entity = ecsNode.AddChild<EcsEntity>(e => { });
-            var exec = UnitDispatcherSystem.Create(entity, 1);
-            entity.AddComponent<DispatchStateComponent>(c =>
+            var agent = entity.AddComponent<DispatchAgentComponent>(c =>
             {
                 c.State = DispatchState.Dispatching;
                 c.TargetEntityId = 55;
                 c.RemainingTimeout = 12f;
             });
 
-            UnitDispatcherSystem.CancelDispatch(exec);
+            DispatchAgentSystem.CancelDispatch(entity);
 
-            var state = entity.GetComponent<DispatchStateComponent>();
-            Assert.That(state.State, Is.EqualTo(DispatchState.Cancelled));
-            Assert.That(state.TargetEntityId, Is.EqualTo(0));
-            Assert.That(state.RemainingTimeout, Is.EqualTo(0f));
+            Assert.That(agent.State, Is.EqualTo(DispatchState.Cancelled));
+            Assert.That(agent.TargetEntityId, Is.EqualTo(0));
+            Assert.That(agent.RemainingTimeout, Is.EqualTo(0));
         }
 
         [Test]
-        public void CompleteDispatch_SetsCompleted_OnlyWhenDispatching()
+        public void CompleteDispatch_SetsCompleted()
         {
             var entity = ecsNode.AddChild<EcsEntity>(e => { });
-            var exec2 = UnitDispatcherSystem.Create(entity, 1);
-            entity.AddComponent<DispatchStateComponent>(c =>
+            var agent = entity.AddComponent<DispatchAgentComponent>(c =>
             {
                 c.State = DispatchState.Dispatching;
-                c.TargetEntityId = 77;
-                c.RemainingTimeout = 3f;
+                c.TargetEntityId = 55;
             });
 
-            UnitDispatcherSystem.CompleteDispatch(exec2);
+            DispatchAgentSystem.CompleteDispatch(entity);
 
-            var state = entity.GetComponent<DispatchStateComponent>();
-            Assert.That(state.State, Is.EqualTo(DispatchState.Completed));
-            Assert.That(state.TargetEntityId, Is.EqualTo(0));
-            Assert.That(state.RemainingTimeout, Is.EqualTo(0f));
+            Assert.That(agent.State, Is.EqualTo(DispatchState.Completed));
+            Assert.That(agent.TargetEntityId, Is.EqualTo(0));
         }
 
         [Test]
-        public void Tick_TriggersTimeout_WhenRemainingTimeoutExpires()
+        public void Tick_UpdatesTimeout()
         {
             var entity = ecsNode.AddChild<EcsEntity>(e => { });
-            UnitDispatcherSystem.Create(entity, 1);
-            entity.AddComponent<DispatchStateComponent>(c =>
+            var agent = entity.AddComponent<DispatchAgentComponent>(c =>
             {
                 c.State = DispatchState.Dispatching;
-                c.TargetEntityId = 88;
-                c.RemainingTimeout = 1.0f;
+                c.RemainingTimeout = 10f;
             });
 
-            DispatchStateSystem.Tick(entity, 1.5f);
+            DispatchAgentSystem.Tick(entity, 1f);
 
-            var state = entity.GetComponent<DispatchStateComponent>();
-            Assert.That(state.State, Is.EqualTo(DispatchState.Timeout));
-            Assert.That(state.RemainingTimeout, Is.LessThanOrEqualTo(0f));
+            Assert.That(agent.RemainingTimeout, Is.EqualTo(9f));
+            Assert.That(agent.State, Is.EqualTo(DispatchState.Dispatching));
         }
 
         [Test]
-        public void CanDispatch_ReturnsFalse_ForNonPositiveCount()
+        public void Tick_TriggersTimeout_WhenZero()
         {
             var entity = ecsNode.AddChild<EcsEntity>(e => { });
-            entity.AddComponent<DispatchRuleComponent>(c => { c.ConfigId = 1; });
+            var agent = entity.AddComponent<DispatchAgentComponent>(c =>
+            {
+                c.State = DispatchState.Dispatching;
+                c.RemainingTimeout = 0.5f;
+            });
 
-            Assert.That(DispatchStateSystem.CanDispatch(entity, 0), Is.False);
-            Assert.That(DispatchStateSystem.CanDispatch(entity, -1), Is.False);
-            Assert.That(DispatchStateSystem.CanDispatch(entity, 1), Is.True);
+            DispatchAgentSystem.Tick(entity, 1f);
+
+            Assert.That(agent.RemainingTimeout, Is.LessThanOrEqualTo(0));
+            Assert.That(agent.State, Is.EqualTo(DispatchState.Timeout));
         }
     }
 }

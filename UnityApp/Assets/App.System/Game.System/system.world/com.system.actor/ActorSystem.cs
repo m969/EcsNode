@@ -105,8 +105,6 @@ namespace ECSGame
             if (stateType == ActorStateType.Death)
             {
                 // 处理角色死亡逻辑
-                // 停止所有动作，播放死亡动画等
-                AnimationSystem.Play(entity as Actor, AnimationState.Die);
                 DisposeAfterSeconds(entity as Actor, 3).Coroutine();
                 EventBus.Send(new ActorDeathEvent
                 {

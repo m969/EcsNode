@@ -14,5 +14,6 @@ namespace ECSUnity
         public GObject HudObject { get; set; }
         public Canvas HudCanvas { get; set; }
         public Slider HealthSlider { get; set; }
+        public GameObject DamagePopupPrefab { get; set; }
     }
 }

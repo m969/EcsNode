@@ -52,7 +52,7 @@ namespace ECSGame
 
             // 创建怪物单位派遣实体
             var monsterDispatcher = UnitDispatcherSystem.Create(world, 1001);
-            monsterDispatcher.Timeout = Time.time + 5f; // 5秒后超时
+            monsterDispatcher.Timeout = 5f; // 5秒后超时
             monsterDispatcher.AddComponent<DispatchRuleComponent>();
             monsterDispatcher.AddComponent<DispatchStateComponent>();
             UnitDispatcherListSystem.AddDispatcher(world, monsterDispatcher);

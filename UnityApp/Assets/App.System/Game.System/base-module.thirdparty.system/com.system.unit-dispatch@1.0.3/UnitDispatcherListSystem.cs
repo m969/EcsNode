@@ -7,19 +7,8 @@ namespace ECSGame.UnitDispatchModule
     /// <summary>
     /// UnitDispatcher 列表组件的系统实现，提供幂等的增删查遍历方法。
     /// </summary>
-    public class UnitDispatcherListSystem : AComponentSystem<EcsEntity, UnitDispatcherListComponent>,
-        IAwake<EcsEntity, UnitDispatcherListComponent>, IInit<EcsEntity, UnitDispatcherListComponent>, IAfterInit<EcsEntity, UnitDispatcherListComponent>,
-        IEnable<EcsEntity, UnitDispatcherListComponent>, IDisable<EcsEntity, UnitDispatcherListComponent>, IDestroy<EcsEntity, UnitDispatcherListComponent>
+    public class UnitDispatcherListSystem : AComponentSystem<EcsEntity, UnitDispatcherListComponent>
     {
-        #region 生命周期 (空实现)
-        public void Awake(EcsEntity entity, UnitDispatcherListComponent c) { }
-        public void Init(EcsEntity entity, UnitDispatcherListComponent c) { }
-        public void AfterInit(EcsEntity entity, UnitDispatcherListComponent c) { }
-        public void Enable(EcsEntity entity, UnitDispatcherListComponent c) { }
-        public void Disable(EcsEntity entity, UnitDispatcherListComponent c) { }
-        public void Destroy(EcsEntity entity, UnitDispatcherListComponent c) { }
-        #endregion
-
         /// <summary>
         /// 向列表中添加一个 UnitDispatcher 实体（幂等）。
         /// </summary>

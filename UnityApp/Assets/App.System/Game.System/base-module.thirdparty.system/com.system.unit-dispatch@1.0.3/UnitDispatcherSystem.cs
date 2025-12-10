@@ -5,19 +5,8 @@ namespace ECSGame.UnitDispatchModule
     /// <summary>
     /// UnitDispatcher 实体的生命周期系统与业务静态方法。
     /// </summary>
-    public partial class UnitDispatcherSystem : AEntitySystem<UnitDispatcher>,
-        IAwake<UnitDispatcher>, IInit<UnitDispatcher>, IAfterInit<UnitDispatcher>,
-        IEnable<UnitDispatcher>, IDisable<UnitDispatcher>, IDestroy<UnitDispatcher>
+    public partial class UnitDispatcherSystem : AEntitySystem<UnitDispatcher>
     {
-        #region 生命周期 (空实现 - 业务在静态方法中)
-        public void Awake(UnitDispatcher entity) { }
-        public void Init(UnitDispatcher entity) { }
-        public void AfterInit(UnitDispatcher entity) { }
-        public void Enable(UnitDispatcher entity) { }
-        public void Disable(UnitDispatcher entity) { }
-        public void Destroy(UnitDispatcher entity) { }
-        #endregion
-
         /// <summary>
         /// 创建并附加一个 UnitDispatcher 实体作为宿主实体的子实体。
         /// </summary>

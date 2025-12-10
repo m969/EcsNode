@@ -1,4 +1,5 @@
 ﻿using ECS;
+using ECSGame.ActorStateModule;
 using ECSGame.Module.Building;
 using ECSUnity;
 using System.Collections;
@@ -11,7 +12,8 @@ namespace ECSGame
         IAwake<Actor>,
         IInit<Actor>,
         IAfterInit<Actor>,
-        IUpdate<Actor>
+        IUpdate<Actor>,
+        IStateEnterHandler
     {
         public void Awake(Actor entity)
         {
@@ -53,6 +55,24 @@ namespace ECSGame
         public void Update(Actor entity)
         {
             EntityViewSystem.Update(entity);
+        }
+
+
+        public static void PlayDieTween(EcsEntity entity)
+        {
+            var modelObj = ModelViewSystem.GetModel(entity);
+            modelObj.transform.GetChild(0).GetComponent<MoveTween>().enabled = true;
+        }
+
+        public void OnStateEnterHandle(EcsEntity entity, ActorStateType stateType)
+        {
+            if (stateType == ActorStateType.Death)
+            {
+                // 处理角色死亡逻辑
+                // 停止所有动作，播放死亡动画等
+                AnimationSystem.Play(entity as Actor, AnimationState.Die);
+                PlayDieTween(entity);
+            }
         }
     }
 }
