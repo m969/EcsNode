@@ -58,6 +58,9 @@ MonoBehaviour:
   - ModuleId: com.module.task
     ModuleVersion: 1.0.0
     Dependencies: []
+  - ModuleId: com.module.true-game-demo
+    ModuleVersion: 1.0.0
+    Dependencies: []
   - ModuleId: com.module.unit-dispatch
-    ModuleVersion: 1.0.3
+    ModuleVersion: 1.0.4
     Dependencies: []

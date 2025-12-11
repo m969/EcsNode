@@ -113,6 +113,8 @@
 - `Modules.Unity/com.module.chase` (追逐模块)
 - `Modules.Unity/com.module.actor-state` (角色状态模块)
 
+<img src="Readme/SLG demo.gif" width="100%">
+
 ### 帧同步 Demo
 - **方案一**: 仅预测移动，冲突即重置回滚重新预测（已实现）。
 - **方案二**: 预测碰撞事件缓存，先做特效表现，等待权威帧验证（未实现）。
