@@ -103,7 +103,7 @@ namespace ECS
         {
             Instance.ForeachNodeFromFirst((ecsNode) =>
             {
-                ecsNode.Dispatch<IEventDispatch<T>>(x => x.OnHandleEvent(ecsNode, eventObject));
+                ecsNode.Dispatch<IEventHandle<T>>(x => x.OnHandleEvent(ecsNode, eventObject));
             });
         }
     }

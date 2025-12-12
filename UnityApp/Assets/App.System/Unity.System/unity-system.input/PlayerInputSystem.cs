@@ -14,7 +14,7 @@ namespace ECSUnity
     public class PlayerInputSystem : AEntitySystem<PlayerInput>,
         IInit<PlayerInput>,
         IUpdate<PlayerInput>,
-        IEventDispatch<InputEvent>
+        IEventHandle<InputEvent>
     {
         public void Init(PlayerInput playerInput)
         {

@@ -43,25 +43,16 @@ namespace GameUI
         {
             ConsoleLog.Debug("Build Clicked");
             var world = EcsDomain.World;
-            var gridPlane = GridPlaneListSystem.GetGridPlaneByConfigId(world, 1001);
-            var selectedCellId = GridPlaneSelectionSystem.GetSelectCell(gridPlane);
-            var gridCell = GridCellListSystem.GetCellById(gridPlane, selectedCellId);
-            var position = new ECSGame.Module.Building.Vector2Int(gridCell.X, gridCell.Y);
-            var building = BuildingSystem.Create(world, 1, position, EcsDomain.Player.Id);
-            building.AddComponent<TransformComponent>();
-            building.AddComponent<UnitDispatcherListComponent>();
-            TransformSystem.ChangePosition(building, new TrueSync.TSVector(position.x, 0, position.y));
-            building.Init();
+            var building = WorldSystem.CreateBuildingFromGrid(world);
             CurrentBuildingId = building.Id;
 
             // 创建英雄单位派遣实体
-            var heroDispatcher = UnitDispatcherSystem.Create(building, 1002);
-            heroDispatcher.Timeout = Time.time + 5f; // 5秒后超时
-            heroDispatcher.AddComponent<DispatchRuleComponent>();
-            heroDispatcher.AddComponent<DispatchStateComponent>();
-            UnitDispatcherListSystem.AddDispatcher(building, heroDispatcher);
-            //UnitDispatcherSystem.StartDispatch(heroDispatcher, 1);
-            CurrentDispatcherId = heroDispatcher.Id;
+            // var heroDispatcher = UnitDispatcherSystem.Create(building, 1002);
+            // heroDispatcher.Timeout = Time.time + 5f; // 5秒后超时
+            // heroDispatcher.AddComponent<DispatchRuleComponent>();
+            // heroDispatcher.AddComponent<DispatchStateComponent>();
+            // UnitDispatcherListSystem.AddDispatcher(building, heroDispatcher);
+            // CurrentDispatcherId = heroDispatcher.Id;
         }
 
         [AfterClick(nameof(m_nDispatchBtn))]
@@ -70,8 +61,9 @@ namespace GameUI
             ConsoleLog.Debug("StartDispatch Clicked");
             var world = EcsDomain.World;
             var building = world.GetChild<BuildingEntity>(CurrentBuildingId);
-            var heroDispatcher = UnitDispatcherListSystem.GetDispatcher(building, CurrentDispatcherId) as UnitDispatcher;
-            UnitDispatcherSystem.StartDispatch(heroDispatcher, 1);
+            DispatchAgentSystem.StartDispatch(building, 1002, 1, 5f);
+            // var heroDispatcher = UnitDispatcherListSystem.GetDispatcher(building, CurrentDispatcherId) as UnitDispatcher;
+            // UnitDispatcherSystem.StartDispatch(heroDispatcher, 1);
         }
     }
 }

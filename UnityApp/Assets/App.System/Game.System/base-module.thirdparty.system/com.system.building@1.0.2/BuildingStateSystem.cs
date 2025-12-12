@@ -5,17 +5,8 @@ namespace ECSGame.Module.Building
     /// <summary>
     /// 建筑状态系统：推进状态与完成回调。
     /// </summary>
-    public class BuildingStateSystem : AComponentSystem<BuildingEntity, BuildingStateComponent>,
-        IAwake<BuildingEntity, BuildingStateComponent>, IInit<BuildingEntity, BuildingStateComponent>,
-        IAfterInit<BuildingEntity, BuildingStateComponent>, IEnable<BuildingEntity, BuildingStateComponent>,
-        IDisable<BuildingEntity, BuildingStateComponent>, IDestroy<BuildingEntity, BuildingStateComponent>
+    public partial class BuildingStateSystem : AComponentSystem<BuildingEntity, BuildingStateComponent>
     {
-    public void Awake(BuildingEntity entity, BuildingStateComponent component) { }
-    public void Init(BuildingEntity entity, BuildingStateComponent component) { }
-    public void AfterInit(BuildingEntity entity, BuildingStateComponent component) { }
-    public void Enable(BuildingEntity entity, BuildingStateComponent component) { }
-    public void Disable(BuildingEntity entity, BuildingStateComponent component) { }
-    public void Destroy(BuildingEntity entity, BuildingStateComponent component) { }
         /// <summary>
         /// 定时推进状态（建造/升级进度等）
         /// </summary>

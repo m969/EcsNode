@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ECSGame
 {
     public class TrueWorldViewSystem : AEntitySystem<TrueWorld>,
-        IEventDispatch<CollisionEvent>
+        IEventHandle<CollisionEvent>
     {
         public void OnHandleEvent(EcsNode ecsNode, CollisionEvent eventContext)
         {

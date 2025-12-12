@@ -13,7 +13,7 @@ using ECSGame;
 namespace ECSUnity
 {
     public partial class UISystem : AEntitySystem<UIStage>,
-        IEventDispatch<UIShowWindowEvent>
+        IEventHandle<UIShowWindowEvent>
     {
         private IUIWindow Show(UIStage uiStage, Type type, Action<IUIWindow> beforeAwake = null)
         {

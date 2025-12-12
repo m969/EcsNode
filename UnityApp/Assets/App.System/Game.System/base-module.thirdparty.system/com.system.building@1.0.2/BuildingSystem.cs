@@ -5,19 +5,8 @@ namespace ECSGame.Module.Building
     /// <summary>
     /// 建筑系统：通用业务入口与创建。
     /// </summary>
-    public class BuildingSystem : AEntitySystem<BuildingEntity>,
-        IAwake<BuildingEntity>, IInit<BuildingEntity>, IAfterInit<BuildingEntity>,
-        IEnable<BuildingEntity>, IDisable<BuildingEntity>, IDestroy<BuildingEntity>
+    public partial class BuildingSystem : AEntitySystem<BuildingEntity>
     {
-        // 生命周期由框架调用，这里不放业务数据
-
-        public void Awake(BuildingEntity entity) { }
-        public void Init(BuildingEntity entity) { }
-        public void AfterInit(BuildingEntity entity) { }
-        public void Enable(BuildingEntity entity) { }
-        public void Disable(BuildingEntity entity) { }
-        public void Destroy(BuildingEntity entity) { }
-
         /// <summary>
         /// 创建建筑实体并挂载必要组件
         /// </summary>

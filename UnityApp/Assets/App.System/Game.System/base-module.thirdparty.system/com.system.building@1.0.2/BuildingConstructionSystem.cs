@@ -5,16 +5,8 @@ namespace ECSGame.Module.Building
     /// <summary>
     /// 建筑建造系统：处理建造、升级、取消与拆除。
     /// </summary>
-    public class BuildingConstructionSystem : AEntitySystem<BuildingEntity>,
-        IAwake<BuildingEntity>, IInit<BuildingEntity>, IAfterInit<BuildingEntity>,
-        IEnable<BuildingEntity>, IDisable<BuildingEntity>, IDestroy<BuildingEntity>
+    public partial class BuildingConstructionSystem : AEntitySystem<BuildingEntity>
     {
-    public void Awake(BuildingEntity entity) { }
-    public void Init(BuildingEntity entity) { }
-    public void AfterInit(BuildingEntity entity) { }
-    public void Enable(BuildingEntity entity) { }
-    public void Disable(BuildingEntity entity) { }
-    public void Destroy(BuildingEntity entity) { }
         /// <summary>
         /// 发起建造，targetLevel为目标等级
         /// </summary>
