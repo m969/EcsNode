@@ -11,5 +11,7 @@ namespace ECSGame
         }
 
         public int Type { get; set; }
+
+        public long ActorId { get; set; }
     }
 }

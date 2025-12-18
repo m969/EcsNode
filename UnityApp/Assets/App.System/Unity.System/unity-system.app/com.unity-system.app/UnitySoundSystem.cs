@@ -13,8 +13,8 @@ namespace ECSUnity
             var systemAssembly = app.GetComponent<ReloadComponent>().SystemAssembly;
             var soundMaster = SoundSystem.Create(systemAssembly);
             soundMaster.Init();
-            EcsDomain.AddNode(soundMaster);
-            EcsDomain.SoundMaster = soundMaster;
+            // EcsDomain.AddNode(soundMaster);
+            // EcsDomain.SoundMaster = soundMaster;
         }
     }
 }

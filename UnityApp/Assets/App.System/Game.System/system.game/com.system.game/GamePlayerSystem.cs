@@ -13,7 +13,8 @@ namespace ECSGame
         public void Init(Game game, GamePlayerComponent component)
         {
             var systemAssembly = game.GetComponent<ReloadComponent>().SystemAssembly;
-            var player = DomainSystem.AddPlayer(systemAssembly);
+            var player = PlayerSystem.Create(systemAssembly);
+            player.Init();
             component.Player = player;
         }
     }

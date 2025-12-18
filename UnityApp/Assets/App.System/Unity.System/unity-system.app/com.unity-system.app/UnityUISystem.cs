@@ -14,8 +14,8 @@ namespace ECSUnity
             var systemAssembly = app.GetComponent<ReloadComponent>().SystemAssembly;
             var uiStage = UISystem.Create(systemAssembly);
             uiStage.Init();
-            EcsDomain.AddNode(uiStage);
-            EcsDomain.UIStage = uiStage;
+            // EcsDomain.AddNode(uiStage);
+            // EcsDomain.UIStage = uiStage;
 
             var groot = GRoot.inst;
             groot.SetContentScaleFactor(1280, 720);

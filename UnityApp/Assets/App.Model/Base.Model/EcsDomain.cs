@@ -56,24 +56,24 @@ namespace ECS
         public static Dictionary<ushort, EcsNode> EcsNodes { get; set; } = new();
         public static Dictionary<Type, List<IEventRun>> EventHandlers { get; set; } = new();
 
-        public static Game Game { get; set; }
-        public static World World { get; set; }
-        public static TrueWorld TrueWorld { get; set; }
+        // public static Game Game { get; set; }
+        // public static World World { get; set; }
+        // public static TrueWorld TrueWorld { get; set; }
         public static UIStage UIStage { get; set; }
         public static SoundMaster SoundMaster { get; set; }
         public static PlayerInput PlayerInput { get; set; }
         public static Player Player { get; set; }
 
 
-        public static void AddNode(EcsNode node)
-        {
-            EcsNodes.Add(node.EcsTypeId, node);
-        }
+        // public static void AddNode(EcsNode node)
+        // {
+        //     EcsNodes.Add(node.EcsTypeId, node);
+        // }
 
-        public static EcsNode GetNode(ushort typeId)
-        {
-            EcsNodes.TryGetValue(typeId, out var ecsNode);
-            return ecsNode;
-        }
+        // public static EcsNode GetNode(ushort typeId)
+        // {
+        //     EcsNodes.TryGetValue(typeId, out var ecsNode);
+        //     return ecsNode;
+        // }
     }
 }

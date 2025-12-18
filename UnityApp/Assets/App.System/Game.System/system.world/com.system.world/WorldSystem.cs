@@ -18,8 +18,10 @@ namespace ECSGame
     public class WorldSystem : AEntitySystem<World>,
         IInit<World>,
         IUpdate<World>,
-        IOnDispatchTimeout,
-        IEventHandle<ActorDeathEvent>
+        IOnDispatchStarted,
+        IEventHandle<ActorDeathEvent>,
+        IEventHandle<PlayerStartDispatchEvent>,
+        IEventHandle<PlayerStartBuildEvent>
     {
         public static World Create(Assembly systemAssembly)
         {
@@ -52,14 +54,6 @@ namespace ECSGame
             GridPlaneListSystem.AddGridPlane(world, gridPlane);
             gridPlane.Init();
 
-            // 创建怪物单位派遣实体
-            // var monsterDispatcher = 
-            // monsterDispatcher.Timeout = 5f; // 5秒后超时
-            // monsterDispatcher.AddComponent<DispatchRuleComponent>();
-            // monsterDispatcher.AddComponent<DispatchStateComponent>();
-            // UnitDispatcherListSystem.AddDispatcher(world, monsterDispatcher);
-            // UnitDispatcherSystem.StartDispatch(monsterDispatcher, 1);
-            // AppStatic.MonsterDispatcher = monsterDispatcher;
             DispatchAgentSystem.StartDispatch(world, 1, 1, 5f);
         }
 
@@ -82,34 +76,33 @@ namespace ECSGame
             DispatchAgentSystem.Tick(entity, AppStatic.DeltaTimeSeconds);
         }
 
-        public void OnDispatchTimeout(EcsEntity entity)
+        public void OnDispatchStarted(EcsEntity entity, int count)
         {
-            ConsoleLog.Debug($"OnDispatchTimeout: EntityId={entity.Id}");
+            ConsoleLog.Debug($"WorldSystem OnDispatchStarted");
             var dispatcher = entity.GetComponent<DispatchAgentComponent>();
-            if (dispatcher.ConfigId == 1001)
-            {
-                var world = entity.As<World>();
+            var world = entity.As<World>();
 
-                var gridPlane = GridPlaneListSystem.GetGridPlaneByConfigId(world, 1002);
-                var gridCell = GridCellListSystem.GetCell(gridPlane, 1, 1);
-                var gridCellPos = new TrueSync.TSVector(gridCell.X, 0, gridCell.Y) + TransformSystem.GetPosition(gridPlane);
+            var gridPlane = GridPlaneListSystem.GetGridPlaneByConfigId(world, 1002);
+            var gridCell = GridCellListSystem.GetCell(gridPlane, 1, 1);
+            var gridCellPos = new TrueSync.TSVector(gridCell.X, 0, gridCell.Y) + TransformSystem.GetPosition(gridPlane);
 
-                var actor = ActorSystem.Create(world, world.NewEntityId());
-                actor.Type = ActorType.Monster;
-                ActorListSystem.AddActor(world, actor);
-                TransformSystem.ChangePosition(actor, gridCellPos);
-                ConsoleLog.Debug($"gridCellPos1={gridCellPos}");
-                CollisionSystem.SetLayer(actor, 1);
-                actor.Init();
-                AppStatic.OtherActor = actor;
+            var actor = ActorSystem.Create(world, world.NewEntityId());
+            actor.Type = ActorType.Monster;
+            ActorListSystem.AddActor(world, actor);
+            TransformSystem.ChangePosition(actor, gridCellPos);
+            ConsoleLog.Debug($"gridCellPos1={gridCellPos}");
+            CollisionSystem.SetLayer(actor, 1);
+            actor.Init();
+            AppStatic.OtherActor = actor;
 
-                gridCell = GridCellListSystem.GetCell(gridPlane, 1, 8);
-                gridCellPos = new TrueSync.TSVector(gridCell.X, 0, gridCell.Y) + TransformSystem.GetPosition(gridPlane);
-                ConsoleLog.Debug($"gridCellPos2={gridCellPos}");
-                MoveSystem.ChangeDestination(actor, gridCellPos);
-                MoveSystem.ChangeSpeed(actor, 1);
-                AISystem.StartBehaviour<AIBehaviour_MoveToDestination>(actor);
-            }
+            gridCell = GridCellListSystem.GetCell(gridPlane, 1, 8);
+            gridCellPos = new TrueSync.TSVector(gridCell.X, 0, gridCell.Y) + TransformSystem.GetPosition(gridPlane);
+            ConsoleLog.Debug($"gridCellPos2={gridCellPos}");
+            MoveSystem.ChangeDestination(actor, gridCellPos);
+            MoveSystem.ChangeSpeed(actor, 1);
+            AISystem.StartBehaviour<AIBehaviour_MoveToDestination>(actor);
+
+            DispatchAgentSystem.ResetToIdle(world);
         }
 
         /// <summary>
@@ -126,9 +119,21 @@ namespace ECSGame
                 //添加道具奖励给玩家
                 ResourceDataSystem.GainResource(AppStatic.MyActor, ResourceType.Coin, 10);
                 //派遣新的怪物
-                // UnitDispatcherSystem.StartDispatch(AppStatic.MonsterDispatcher, 1);
                 DispatchAgentSystem.StartDispatch(world, 1, 1, 5f);
             }
+        }
+
+        public void OnHandleEvent(EcsNode ecsNode, PlayerStartDispatchEvent eventContext)
+        {
+            var world = ecsNode.As<World>();
+            var building = world.GetChild<BuildingEntity>(eventContext.BuildingId);
+            DispatchAgentSystem.StartDispatch(building, 1002, 1, 5f);
+        }
+
+        public void OnHandleEvent(EcsNode ecsNode, PlayerStartBuildEvent eventContext)
+        {
+            var building = CreateBuildingFromGrid(ecsNode.As<World>());
+            eventContext.BuildingId = building.Id;
         }
     }
 }

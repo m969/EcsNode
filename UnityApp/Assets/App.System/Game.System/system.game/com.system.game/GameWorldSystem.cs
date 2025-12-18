@@ -13,7 +13,8 @@ namespace ECSGame
         public void Init(Game game, GameWorldComponent component)
         {
             var systemAssembly = game.GetComponent<ReloadComponent>().SystemAssembly;
-            var gameWorld = DomainSystem.AddWorld(systemAssembly);
+            var gameWorld = WorldSystem.Create(systemAssembly);
+            gameWorld.Init();
             component.World = gameWorld;
         }
 
@@ -41,6 +42,15 @@ namespace ECSGame
                 return;
             }
             component.World.DriveEntityFixedUpdate();
+        }
+    
+        public static World GetWorld(Game game)
+        {
+            if (game.TryGetComponent<GameWorldComponent>(out var component) == false)
+            {
+                return null;
+            }
+            return component.World;
         }
     }
 }

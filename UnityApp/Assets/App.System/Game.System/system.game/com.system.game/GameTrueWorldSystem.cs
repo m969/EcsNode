@@ -13,18 +13,19 @@ namespace ECSGame
         public void Init(Game game, GameTrueWorldComponent component)
         {
             var systemAssembly = game.GetComponent<ReloadComponent>().SystemAssembly;
-            var gameWorld = DomainSystem.AddTrueWorld(systemAssembly);
-            component.World = gameWorld;
+            var trueWorld = TrueWorldSystem.Create(systemAssembly);
+            trueWorld.Init();
+            component.World = trueWorld;
 
-            var actor = ActorSystem.Create(gameWorld, gameWorld.NewEntityId());
-            ActorListSystem.AddActor(gameWorld, actor);
+            var actor = ActorSystem.Create(trueWorld, trueWorld.NewEntityId());
+            ActorListSystem.AddActor(trueWorld, actor);
             actor.AddComponent<FramePlayComponent>();
             CollisionSystem.SetLayer(actor, 1);
             actor.Init();
             UnityAppStatic.MyActor = actor;
 
-            var actor1 = ActorSystem.Create(gameWorld, gameWorld.NewEntityId());
-            ActorListSystem.AddActor(gameWorld, actor1);
+            var actor1 = ActorSystem.Create(trueWorld, trueWorld.NewEntityId());
+            ActorListSystem.AddActor(trueWorld, actor1);
             actor1.AddComponent<FramePlayComponent>();
             CollisionSystem.SetLayer(actor1, 2);
             //actor1.AddComponent<AIComponent>();
@@ -59,6 +60,15 @@ namespace ECSGame
                 return;
             }
             component.World.DriveEntityFixedUpdate();
+        }
+    
+        public static TrueWorld GetTrueWorld(Game game)
+        {
+            if (game.TryGetComponent<GameTrueWorldComponent>(out var component) == false)
+            {
+                return null;
+            }
+            return component.World;
         }
     }
 }

@@ -22,9 +22,9 @@ namespace ECS
         public static float NowSeconds { get; set; }
         public static long DeltaTimeMilliseconds { get; set; }
         public static float DeltaTimeSeconds { get; set; }
+        public static Game Game { get; set; }
         public static GameType GameType { get; set; } = GameType.ECSGame;
         public static Actor MyActor { get; set; }
         public static Actor OtherActor { get; set; }
-        // public static UnitDispatcher MonsterDispatcher { get; set; }
     }
 }

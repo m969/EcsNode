@@ -10,7 +10,8 @@ namespace ECSGame
     public class GameSystem : AEntitySystem<Game>,
         IInit<Game>,
         IUpdate<Game>,
-        IFixedUpdate<Game>
+        IFixedUpdate<Game>,
+        IEventHandle<InputEvent>
     {
         public static Game Create(Assembly systemAssembly)
         {
@@ -29,10 +30,6 @@ namespace ECSGame
         /// <param name="entity"></param>
         public void Update(Game entity)
         {
-            AppStatic.DeltaTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - AppStatic.NowMilliseconds;
-            AppStatic.DeltaTimeSeconds = AppStatic.DeltaTimeMilliseconds / 1000f;
-            AppStatic.NowMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            AppStatic.NowSeconds = AppStatic.NowMilliseconds / 1000f;
             if (entity.Type == ((int)GameType.TrueGameDemo))
             {
                 GameTrueWorldSystem.Update(entity);
@@ -52,6 +49,28 @@ namespace ECSGame
             else
             {
                 GameWorldSystem.FixedUpdate(entity);
+            }
+        }
+
+
+        public void OnHandleEvent(EcsNode ecsNode, InputEvent eventContext)
+        {
+            ConsoleLog.Debug("GameSystem OnHandleEvent: InputEvent " + eventContext.InputType);
+            var myActor = AppStatic.MyActor;
+            var trueWorld = GameTrueWorldSystem.GetTrueWorld(ecsNode.As<Game>());
+            var advanceFrame = trueWorld.DetermineFrame + TrueWorld.ForecastFrame;
+
+            if (eventContext.InputType == InputType.Fire)
+            {
+                var input = new InputData()
+                {
+                    Frame = advanceFrame,
+                    PlayerId = myActor.Id,
+                    InputType = InputType.Fire,
+                    InputVector = eventContext.Direction.ToTSVector(),
+                };
+
+                ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, input, advanceFrame);
             }
         }
     }

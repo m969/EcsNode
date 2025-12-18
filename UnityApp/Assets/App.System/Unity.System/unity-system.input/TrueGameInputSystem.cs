@@ -59,14 +59,13 @@ namespace ECSUnity
 
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                foreach (var item in EcsDomain.TrueWorld.Id2Children.Values)
-                {
-                    if (item != UnityAppStatic.MyActor)
-                    {
-                        var transComp = item.GetComponent<TransformComponent>();
-                        //ConsoleLog.Debug($"{transComp.Position} {transComp.ForecastPosition}");
-                    }
-                }
+                // foreach (var item in EcsDomain.TrueWorld.Id2Children.Values)
+                // {
+                //     if (item != UnityAppStatic.MyActor)
+                //     {
+                //         var transComp = item.GetComponent<TransformComponent>();
+                //     }
+                // }
             }
         }
 

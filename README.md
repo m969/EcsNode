@@ -2,6 +2,26 @@
 
 基于 Entity-Component-System (ECS) 的框架，支持**热重载**。
 
+## Demos (开发中)
+
+### SLG 游戏 Demo
+- `Modules.Unity/com.module.resource-data` (资源模块)
+- `Modules.Unity/com.module.grid-based` (网格系统)
+- `Modules.Unity/com.module.building` (建筑建造模块)
+- `Modules.Unity/com.module.achieve` (达成模块，成就/任务)
+- `Modules.Unity/com.module.chase` (追逐模块)
+- `Modules.Unity/com.module.actor-state` (角色状态模块)
+
+<img src="Readme/SLG demo.gif" width="100%">
+
+### 帧同步 Demo
+- **方案一**: 仅预测移动，冲突即重置回滚重新预测（已实现）。
+- **方案二**: 预测碰撞事件缓存，先做特效表现，等待权威帧验证（未实现）。
+- **方案三**: 全部预测，缓存状态帧快照用以回滚（未实现）。
+
+*(图中黄色物体为确定帧轨迹)*
+<img src="Readme/帧同步demo.gif" width="100%">
+
 ## 核心理念 (Core Philosophy)
 
 - **数据逻辑分离 (Component-System)**
@@ -102,26 +122,6 @@
     - ECS 主要用于业务功能框架，处理主次不明显的逻辑抽象和组合。
 
 <img src="Readme/debug-editor.png" width="40%">
-
-## Demos (开发中)
-
-### SLG 游戏 Demo
-- `Modules.Unity/com.module.resource-data` (资源模块)
-- `Modules.Unity/com.module.grid-based` (网格系统)
-- `Modules.Unity/com.module.building` (建筑建造模块)
-- `Modules.Unity/com.module.achieve` (达成模块，成就/任务)
-- `Modules.Unity/com.module.chase` (追逐模块)
-- `Modules.Unity/com.module.actor-state` (角色状态模块)
-
-<img src="Readme/SLG demo.gif" width="100%">
-
-### 帧同步 Demo
-- **方案一**: 仅预测移动，冲突即重置回滚重新预测（已实现）。
-- **方案二**: 预测碰撞事件缓存，先做特效表现，等待权威帧验证（未实现）。
-- **方案三**: 全部预测，缓存状态帧快照用以回滚（未实现）。
-
-*(图中黄色物体为确定帧轨迹)*
-<img src="Readme/帧同步demo.gif" width="100%">
 
 ## 参考引用
 - [ET](https://github.com/egametang/ET)

@@ -17,39 +17,38 @@ namespace ECSGame.Module.Building
 {
     public partial class BuildingSystem : AEntitySystem<BuildingEntity>,
         IUpdate<BuildingEntity>,
-        IOnDispatchTimeout
+        IOnDispatchStarted
     {
         public void Update(BuildingEntity entity)
         {
             DispatchAgentSystem.Tick(entity, AppStatic.DeltaTimeSeconds);
         }
 
-        public void OnDispatchTimeout(EcsEntity entity)
+        public void OnDispatchStarted(EcsEntity entity, int count)
         {
-            ConsoleLog.Debug($"OnDispatchTimeout: EntityId={entity.Id}");
+            ConsoleLog.Debug($"BuildingSystem OnDispatchStarted: Count={count}");
 
             var dispatcher = entity.GetComponent<DispatchAgentComponent>();
-            if (dispatcher.ConfigId == 1002)
-            {
-                var building = dispatcher.Entity.As<BuildingEntity>();
-                var world = building.GetParent<World>();
+            var building = dispatcher.Entity.As<BuildingEntity>();
+            var world = building.GetParent<World>();
 
-                var gridPlane = GridPlaneListSystem.GetGridPlaneByConfigId(world, 1001);
-                var gridCell = GridCellListSystem.GetCell(gridPlane, 1, 1);
-                var gridCellPos = new TrueSync.TSVector(gridCell.X, 0, gridCell.Y) + TransformSystem.GetPosition(gridPlane);
+            var gridPlane = GridPlaneListSystem.GetGridPlaneByConfigId(world, 1001);
+            var gridCell = GridCellListSystem.GetCell(gridPlane, 1, 1);
+            var gridCellPos = new TrueSync.TSVector(gridCell.X, 0, gridCell.Y) + TransformSystem.GetPosition(gridPlane);
 
-                var actor = ActorSystem.Create(world, world.NewEntityId());
-                actor.Type = ActorType.Hero;
-                ActorListSystem.AddActor(world, actor);
-                TransformSystem.ChangePosition(actor, gridCellPos);
-                CollisionSystem.SetLayer(actor, 1);
-                ChaseConfigSystem.SetConfig(actor, "", 50, 51, 2, 55);
-                ChaseSystem.SetCurrentTarget(actor, AppStatic.OtherActor);
-                actor.Init();
-                MoveSystem.ChangeSpeed(actor, 1);
-                AppStatic.MyActor = actor;
-                AISystem.StartBehaviour<AIBehaviour_Launch>(actor);
-            }
+            var actor = ActorSystem.Create(world, world.NewEntityId());
+            actor.Type = ActorType.Hero;
+            ActorListSystem.AddActor(world, actor);
+            TransformSystem.ChangePosition(actor, gridCellPos);
+            CollisionSystem.SetLayer(actor, 1);
+            ChaseConfigSystem.SetConfig(actor, "", 50, 51, 2, 55);
+            ChaseSystem.SetCurrentTarget(actor, AppStatic.OtherActor);
+            actor.Init();
+            MoveSystem.ChangeSpeed(actor, 1);
+            AppStatic.MyActor = actor;
+            AISystem.StartBehaviour<AIBehaviour_Launch>(actor);
+
+            DispatchAgentSystem.ResetToIdle(world);
         }
     }
 }

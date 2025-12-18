@@ -18,9 +18,10 @@ namespace ECSUnity
         {
             ConsoleLog.Debug($"UnityAppRun Init {Application.platform} {(GameType)gameType}");
 
-            AppStatic.GameType = (GameType)gameType;
+            AppStatic.NowMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            AppStatic.NowSeconds = AppStatic.NowMilliseconds / 1000f;
 
-            // DomainSystem.InitEventHandlers(systemAssembly);
+            AppStatic.GameType = (GameType)gameType;
 
             var app = UnityAppSystem.Create(systemAssembly);
             app.AddComponent<UnityConfigComponent>();// 添加配置模块
@@ -31,7 +32,9 @@ namespace ECSUnity
             // app.AddComponent<UnityNeterComponent>();// 添加网络通讯模块
             app.Init();
 
-            var game = DomainSystem.AddGame(gameType, systemAssembly);
+            var game = GameSystem.Create(systemAssembly);
+            AppStatic.Game = game;
+            game.Type = gameType;
             if (gameType == (int)GameType.TrueGameDemo) game.AddComponent<GameTrueWorldComponent>();
             if (gameType == (int)GameType.ECSGame) game.AddComponent<GameWorldComponent>();
             if (gameType == (int)GameType.SimulationGameDemo) game.AddComponent<GameWorldComponent>();
@@ -91,14 +94,17 @@ namespace ECSUnity
 
         public static void Update()
         {
+            AppStatic.DeltaTimeMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - AppStatic.NowMilliseconds;
+            AppStatic.DeltaTimeSeconds = AppStatic.DeltaTimeMilliseconds / 1000f;
+            AppStatic.NowMilliseconds = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            AppStatic.NowSeconds = AppStatic.NowMilliseconds / 1000f;
+
             EventBus.Instance.DriveUpdate();
-            // EcsDomain.Game?.DriveEntityUpdate();
         }
 
         public static void FixedUpdate()
         {
             EventBus.Instance.DriveFixedUpdate();
-            // EcsDomain.Game?.DriveEntityFixedUpdate();
         }
     }
 }

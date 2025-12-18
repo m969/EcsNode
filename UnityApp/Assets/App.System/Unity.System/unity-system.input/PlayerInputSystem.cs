@@ -13,8 +13,8 @@ namespace ECSUnity
 {
     public class PlayerInputSystem : AEntitySystem<PlayerInput>,
         IInit<PlayerInput>,
-        IUpdate<PlayerInput>,
-        IEventHandle<InputEvent>
+        IUpdate<PlayerInput>
+        // IEventHandle<InputEvent>
     {
         public void Init(PlayerInput playerInput)
         {
@@ -39,30 +39,29 @@ namespace ECSUnity
             return playerInput;
         }
 
-        public void OnHandleEvent(EcsNode ecsNode, InputEvent eventContext)
-        {
-            ConsoleLog.Debug("OnHandleEvent: InputEvent " + eventContext.InputType);
-            if (ecsNode.TryGetComponent<TrueGameInputComponent>(out var component) == false)
-            {
-                return;
-            }
+        // public void OnHandleEvent(EcsNode ecsNode, InputEvent eventContext)
+        // {
+        //     ConsoleLog.Debug("OnHandleEvent: InputEvent " + eventContext.InputType);
+        //     if (ecsNode.TryGetComponent<TrueGameInputComponent>(out var component) == false)
+        //     {
+        //         return;
+        //     }
 
-            var myActor = UnityAppStatic.MyActor;
-            var advanceFrame = EcsDomain.TrueWorld.DetermineFrame + TrueWorld.ForecastFrame;
+        //     var myActor = UnityAppStatic.MyActor;
+        //     var advanceFrame = EcsDomain.TrueWorld.DetermineFrame + TrueWorld.ForecastFrame;
 
-            if (eventContext.InputType == InputType.Fire)
-            {
-                component.FireVector = eventContext.Direction;
-                var input = new InputData()
-                {
-                    Frame = advanceFrame,
-                    PlayerId = myActor.Id,
-                    InputType = InputType.Fire,
-                    InputVector = eventContext.Direction.ToTSVector(),
-                };
+        //     if (eventContext.InputType == InputType.Fire)
+        //     {
+        //         var input = new InputData()
+        //         {
+        //             Frame = advanceFrame,
+        //             PlayerId = myActor.Id,
+        //             InputType = InputType.Fire,
+        //             InputVector = eventContext.Direction.ToTSVector(),
+        //         };
 
-                ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, input, advanceFrame);
-            }
-        }
+        //         ActorAdvancePlaySystem.AddLocalPlayerInput(myActor, input, advanceFrame);
+        //     }
+        // }
     }
 }
