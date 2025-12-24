@@ -21,8 +21,7 @@ namespace ECSUnity
                 playerInput.AddComponent<SimulationGameInputComponent>();
             }
             playerInput.Init();
-            // EcsDomain.AddNode(playerInput);
-            // EcsDomain.PlayerInput = playerInput;
+            UnityAppStatic.PlayerInput = playerInput;
         }
     }
 }

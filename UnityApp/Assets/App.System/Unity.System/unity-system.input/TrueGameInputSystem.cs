@@ -189,7 +189,7 @@ namespace ECSUnity
         public static void OnFrameUpdate(TrueWorld trueWorld, long determineFrame)
         {
             var newInputFrame = determineFrame + TrueWorld.ForecastFrame;
-            var playerInput = EcsDomain.PlayerInput;
+            var playerInput = UnityAppStatic.PlayerInput;
             if (playerInput == null || playerInput.TryGetComponent<TrueGameInputComponent>(out var component) == false)
             {
                 return;

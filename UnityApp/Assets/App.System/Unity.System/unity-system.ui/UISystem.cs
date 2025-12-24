@@ -36,7 +36,7 @@ namespace ECSUnity
         public static T GetWindow<T>() where T : UIPanel, IUIWindow
         {
             var type = typeof(T);
-            EcsDomain.UIStage.Type2Windows.TryGetValue(type, out var window);
+            UnityAppStatic.UIStage.Type2Windows.TryGetValue(type, out var window);
             if (window == null)
             {
                 return null;
@@ -60,7 +60,7 @@ namespace ECSUnity
             EventBus.Send(showEvent);
             await showEvent.CompleteTask;
 
-            EcsDomain.UIStage.Type2Windows.TryGetValue(type, out var window);
+            UnityAppStatic.UIStage.Type2Windows.TryGetValue(type, out var window);
             if (window == null)
             {
                 return null;
@@ -85,7 +85,7 @@ namespace ECSUnity
         {
             var type = typeof(T);
 
-            EcsDomain.UIStage.Type2Windows.TryGetValue(type, out var window);
+            UnityAppStatic.UIStage.Type2Windows.TryGetValue(type, out var window);
             if (window != null)
             {
                 var uiobject = (T)window;

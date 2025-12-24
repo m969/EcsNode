@@ -63,7 +63,7 @@ namespace ECSGame
             var selectedCellId = GridPlaneSelectionSystem.GetSelectCell(gridPlane);
             var gridCell = GridCellListSystem.GetCellById(gridPlane, selectedCellId);
             var position = new ECSGame.Module.Building.Vector2Int(gridCell.X, gridCell.Y);
-            var building = BuildingSystem.Create(world, 1, position, EcsDomain.Player.Id);
+            var building = BuildingSystem.Create(world, 1, position, AppStatic.Player.Id);
             building.AddComponent<TransformComponent>();
             building.AddComponent<DispatchAgentComponent>();
             TransformSystem.ChangePosition(building, new TrueSync.TSVector(position.x, 0, position.y));

@@ -26,7 +26,7 @@ namespace ECSUnity
 
         public static void PlayClip(int clipType)
         {
-            var soundMaster = EcsDomain.SoundMaster;
+            var soundMaster = UnityAppStatic.SoundMaster;
             //if (!component.Id2Clip.TryGetValue(clipType, out var audioClip))
             //{
             //    audioClip = Resources.Load<AudioClip>("Smith & Wesson M&P 40C Shot 3");

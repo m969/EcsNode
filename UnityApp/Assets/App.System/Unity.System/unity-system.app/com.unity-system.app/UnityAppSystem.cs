@@ -10,8 +10,9 @@ namespace ECSUnity
     {
         public static UnityApp Create(Assembly systemAssembly)
         {
-            var game = EcsNodeSystem.Create<UnityApp>(EcsType.UnityApp, systemAssembly);
-            return game;
+            var app = EcsNodeSystem.Create<UnityApp>(EcsType.UnityApp, systemAssembly);
+            UnityAppStatic.App = app;
+            return app;
         }
 
         public void Init(UnityApp entity)

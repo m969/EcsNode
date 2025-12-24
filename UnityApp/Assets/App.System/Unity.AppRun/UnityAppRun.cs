@@ -49,7 +49,7 @@ namespace ECSUnity
             {
                 item.Dispose();
             }
-            var uiComp = EcsDomain.UIStage;
+            var uiComp = UnityAppStatic.UIStage;
             uiComp.Type2Windows.Clear();
             UIObjectFactory.Clear();
             UIPackage.RemoveAllPackages();
@@ -73,13 +73,13 @@ namespace ECSUnity
 
         public static void Reload(Assembly systemAssembly, int gameType)
         {
-            ConsoleLog.Debug($"AppRunStatic Reload");
+            ConsoleLog.Debug($"UnityAppRun Reload");
 
-            foreach (var ecsNode in EcsDomain.EcsNodes.Values)
+            EventBus.Instance.ForeachNodeFromFirst(ecsNode=>
             {
                 ecsNode.GetComponent<ReloadComponent>().SystemAssembly = systemAssembly;
                 EcsNodeSystem.RegisterSystems(ecsNode, systemAssembly);
-            }
+            });
 
             ReloadUI();
 
