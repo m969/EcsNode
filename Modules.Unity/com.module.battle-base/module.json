@@ -1,0 +1,12 @@
+{
+  "displayName": "BattleBase",
+  "name": "com.module.battle-base",
+  "unity": "2019.4",
+  "description": "",
+  "category": "Engineering",
+  "keywords": [
+  ],
+  "version": "1.0.0",
+  "dependencies": {
+  }
+}
