@@ -16,6 +16,7 @@ namespace ECSGame
             var player = PlayerSystem.Create(systemAssembly);
             player.Init();
             component.Player = player;
+            AppStatic.Player = player;
         }
     }
 }

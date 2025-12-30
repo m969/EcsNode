@@ -1,7 +1,7 @@
 using ECS;
 using System.Collections.Generic;
 
-namespace ECSGame.BattleBase
+namespace ECSGame.BattleBaseModule
 {
     /// <summary>
     /// 战斗基地列表组件
@@ -17,6 +17,6 @@ namespace ECSGame.BattleBase
         /// <summary>
         /// Key为配置Id，Value为实体对象列表
         /// </summary>
-        public Dictionary<long, List<BattleBaseEntity>> ConfigId2Entities = new Dictionary<long, List<BattleBaseEntity>>();
+        public Dictionary<int, List<BattleBaseEntity>> ConfigId2Entities = new Dictionary<int, List<BattleBaseEntity>>();
     }
 }

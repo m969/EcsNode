@@ -1,7 +1,7 @@
 using ECS;
 using System.Collections.Generic;
 
-namespace ECSGame.BattleBase
+namespace ECSGame.BattleBaseModule
 {
     /// <summary>
     /// 战斗基地实体
@@ -9,6 +9,11 @@ namespace ECSGame.BattleBase
     /// </summary>
     public class BattleBaseEntity : EcsEntity
     {
+        /// <summary>
+        /// 配置Id（对应战斗基地配置表）
+        /// </summary>
+        public int ConfigId;
+        
         /// <summary>
         /// 品级（下品、中品、上品、极品、仙品）
         /// </summary>

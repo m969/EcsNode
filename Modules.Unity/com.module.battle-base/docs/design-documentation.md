@@ -27,7 +27,7 @@
     - 包含Entity（EcsEntity）属性，用于关联所属实体。
 
 ### 命名空间
-所有模块代码命名空间为 `ECSGame.BattleBase`
+所有模块代码命名空间为 `ECSGame.BattleBaseModule`
 
 ### 常用引用
 ```csharp
@@ -74,6 +74,7 @@ using System.Collections.Generic;
         - 战斗基地部件实体系统功能接口设计：
             - SetPartData(BattleBasePartEntity entity, BattleBasePartType type, BattleBaseQuality quality, float energyCost)：初始化部件数据。
 
+- 组件设计
     - 战斗基地列表组件 (BattleBaseListComponent) 用于存储和管理该实体
         - Id2Entities 字典，Key为实体Id，Value为实体对象
         - ConfigId2Entities 字典，Key为配置Id，Value为实体对象列表
@@ -88,9 +89,6 @@ using System.Collections.Generic;
     - 战斗基地部件列表组件系统设计 (BattleBasePartListSystem)
         - 战斗基地部件列表组件系统功能接口设计：
             - GetPart(long id)：获取部件。
-
-- 组件设计
-    - (无额外组件需求，功能主要在实体和系统实现)
 
 - 其他类型补充
     - 流程节点派发接口补充

@@ -1,18 +1,18 @@
 using ECS;
 
-namespace ECSGame.BattleBase
+namespace ECSGame.BattleBaseModule
 {
-    public interface IBattleBaseLevelChangedHandler
+    public interface IBattleBaseLevelChangedHandler : IDispatch
     {
         void OnBattleBaseLevelChanged(BattleBaseEntity entity, int oldLevel, int newLevel);
     }
 
-    public interface IBattleBaseEnergyChangedHandler
+    public interface IBattleBaseEnergyChangedHandler : IDispatch
     {
         void OnBattleBaseEnergyChanged(BattleBaseEntity entity, float currentEnergy, float maxEnergy);
     }
 
-    public interface IBattleBasePartChangedHandler
+    public interface IBattleBasePartChangedHandler : IDispatch
     {
         void OnBattleBasePartChanged(BattleBaseEntity entity, BattleBasePartEntity part, bool isAdded);
     }

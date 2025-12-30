@@ -1,6 +1,6 @@
 using ECS;
 
-namespace ECSGame.BattleBase
+namespace ECSGame.BattleBaseModule
 {
     /// <summary>
     /// 战斗基地部件实体
@@ -8,6 +8,11 @@ namespace ECSGame.BattleBase
     /// </summary>
     public class BattleBasePartEntity : EcsEntity
     {
+        /// <summary>
+        /// 配置Id（对应战斗基地部件配置表）
+        /// </summary>
+        public int ConfigId;
+
         /// <summary>
         /// 部件类型（武器、护盾、引擎）
         /// </summary>

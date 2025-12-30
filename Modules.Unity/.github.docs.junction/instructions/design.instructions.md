@@ -30,8 +30,11 @@ applyTo: "design-documentation.md"
 - 组件基类 EcsComponent：
     - 包含Entity（EcsEntity）属性，用于关联所属实体。
 
+## 系统类：
+- 只实现方法逻辑，不实现属性数据
+
 ### 命名空间
-所有模块代码命名空间为 `ECSGame.**Module`（**为模块名，忽略横杆下划线，大写开头）
+所有模块代码命名空间为 `ECSGame.**Module`（**为模块名，忽略横杆下划线，大写开头，以Module为后缀）
 
 ### 常用引用
 ```csharp
@@ -51,44 +54,28 @@ using System.Collections.Generic;
 ## 文档模板
 
 - 实体设计（没有需求则留空）
-    - 实体1
-        - 实体1用途
-    	- 实体1字段设计
-    - 实体2
-        - 实体2用途
-    	- 实体2字段设计
+    - 实体A
+        - 实体A用途
+    	- 实体A字段设计
 
-    - 实体1系统设计（以 System 为后缀）
-        - 实体1系统功能接口设计
-    - 实体2系统设计（以 System 为后缀）
-        - 实体2系统功能接口设计
-
-    - 实体1列表组件（Entity1ListComponent） 用于存储和管理该实体
-        - Id2Entities 字典，Key为实体Id，Value为实体对象
-        - ConfigId2Entities 字典，Key为配置Id，Value为实体对象列表（没有需求则留空）
-        - 其他
-    - 实体2列表组件（Entity2ListComponent） 用于存储和管理该实体
-        - Id2Entities 字典，Key为实体Id，Value为实体对象
-        - ConfigId2Entities 字典，Key为配置Id，Value为实体对象列表（没有需求则留空）
-        - 其他
-        
-    - 实体1列表组件系统设计（命名省略 Component 并以 System 为后缀）
-        - 实体1列表组件系统功能接口设计
-    - 实体2列表组件系统设计（命名省略 Component 并以 System 为后缀）
-        - 实体2列表组件系统功能接口设计
+    - 实体A系统设计（以 System 为后缀）
+        - 实体A系统功能接口设计
 
 - 组件设计（没有需求则留空）
+    - 实体A列表组件（EntityAListComponent） 用于存储和管理该实体
+        - Id2Entities 字典，Key为实体Id(long)，Value为实体对象
+        - ConfigId2Entities 字典，Key为配置Id(int)，Value为实体对象列表
+        - 其他
+        
+    - 实体A列表组件系统设计（命名省略 Component 并以 System 为后缀）
+        - 实体A列表组件系统功能接口设计
+
     - 组件A
     	- 组件A用途
     	- 组件A字段设计
-    - 组件B
-    	- 组件B用途
-    	- 组件B字段设计
 
     - 组件A系统设计（命名省略 Component 并以 System 为后缀）
         - 组件A系统功能接口设计
-    - 组件B系统设计（命名省略 Component 并以 System 为后缀）
-        - 组件B系统功能接口设计
 
 - 其他类型补充
     - 流程节点派发接口补充（方便外部监听扩展，例如其他模块依赖或视图刷新，一个节点一个接口，方法命名以On开头，没有需求则留空）

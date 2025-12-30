@@ -67,7 +67,7 @@ namespace ECSGame
             var transComp = entity.GetComponent<TransformComponent>();
             moveComp.TrueDirection = target;
             var beforePos = transComp.Position;
-            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * SpeedAdaptive);
+            var afterPos = transComp.Position + target * FP.FromFloat(moveComp.Speed * AppStatic.DeltaTimeSeconds);
             TransformSystem.ChangePosition(entity, afterPos);
             if (TSVector.Distance(afterPos, target) < FP.FromFloat(0.1f))
             {

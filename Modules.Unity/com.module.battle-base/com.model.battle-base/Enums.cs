@@ -1,4 +1,4 @@
-namespace ECSGame.BattleBase
+namespace ECSGame.BattleBaseModule
 {
     public enum BattleBaseQuality
     {
