@@ -1,7 +1,9 @@
 {
     "name": "After.Fody",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:80c4836a72fca9f4f96894aede385afc"
+    ],
     "includePlatforms": [
         "Editor"
     ],

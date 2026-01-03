@@ -110,7 +110,7 @@ namespace Fody.Unity
             if (weavers.Count <= 0)
                 return;
 
-            typeSystem = new TypeSystem(typeCache.FindType, this.moduleDefinition);
+            typeSystem = this.moduleDefinition.TypeSystem;
             weavers.ForEach(m => m.TypeSystem = typeSystem);
         }
 
@@ -223,7 +223,7 @@ namespace Fody.Unity
         protected virtual void AddWeavingInfo()
         {
             const TypeAttributes typeAttributes = TypeAttributes.NotPublic | TypeAttributes.Class;
-            var typeDefinition = new TypeDefinition(null, GetWeavingInfoClassName(), typeAttributes, typeSystem.ObjectReference);
+            var typeDefinition = new TypeDefinition(null, GetWeavingInfoClassName(), typeAttributes, typeSystem.Object);
             moduleDefinition.Types.Add(typeDefinition);
 
             AddVersionField(typeof(BaseModuleWeaver).Assembly, "FodyVersion", typeDefinition);
@@ -248,7 +248,7 @@ namespace Fody.Unity
                                                     FieldAttributes.Literal |
                                                     FieldAttributes.Static |
                                                     FieldAttributes.HasDefault;
-            var field = new FieldDefinition(name, fieldAttributes, typeSystem.StringReference)
+            var field = new FieldDefinition(name, fieldAttributes, typeSystem.String)
             {
                 Constant = weaverVersion
             };

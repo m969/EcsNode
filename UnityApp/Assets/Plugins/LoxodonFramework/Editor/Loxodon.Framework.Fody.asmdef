@@ -1,9 +1,7 @@
 {
     "name": "Loxodon.Framework.Fody",
     "rootNamespace": "",
-    "references": [
-        "GUID:440d25ea739a6b240951322205a4be3d"
-    ],
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],

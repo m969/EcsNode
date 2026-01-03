@@ -79,10 +79,10 @@ namespace Loxodon.Framework.Fody
             else if (Directory.Exists(DEFAULT_CONFIG_TEMPLATE_DIR))
                 weaverAssemblyRoot = DEFAULT_CONFIG_TEMPLATE_DIR;
 
-            LoadAssembly(weaverAssemblyRoot + "Fody/FodyHelpers.dll");
-            LoadAssembly(weaverAssemblyRoot + "Fody/Mono.Cecil.dll");
-            LoadAssembly(weaverAssemblyRoot + "Fody/Mono.Cecil.Pdb.dll");
-            LoadAssembly(weaverAssemblyRoot + "Fody/Mono.Cecil.Rocks.dll");
+            //LoadAssembly(weaverAssemblyRoot + "Fody/FodyHelpers.dll");
+            //LoadAssembly(weaverAssemblyRoot + "Fody/Mono.Cecil.dll");
+            //LoadAssembly(weaverAssemblyRoot + "Fody/Mono.Cecil.Pdb.dll");
+            //LoadAssembly(weaverAssemblyRoot + "Fody/Mono.Cecil.Rocks.dll");
             //Assembly assembly = LoadAssembly(weaverAssemblyRoot + "Fody/Fody.Unity.dll");
 
             List<string> assemblyNames = new List<string>();
