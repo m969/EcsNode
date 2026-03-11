@@ -1,5 +1,7 @@
 # EcsNode
 
+<img src="Readme/icon.jpg" width="30%">
+
 基于 Entity-Component-System (ECS) 的框架，支持**热重载**。
 
 ## Demos (开发中)
